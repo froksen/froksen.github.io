@@ -1,0 +1,369 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: transparent; }
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 500px;
+  font-family: var(--font-sans);
+}
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 12px 12px;
+  position: relative;
+}
+.panel:first-child {
+  border-right: 0.5px solid var(--color-border-tertiary);
+}
+.panel-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+canvas { display: block; }
+
+/* 2D right panel */
+.bohr-svg { width: 100%; max-width: 300px; }
+.legend {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+</style>
+
+<div class="container">
+  <!-- LEFT: 3D -->
+  <div class="panel">
+    <div class="panel-title">Tredimensionel</div>
+    <canvas id="c3d" width="300" height="360"></canvas>
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#E24B4A"></div> Proton</div>
+      <div class="legend-item"><div class="dot" style="background:#888780"></div> Neutron</div>
+      <div class="legend-item"><div class="dot" style="background:#378ADD"></div> Elektron</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: 2D Bohr -->
+  <div class="panel">
+    <div class="panel-title">Bohrs atommodel</div>
+    <svg id="bohr" class="bohr-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#E24B4A"></div> Proton (3)</div>
+      <div class="legend-item"><div class="dot" style="background:#888780"></div> Neutron (4)</div>
+      <div class="legend-item"><div class="dot" style="background:#378ADD"></div> Elektron (3)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// 3D Canvas Renderer
+// ─────────────────────────────────────────────
+const canvas = document.getElementById('c3d');
+const ctx = canvas.getContext('2d');
+const W = 300, H = 360, CX = 150, CY = 185;
+
+// Dark mode detection
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const bgColor = dark ? '#1a1a18' : '#ffffff';
+const orbitColor = dark ? 'rgba(180,178,169,0.25)' : 'rgba(100,98,90,0.2)';
+
+// Lithium: 3 protons, 4 neutrons, 3 electrons
+// Orbit 1: 2e, Orbit 2: 1e
+const PROTON_COLOR   = '#E24B4A';
+const NEUTRON_COLOR  = '#888780';
+const ELECTRON_COLOR = '#378ADD';
+const PROTON_GLOW    = 'rgba(226,75,74,0.3)';
+const ELECTRON_GLOW  = 'rgba(55,138,221,0.4)';
+
+// Nucleus particles (3 protons + 4 neutrons, arranged in 3D cluster)
+const nucleusParticles = [
+  {type:'p', ox:0,   oy:-8,  oz:6},
+  {type:'p', ox:-9,  oy:5,   oz:-3},
+  {type:'p', ox:9,   oy:4,   oz:-3},
+  {type:'n', ox:0,   oy:6,   oz:-8},
+  {type:'n', ox:-9,  oy:-5,  oz:-2},
+  {type:'n', ox:9,   oy:-5,  oz:-2},
+  {type:'n', ox:0,   oy:0,   oz:11},
+];
+
+// Orbit definitions (semi-major/minor for 3D tilt, inclination)
+const orbits = [
+  { r: 60,  tiltX: 0.55, tiltZ: 0.2,  speed: 0.022, electrons: 2 },
+  { r: 115, tiltX: 0.3,  tiltZ: 0.55, speed: 0.013, electrons: 1 },
+];
+
+// Electron state: angle
+let electronAngles = [0, Math.PI, 0]; // orbit0: e0=0, e1=π; orbit1: e2=0
+
+let t = 0;
+
+// Project 3D→2D with simple isometric-ish perspective
+function project3D(x, y, z, tX, tZ) {
+  // Apply tilt around X axis
+  const y2 = y * Math.cos(tX) - z * Math.sin(tX);
+  const z2 = y * Math.sin(tX) + z * Math.cos(tX);
+  // Apply tilt around Z axis
+  const x3 = x * Math.cos(tZ) - y2 * Math.sin(tZ);
+  const y3 = x * Math.sin(tZ) + y2 * Math.cos(tZ);
+  return { sx: CX + x3, sy: CY + y3, depth: z2 };
+}
+
+function drawOrbitEllipse(orbit) {
+  const steps = 80;
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const a = (i / steps) * Math.PI * 2;
+    const x = Math.cos(a) * orbit.r;
+    const z = Math.sin(a) * orbit.r * 0.35;
+    const p = project3D(x, 0, z, orbit.tiltX, orbit.tiltZ);
+    if (i === 0) ctx.moveTo(p.sx, p.sy);
+    else ctx.lineTo(p.sx, p.sy);
+  }
+  ctx.closePath();
+  ctx.strokeStyle = orbitColor;
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+}
+
+function drawSphere(sx, sy, r, fillColor, glowColor, depth) {
+  // Shadow / depth cue
+  const scale = 0.8 + depth * 0.008;
+  const rr = r * Math.max(0.6, Math.min(1.4, scale));
+
+  if (glowColor) {
+    const g = ctx.createRadialGradient(sx - rr*0.3, sy - rr*0.3, 0, sx, sy, rr * 1.6);
+    g.addColorStop(0, glowColor);
+    g.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(sx, sy, rr * 1.6, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
+  }
+
+  // Main sphere with radial gradient for 3D feel
+  const grad = ctx.createRadialGradient(sx - rr*0.35, sy - rr*0.35, rr*0.05, sx, sy, rr);
+  grad.addColorStop(0, lighten(fillColor, 0.6));
+  grad.addColorStop(0.5, fillColor);
+  grad.addColorStop(1, darken(fillColor, 0.5));
+  ctx.beginPath();
+  ctx.arc(sx, sy, rr, 0, Math.PI * 2);
+  ctx.fillStyle = grad;
+  ctx.fill();
+}
+
+function lighten(hex, amt) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.min(255,r+Math.round((255-r)*amt))},${Math.min(255,g+Math.round((255-g)*amt))},${Math.min(255,b+Math.round((255-b)*amt))})`;
+}
+function darken(hex, amt) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.max(0,Math.round(r*(1-amt)))},${Math.max(0,Math.round(g*(1-amt)))},${Math.max(0,Math.round(b*(1-amt)))})`;
+}
+
+function getElectronPos(orbitIdx, angle) {
+  const orbit = orbits[orbitIdx];
+  const x = Math.cos(angle) * orbit.r;
+  const z = Math.sin(angle) * orbit.r * 0.35;
+  return project3D(x, 0, z, orbit.tiltX, orbit.tiltZ);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = dark ? '#0e0e0d' : 'transparent';
+
+  // Update angles
+  t += 1;
+  electronAngles[0] += orbits[0].speed;
+  electronAngles[1] += orbits[0].speed;
+  electronAngles[2] += orbits[1].speed * 0.7;
+
+  // Collect all draw calls with depth
+  const drawCalls = [];
+
+  // Nucleus particles
+  for (const p of nucleusParticles) {
+    const proj = project3D(p.ox, p.oy, p.oz, 0.5, 0.3);
+    drawCalls.push({
+      depth: proj.depth,
+      draw: () => drawSphere(
+        proj.sx, proj.sy,
+        p.type === 'p' ? 9 : 8.5,
+        p.type === 'p' ? PROTON_COLOR : NEUTRON_COLOR,
+        p.type === 'p' ? PROTON_GLOW : null,
+        proj.depth
+      )
+    });
+  }
+
+  // Electrons
+  const ePositions = [
+    getElectronPos(0, electronAngles[0]),
+    getElectronPos(0, electronAngles[1]),
+    getElectronPos(1, electronAngles[2]),
+  ];
+
+  for (const ep of ePositions) {
+    drawCalls.push({
+      depth: ep.depth,
+      draw: () => drawSphere(ep.sx, ep.sy, 5.5, ELECTRON_COLOR, ELECTRON_GLOW, ep.depth)
+    });
+  }
+
+  // Sort by depth (back to front)
+  drawCalls.sort((a, b) => a.depth - b.depth);
+
+  // Draw orbits first
+  drawOrbitEllipse(orbits[0]);
+  drawOrbitEllipse(orbits[1]);
+
+  // Draw spheres
+  for (const dc of drawCalls) dc.draw();
+
+  // Label
+  ctx.fillStyle = dark ? 'rgba(194,192,182,0.6)' : 'rgba(100,98,90,0.6)';
+  ctx.font = '11px var(--font-sans, sans-serif)';
+  ctx.textAlign = 'center';
+  ctx.fillText('Li — Lithium (Z=3)', CX, H - 14);
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ─────────────────────────────────────────────
+// 2D Bohr SVG
+// ─────────────────────────────────────────────
+const svgNS = 'http://www.w3.org/2000/svg';
+const bohr = document.getElementById('bohr');
+const BCX = 150, BCY = 150;
+
+const isDark = dark;
+const textColor = isDark ? '#c2c0b6' : '#3d3d3a';
+const strokeCol = isDark ? 'rgba(180,178,169,0.3)' : 'rgba(80,78,70,0.25)';
+
+function makeSVGEl(tag, attrs) {
+  const el = document.createElementNS(svgNS, tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  return el;
+}
+
+// Orbit circles
+const orbitRadii = [42, 85];
+for (const r of orbitRadii) {
+  bohr.appendChild(makeSVGEl('circle', {
+    cx: BCX, cy: BCY, r,
+    fill: 'none', stroke: strokeCol, 'stroke-width': '1'
+  }));
+}
+
+// Nucleus background
+bohr.appendChild(makeSVGEl('circle', {
+  cx: BCX, cy: BCY, r: 22,
+  fill: isDark ? '#1a1a18' : '#f1efea',
+  stroke: isDark ? 'rgba(180,178,169,0.2)' : 'rgba(80,78,70,0.2)',
+  'stroke-width': '0.5'
+}));
+
+// Nucleus particles arrangement
+const nuclPos = [
+  { type: 'p', x: BCX - 7,  y: BCY - 7  },
+  { type: 'p', x: BCX + 7,  y: BCY - 7  },
+  { type: 'p', x: BCX,      y: BCY + 7  },
+  { type: 'n', x: BCX - 7,  y: BCY + 4  },
+  { type: 'n', x: BCX + 7,  y: BCY + 4  },
+  { type: 'n', x: BCX,      y: BCY - 14 },
+  { type: 'n', x: BCX,      y: BCY + 16 },
+];
+
+for (const p of nuclPos) {
+  bohr.appendChild(makeSVGEl('circle', {
+    cx: p.x, cy: p.y, r: p.type === 'p' ? 6 : 5.5,
+    fill: p.type === 'p' ? PROTON_COLOR : NEUTRON_COLOR,
+    stroke: p.type === 'p' ? darken(PROTON_COLOR, 0.25) : darken(NEUTRON_COLOR, 0.2),
+    'stroke-width': '0.5'
+  }));
+}
+
+// Electron dots on orbits (Bohr: static positions)
+// Shell 1: 2 electrons at 0° and 180°
+const shellElectrons = [
+  { shell: 0, angle: 270 },
+  { shell: 0, angle: 90  },
+  { shell: 1, angle: 0   },
+];
+
+const electronEls = [];
+for (const e of shellElectrons) {
+  const r = orbitRadii[e.shell];
+  const rad = (e.angle * Math.PI) / 180;
+  const ex = BCX + r * Math.cos(rad);
+  const ey = BCY + r * Math.sin(rad);
+
+  // Glow
+  const glow = makeSVGEl('circle', { cx: ex, cy: ey, r: 10, fill: ELECTRON_GLOW, opacity: '0.5' });
+  bohr.appendChild(glow);
+
+  const dot = makeSVGEl('circle', { cx: ex, cy: ey, r: 5.5, fill: ELECTRON_COLOR });
+  bohr.appendChild(dot);
+  electronEls.push({ dot, glow, r, angle: e.angle, shell: e.shell });
+}
+
+// Labels
+const lbl = makeSVGEl('text', {
+  x: BCX, y: 290,
+  'text-anchor': 'middle',
+  fill: textColor, 'font-size': '11', 'font-family': 'var(--font-sans, sans-serif)'
+});
+lbl.textContent = 'Li — Lithium (Z=3)';
+bohr.appendChild(lbl);
+
+// Shell labels
+const s1lbl = makeSVGEl('text', { x: BCX + 28, y: BCY - 30, fill: textColor, 'font-size': '10', 'font-family': 'var(--font-sans)', opacity: '0.65' });
+s1lbl.textContent = 'K (n=1)';
+bohr.appendChild(s1lbl);
+
+const s2lbl = makeSVGEl('text', { x: BCX + 62, y: BCY - 62, fill: textColor, 'font-size': '10', 'font-family': 'var(--font-sans)', opacity: '0.65' });
+s2lbl.textContent = 'L (n=2)';
+bohr.appendChild(s2lbl);
+
+// Animate 2D electrons around their orbits
+let bohrT = 0;
+const bohrSpeeds = [0.022, 0.022, 0.013 * 0.7];
+const bohrAngles = [270, 90, 0];
+
+function animateBohr() {
+  bohrAngles[0] += bohrSpeeds[0] * (180 / Math.PI);
+  bohrAngles[1] += bohrSpeeds[1] * (180 / Math.PI);
+  bohrAngles[2] += bohrSpeeds[2] * (180 / Math.PI);
+
+  for (let i = 0; i < electronEls.length; i++) {
+    const e = electronEls[i];
+    const r = orbitRadii[e.shell];
+    const rad = (bohrAngles[i] * Math.PI) / 180;
+    const ex = BCX + r * Math.cos(rad);
+    const ey = BCY + r * Math.sin(rad);
+    e.dot.setAttribute('cx', ex);
+    e.dot.setAttribute('cy', ey);
+    e.glow.setAttribute('cx', ex);
+    e.glow.setAttribute('cy', ey);
+  }
+  requestAnimationFrame(animateBohr);
+}
+animateBohr();
+</script>

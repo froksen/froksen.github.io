@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vandets kredsløb – Simulering</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, sans-serif;
+    background: linear-gradient(180deg, #b8d9f5 0%, #daeeff 40%, #c8e6a0 70%, #8bc34a 100%);
+    min-height: 100vh;
+    color: #1a2a1a;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a3a6e;
+    padding: 1.2rem 1rem 0.3rem;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #3a5a8e;
+    margin-bottom: 0.8rem;
+  }
+
+  .layout {
+    display: flex;
+    gap: 16px;
+    padding: 0 16px 16px;
+    max-width: 960px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  /* Controls panel */
+  .panel {
+    background: rgba(255,255,255,0.88);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.7);
+    flex: 1;
+    min-width: 240px;
+  }
+  .panel h2 { font-size: 0.9rem; font-weight: 600; color: #1a3a6e; margin-bottom: 0.8rem; }
+
+  .slider-group { margin-bottom: 1rem; }
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #2a3a4e;
+    margin-bottom: 4px;
+  }
+  .slider-label span { font-size: 0.78rem; color: #5a7aae; }
+  .emoji-label { font-size: 1rem; margin-right: 4px; }
+
+  input[type=range] {
+    width: 100%;
+    accent-color: #2e7dd1;
+    height: 4px;
+    cursor: pointer;
+  }
+
+  /* Stats panel */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat-card {
+    background: rgba(240,248,255,0.9);
+    border-radius: 10px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid rgba(100,150,220,0.25);
+  }
+  .stat-label { font-size: 0.7rem; color: #5a7aae; margin-bottom: 2px; }
+  .stat-value { font-size: 1.25rem; font-weight: 600; color: #1a3a6e; }
+  .stat-unit { font-size: 0.7rem; color: #7a9abe; }
+
+  .balance-bar-wrap {
+    margin-top: 0.9rem;
+    background: rgba(240,248,255,0.9);
+    border-radius: 10px;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid rgba(100,150,220,0.25);
+  }
+  .balance-label { font-size: 0.72rem; color: #5a7aae; margin-bottom: 6px; font-weight: 500; }
+  .balance-bar-bg {
+    width: 100%;
+    height: 12px;
+    background: #e0eaf5;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .balance-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.3s, background 0.3s;
+  }
+  .balance-text {
+    font-size: 0.75rem;
+    margin-top: 5px;
+    font-weight: 500;
+    min-height: 1.1em;
+  }
+
+  /* Canvas area */
+  .canvas-wrap {
+    flex: 2;
+    min-width: 300px;
+    position: relative;
+  }
+  canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,80,160,0.12);
+  }
+
+  /* Info box at bottom */
+  .info-box {
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.78rem;
+    color: #2a4a6e;
+    margin-top: 10px;
+    border: 1px solid rgba(100,150,220,0.2);
+    line-height: 1.5;
+  }
+  .info-box strong { color: #1a3a6e; }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.7rem;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    color: #3a5a7a;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>💧 Vandets kredsløb</h1>
+<p class="subtitle">Justér variablerne og se hvad der sker med vandet</p>
+
+<div class="layout">
+
+  <!-- Controls -->
+  <div class="panel" style="min-width:230px; max-width:270px;">
+    <h2>🎛 Indstillinger</h2>
+
+    <div class="slider-group">
+      <div class="slider-label">
+        <span><span class="emoji-label">🌧</span>Nedbør</span>
+        <span id="precip-val">60 mm</span>
+      </div>
+      <input type="range" id="precip" min="0" max="150" value="60" step="1">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label">
+        <span><span class="emoji-label">☀️</span>Fordampning</span>
+        <span id="evap-val">30%</span>
+      </div>
+      <input type="range" id="evap" min="0" max="100" value="30" step="1">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label">
+        <span><span class="emoji-label">🏃</span>Overfladeafstrømning</span>
+        <span id="runoff-val">20%</span>
+      </div>
+      <input type="range" id="runoff" min="0" max="100" value="20" step="1">
+    </div>
+
+    <hr style="border:none;border-top:1px solid #d0dff0; margin:0.8rem 0;">
+
+    <h2 style="margin-bottom:0.6rem;">📊 Vandbalance</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">🌧 Nedbør</div>
+        <div class="stat-value" id="s-precip">60</div>
+        <div class="stat-unit">mm/måned</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">☀️ Fordampet</div>
+        <div class="stat-value" id="s-evap">18</div>
+        <div class="stat-unit">mm (30%)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🏃 Afstrømning</div>
+        <div class="stat-value" id="s-runoff">12</div>
+        <div class="stat-unit">mm (20%)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">💧 Nedsivning</div>
+        <div class="stat-value" id="s-infil">30</div>
+        <div class="stat-unit">mm (50%)</div>
+      </div>
+    </div>
+
+    <div class="balance-bar-wrap">
+      <div class="balance-label">Fordampning + Afstrømning af nedbøren:</div>
+      <div class="balance-bar-bg">
+        <div class="balance-fill" id="bal-fill" style="width:50%;background:#e87c3e;"></div>
+      </div>
+      <div class="balance-text" id="bal-text">50% bruges / 50% siver ned</div>
+    </div>
+
+    <div class="legend" style="margin-top:0.8rem;">
+      <div class="legend-item"><div class="legend-dot" style="background:#5da8e0;"></div>Nedbør</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f5c842;"></div>Fordampning</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e87c3e;"></div>Afstrømning</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#74b87a;"></div>Nedsivning</div>
+    </div>
+  </div>
+
+  <!-- Canvas area -->
+  <div class="canvas-wrap">
+    <canvas id="scene" width="620" height="420"></canvas>
+
+    <div class="info-box" id="info-text">
+      Justér skyderne til venstre og se, hvad der sker med vandets kredsløb. 💡 Nedsivning er det vand, der er tilbage efter fordampning og afstrømning.
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('scene');
+const ctx = canvas.getContext('2d');
+const W = 620, H = 420;
+
+// Particle pools
+const rainDrops = [];
+const steamParticles = [];
+const runoffDrops = [];
+const groundDrops = [];
+
+let precip = 60, evapPct = 30, runoffPct = 20;
+
+// -------- Scene drawing --------
+function drawScene() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Sky gradient
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+  skyGrad.addColorStop(0, '#6bb5e8');
+  skyGrad.addColorStop(1, '#c8e6f8');
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0, 0, W, H * 0.55);
+
+  // Mountains
+  drawMountains();
+
+  // Ground
+  drawGround();
+
+  // River / lake
+  drawWater();
+
+  // Underground layer
+  drawUnderground();
+
+  // Cloud
+  drawCloud(precip);
+
+  // Particles
+  drawRainDrops();
+  drawSteam();
+  drawRunoff();
+  drawGroundwater();
+
+  // Labels
+  drawLabels();
+}
+
+function drawMountains() {
+  ctx.fillStyle = '#7aab5e';
+  ctx.beginPath();
+  ctx.moveTo(0, 260);
+  ctx.lineTo(60, 180);
+  ctx.lineTo(130, 240);
+  ctx.lineTo(180, 160);
+  ctx.lineTo(240, 250);
+  ctx.lineTo(W, 250);
+  ctx.lineTo(W, 260);
+  ctx.lineTo(0, 260);
+  ctx.fill();
+
+  // Snow caps
+  ctx.fillStyle = '#f0f6ff';
+  ctx.beginPath();
+  ctx.moveTo(180, 160);
+  ctx.lineTo(165, 192);
+  ctx.lineTo(195, 192);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(60, 180);
+  ctx.lineTo(48, 205);
+  ctx.lineTo(72, 205);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawGround() {
+  // Grass layer
+  const grassGrad = ctx.createLinearGradient(0, 255, 0, 320);
+  grassGrad.addColorStop(0, '#8bc34a');
+  grassGrad.addColorStop(1, '#6d9e35');
+  ctx.fillStyle = grassGrad;
+  ctx.beginPath();
+  ctx.moveTo(0, 260);
+  ctx.lineTo(W, 260);
+  ctx.lineTo(W, 320);
+  ctx.lineTo(0, 320);
+  ctx.fill();
+
+  // Soil
+  const soilGrad = ctx.createLinearGradient(0, 320, 0, 370);
+  soilGrad.addColorStop(0, '#a0784a');
+  soilGrad.addColorStop(1, '#7a5a30');
+  ctx.fillStyle = soilGrad;
+  ctx.fillRect(0, 320, W, 50);
+}
+
+function drawWater() {
+  // River
+  ctx.fillStyle = '#3a9ad9';
+  ctx.globalAlpha = 0.75;
+  ctx.beginPath();
+  ctx.ellipse(490, 295, 90, 22, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.beginPath();
+  ctx.ellipse(475, 288, 50, 10, -0.2, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawUnderground() {
+  // Underground water
+  ctx.fillStyle = 'rgba(80,160,240,0.18)';
+  ctx.fillRect(0, 355, W, 15);
+  ctx.fillStyle = 'rgba(80,160,240,0.10)';
+  ctx.fillRect(0, 375, W, 12);
+}
+
+function drawCloud(precipMM) {
+  const intensity = Math.min(precipMM / 150, 1);
+  // Cloud darkness based on rain
+  const grayVal = Math.round(240 - intensity * 100);
+  const r = grayVal, g = grayVal, b = Math.min(255, grayVal + 10);
+
+  ctx.fillStyle = `rgb(${r},${g},${b})`;
+  const cx = 300, cy = 70;
+  const scale = 0.9 + intensity * 0.35;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 42 * scale, 0, Math.PI * 2);
+  ctx.arc(cx - 35 * scale, cy + 10, 28 * scale, 0, Math.PI * 2);
+  ctx.arc(cx + 38 * scale, cy + 10, 30 * scale, 0, Math.PI * 2);
+  ctx.arc(cx - 15 * scale, cy + 22, 26 * scale, 0, Math.PI * 2);
+  ctx.arc(cx + 18 * scale, cy + 22, 24 * scale, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawRainDrops() {
+  ctx.strokeStyle = '#5da8e0';
+  ctx.lineWidth = 1.5;
+  for (const d of rainDrops) {
+    ctx.globalAlpha = d.alpha;
+    ctx.beginPath();
+    ctx.moveTo(d.x, d.y);
+    ctx.lineTo(d.x - 2, d.y + d.len);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawSteam() {
+  for (const p of steamParticles) {
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = '#f5c842';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawRunoff() {
+  ctx.fillStyle = '#e87c3e';
+  for (const d of runoffDrops) {
+    ctx.globalAlpha = d.alpha;
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawGroundwater() {
+  ctx.fillStyle = '#74b87a';
+  for (const d of groundDrops) {
+    ctx.globalAlpha = d.alpha;
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawLabels() {
+  ctx.font = 'bold 12px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+
+  // Rain label
+  if (precip > 5) {
+    ctx.fillStyle = '#1a5a9e';
+    ctx.fillText('Nedbør', 210, 145);
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillText(precip + ' mm', 210, 158);
+    ctx.font = 'bold 12px system-ui, sans-serif';
+  }
+
+  // Evaporation label
+  if (evapPct > 3) {
+    ctx.fillStyle = '#8a6800';
+    ctx.fillText('Fordampning', 430, 230);
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillText(evapPct + '%', 430, 243);
+    ctx.font = 'bold 12px system-ui, sans-serif';
+  }
+
+  // Runoff label
+  if (runoffPct > 3) {
+    ctx.fillStyle = '#8a3a0a';
+    ctx.fillText('Afstrømning', 520, 260);
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillText(runoffPct + '%', 520, 273);
+    ctx.font = 'bold 12px system-ui, sans-serif';
+  }
+
+  // Groundwater label
+  ctx.fillStyle = '#1a5a2e';
+  ctx.font = '11px system-ui, sans-serif';
+  ctx.fillText('Grundvand / nedsivning', 310, 368);
+
+  // Lake label
+  ctx.fillStyle = '#0a4a7a';
+  ctx.fillText('Sø / å', 490, 315);
+}
+
+// -------- Particle systems --------
+function spawnRain() {
+  const rate = precip / 150;
+  if (Math.random() < rate * 0.7) {
+    rainDrops.push({
+      x: 120 + Math.random() * 360,
+      y: 105 + Math.random() * 30,
+      vy: 4 + Math.random() * 3,
+      len: 8 + Math.random() * 8,
+      alpha: 0.6 + Math.random() * 0.4,
+    });
+  }
+  // Cull
+  for (let i = rainDrops.length - 1; i >= 0; i--) {
+    rainDrops[i].y += rainDrops[i].vy;
+    if (rainDrops[i].y > 280) rainDrops.splice(i, 1);
+  }
+}
+
+function spawnSteam() {
+  const rate = evapPct / 100;
+  if (Math.random() < rate * 0.55) {
+    steamParticles.push({
+      x: 80 + Math.random() * W * 0.75,
+      y: 255 + Math.random() * 20,
+      vy: -(0.5 + Math.random() * 0.8),
+      vx: (Math.random() - 0.5) * 0.6,
+      r: 2 + Math.random() * 2.5,
+      alpha: 0.7,
+      life: 0,
+    });
+  }
+  for (let i = steamParticles.length - 1; i >= 0; i--) {
+    const p = steamParticles[i];
+    p.y += p.vy; p.x += p.vx; p.life++;
+    p.alpha = Math.max(0, 0.7 - p.life / 80);
+    if (p.alpha <= 0 || p.y < 80) steamParticles.splice(i, 1);
+  }
+}
+
+function spawnRunoff() {
+  const rate = runoffPct / 100;
+  if (precip > 5 && Math.random() < rate * 0.45) {
+    runoffDrops.push({
+      x: 100 + Math.random() * 260,
+      y: 265 + Math.random() * 30,
+      vx: 1.5 + Math.random() * 1.5,
+      vy: 0.3 + Math.random() * 0.5,
+      alpha: 0.85,
+      life: 0,
+    });
+  }
+  for (let i = runoffDrops.length - 1; i >= 0; i--) {
+    const d = runoffDrops[i];
+    d.x += d.vx; d.y += d.vy; d.life++;
+    d.alpha = Math.max(0, 0.85 - d.life / 100);
+    if (d.alpha <= 0 || d.x > 570) runoffDrops.splice(i, 1);
+  }
+}
+
+function spawnGround() {
+  const infilPct = Math.max(0, 100 - evapPct - runoffPct);
+  const rate = (infilPct / 100) * (precip / 150);
+  if (Math.random() < rate * 0.5) {
+    groundDrops.push({
+      x: 40 + Math.random() * (W - 80),
+      y: 322 + Math.random() * 10,
+      vy: 0.7 + Math.random() * 0.6,
+      alpha: 0.8,
+      life: 0,
+    });
+  }
+  for (let i = groundDrops.length - 1; i >= 0; i--) {
+    const d = groundDrops[i];
+    d.y += d.vy; d.life++;
+    d.alpha = Math.max(0, 0.8 - d.life / 90);
+    if (d.alpha <= 0 || d.y > 390) groundDrops.splice(i, 1);
+  }
+}
+
+// -------- Stats + UI update --------
+function updateStats() {
+  const evapMM = Math.round(precip * evapPct / 100);
+  const runoffMM = Math.round(precip * runoffPct / 100);
+  const usedPct = Math.min(100, evapPct + runoffPct);
+  const infilPct = Math.max(0, 100 - evapPct - runoffPct);
+  const infilMM = precip - evapMM - runoffMM;
+
+  document.getElementById('precip-val').textContent = precip + ' mm';
+  document.getElementById('evap-val').textContent = evapPct + '%';
+  document.getElementById('runoff-val').textContent = runoffPct + '%';
+
+  document.getElementById('s-precip').textContent = precip;
+  document.getElementById('s-evap').textContent = evapMM;
+  document.getElementById('s-evap').nextElementSibling.textContent = 'mm (' + evapPct + '%)';
+  document.getElementById('s-runoff').textContent = runoffMM;
+  document.getElementById('s-runoff').nextElementSibling.textContent = 'mm (' + runoffPct + '%)';
+  document.getElementById('s-infil').textContent = Math.max(0, infilMM);
+  document.getElementById('s-infil').nextElementSibling.textContent = 'mm (' + infilPct + '%)';
+
+  const fill = document.getElementById('bal-fill');
+  fill.style.width = Math.min(100, usedPct) + '%';
+  if (usedPct > 90) fill.style.background = '#d94040';
+  else if (usedPct > 70) fill.style.background = '#e87c3e';
+  else fill.style.background = '#5da8e0';
+
+  let balText = '';
+  if (usedPct > 100) {
+    balText = '⚠️ Fordampning + afstrømning overstiger nedbøren! Der vil opstå tørke.';
+  } else if (infilPct < 10) {
+    balText = '⚠️ Næsten intet vand siver ned til grundvandet.';
+  } else if (infilPct > 70) {
+    balText = '✅ Masser af vand siver ned og fylder grundvandet op.';
+  } else {
+    balText = usedPct + '% fordampes/løber af – ' + infilPct + '% siver ned til grundvandet.';
+  }
+  document.getElementById('bal-text').textContent = balText;
+
+  // Info text
+  let info = '';
+  if (precip === 0) {
+    info = '☀️ Ingen nedbør – vandet i søen og grundvandet falder langsomt.';
+  } else if (evapPct + runoffPct >= 100) {
+    info = '⚠️ Al nedbør fordamper eller løber af – intet vand siver ned til grundvandet!';
+  } else if (evapPct > 60) {
+    info = '☀️ Meget varmt og tørt vejr: Det meste vand fordamper hurtigt op i atmosfæren.';
+  } else if (runoffPct > 60) {
+    info = '🏃 Kraftig overfladeafstrømning – typisk på befæstet underlag (fx byer) eller ved kraftig regn.';
+  } else if (precip > 100) {
+    info = '🌧 Kraftig regn! Meget vand tilføres. Se om grundvandet fyldes op.';
+  } else {
+    info = '💡 Nedsivning er det vand, der siver ned og genopfylder grundvandet. Det er vigtigt for vores drikkevand!';
+  }
+  document.getElementById('info-text').textContent = info;
+}
+
+// -------- Animation loop --------
+function loop() {
+  spawnRain();
+  spawnSteam();
+  spawnRunoff();
+  spawnGround();
+  drawScene();
+  requestAnimationFrame(loop);
+}
+
+// -------- Event listeners --------
+document.getElementById('precip').addEventListener('input', e => {
+  precip = parseInt(e.target.value);
+  updateStats();
+});
+document.getElementById('evap').addEventListener('input', e => {
+  evapPct = parseInt(e.target.value);
+  updateStats();
+});
+document.getElementById('runoff').addEventListener('input', e => {
+  runoffPct = parseInt(e.target.value);
+  updateStats();
+});
+
+updateStats();
+loop();
+</script>
+</body>
+</html>
