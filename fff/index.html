@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delemner - Naturfagsprøven 9. klasse</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 40px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .main-nav { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 30px; }
+        .main-nav a { background: white; color: #667eea; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .main-nav a:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); }
+        .theme-section { background: white; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .theme-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 30px; border-radius: 15px; margin-bottom: 25px; }
+        .theme-header h2 { font-size: 1.8em; }
+        .subtopic { border: 2px solid #e0e0e0; border-radius: 15px; padding: 25px; margin-bottom: 25px; background: #fafafa; }
+        .subtopic h3 { color: #667eea; font-size: 1.4em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #667eea; }
+        .investigations { background: linear-gradient(135deg, #e8f4f8 0%, #f0e8f8 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .investigations h4 { color: #2c5f7f; margin-bottom: 15px; font-size: 1.1em; }
+        .investigations ul { list-style: none; padding-left: 10px; }
+        .investigations li { padding: 10px 15px; margin-bottom: 10px; background: white; border-radius: 8px; border-left: 4px solid #2c5f7f; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .focus-areas { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .focus-column { border-radius: 12px; padding: 20px; }
+        .focus-column.fysik { background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%); border: 2px solid #ff6b6b; }
+        .focus-column.geografi { background: linear-gradient(135deg, #f0fff5 0%, #e0f8e8 100%); border: 2px solid #51cf66; }
+        .focus-column.biologi { background: linear-gradient(135deg, #f5f0ff 0%, #e8e0ff 100%); border: 2px solid #845ef7; }
+        .focus-column h4 { font-size: 1.1em; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid currentColor; }
+        .focus-column.fysik h4 { color: #c92a2a; }
+        .focus-column.geografi h4 { color: #2b8a3e; }
+        .focus-column.biologi h4 { color: #5c3dc9; }
+        .focus-column ul { list-style: none; }
+        .focus-column li { padding: 8px 12px; margin-bottom: 8px; background: white; border-radius: 6px; font-size: 0.95em; }
+        .resources { background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #ffd700; }
+        .resources h4 { color: #b8860b; margin-bottom: 15px; font-size: 1.1em; }
+        .resources ul { list-style: none; padding-left: 10px; }
+        .resources li { padding: 10px 15px; margin-bottom: 10px; background: white; border-radius: 8px; border-left: 4px solid #ffd700; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .resources a { color: #0066cc; text-decoration: none; font-weight: bold; }
+        .resources a:hover { text-decoration: underline; }
+        .resource-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 8px; font-weight: bold; }
+        .tag-sim { background: #e3f2fd; color: #1565c0; }
+        .tag-video { background: #ffebee; color: #c62828; }
+        .tag-dr { background: #e8f5e9; color: #2e7d32; }
+        footer { text-align: center; color: white; padding: 30px; opacity: 0.8; }
+        @media (max-width: 768px) { header h1 { font-size: 1.8em; } .main-nav { flex-direction: column; align-items: center; } .main-nav a { width: 100%; max-width: 300px; text-align: center; } .theme-section { padding: 20px; } .focus-areas { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Delemner til Naturfagsprøven</h1>
+            <p>Forslag til undersøgelser og faglige fokusområder for 9. klasse</p>
+        </header>
+
+        <nav class="main-nav">
+            <a href="#energi">1. Bæredygtig energiforsyning</a>
+            <a href="#produktion">2. Bæredygtig produktion</a>
+            <a href="#straling">3. Strålings indvirkning</a>
+            <a href="#vand">4. Vand til verden</a>
+        </nav>
+
+        <!-- TEMA 1: Bæredygtig energiforsyning -->
+        <section id="energi" class="theme-section">
+            <div class="theme-header"><h2>1. Bæredygtig energiforsyning</h2></div>
+
+            <article class="subtopic">
+                <h3>Vindenergi i Danmark</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Byg en modelvindmølle:</strong> Konstruer en lille vindmølle og mål elproduktionen ved forskellige vindhastigheder med ventilator og multimeter.</li>
+                        <li><strong>Placeringsoptimering:</strong> Undersøg hvordan placering af vindmøller påvirker energiproduktionen ved forskellige afstande og opstillinger.</li>
+                        <li><strong>Energitabet i nettet:</strong> Beregn hvor meget energi der går tabt ved transport fra vindmølle til forbruger.</li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/sims/html/wind-energy/latest/wind-energy_da.html" target="_blank">PhET: Vindenergi</a> - Undersøg hvordan vindmøller producerer energi</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=wind+energy+how+it+works" target="_blank">How Wind Turbines Work</a> - Forklaring på vindmøllers virkemåde</li>
+                        <li><span class="resource-tag tag-dr">DR</span><a href="https://www.dr.dk/skole/temaer/energi" target="_blank">DR Skole: Energi</a> - Dokumentar om vindenergi i Danmark</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiomdannelse: vind → mekanisk → elektrisk</li><li>Effekt og virkningsgrad</li><li>Elektromagnetisk induktion</li><li>Materialelære: vingernes konstruktion</li><li>Energitransformation og -tab</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Danmarks vindressourcer</li><li>Vindmøllers påvirkning af lokalmiljøet</li><li>Energiforsyning og forsyningsnet</li><li>Rumlig planlægning</li><li>CO₂-besparelser</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Påvirkning af fugle og flagermus</li><li>Støjgener for dyr og mennesker</li><li>Habitatpåvirkning</li><li>Skyggekast og biologiske rytmer</li><li>Marine økosystemer ved havmøller</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Solceller på private boliger</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Solcelle-effektivitet:</strong> Mål hvordan solcellepanelers produktion ændrer sig med vinkel, skygge og lysstyrke.</li>
+                        <li><strong>Økonomisk beregning:</strong> Lav cost-benefit-analyse for en husstand med solceller inkl. installation og besparelser.</li>
+                        <li><strong>Sæsonvariation:</strong> Undersøg hvordan solcellers produktion varierer over året i Danmark.</li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_da.html" target="_blank">PhET: Energi former og ændringer</a> - Undersøg solenergi og energioverførsel</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=solceller+forklaret" target="_blank">Solceller forklaret</a> - Hvordan virker solceller</li>
+                        <li><span class="resource-tag tag-dr">DR</span><a href="https://www.dr.dk/skole/temaer/energi" target="_blank">DR Skole: Solenergi</a> - Dokumentar om solceller i Danmark</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Den fotoelektriske effekt</li><li>Elektrisk strøm og spænding</li><li>Energiomdannelse: lys → elektricitet</li><li>Halvledere og silicium</li><li>Virkningsgrad</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Danmarks solressourcer</li><li>Solindstrålingens variation</li><li>Energipolitik og tilskud</li><li>Decentral energiforsyning</li><li>Bæredygtig byudvikling</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Fotosyntese som inspiration</li><li>Økosystempåvirkning ved store anlæg</li><li>Arealanvendelse og naturhensyn</li><li>Produktion og miljø</li><li>Recycling af paneler</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Atomkraft som energikilde</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Strålingsmåling:</strong> Brug Geiger-tæller til at måle baggrundsstråling og sammenlign med forskellige kilder.</li>
+                        <li><strong>Energitætheds-beregning:</strong> Beregn energi fra fission af 1 kg uran vs. forbrænding af 1 kg kul.</li>
+                        <li><strong>Debatundersøgelse:</strong> Lav spørgeskema om holdninger til atomkraft og analyser resultaterne.</li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/sims/html/nuclear-fission/latest/nuclear-fission_da.html" target="_blank">PhET: Kernespaltning</a> - Simulér atomkraft og kædereaktion</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=atomkraft+forklaret" target="_blank">Atomkraft forklaret</a> - Hvordan virker atomkraftværker</li>
+                        <li><span class="resource-tag tag-dr">DR</span><a href="https://www.dr.dk/skole/temaer/energi" target="_blank">DR: Tjernobyl og Fukushima</a> - Dokumentar om atomkraftulykker</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Radioaktivitet og henfald</li><li>Kernespaltning og kædereaktioner</li><li>Strålingstyper: alfa, beta, gamma</li><li>Halveringstid</li><li>E = mc²</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Atomkraft i verdens energiforsyning</li><li>Uranudvinding og fordeling</li><li>Radioaktivt affald</li><li>Energisikkerhed og geopolitik</li><li>Klimaargumenter</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålings påvirkning af celler</li><li>DNA-skader og mutationer</li><li>Akut strålingssyge</li><li>Langtidsvirkninger: kræftrisiko</li><li>Tjernobyl og Fukushima</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Energilagring (batterier, brint, P2X)</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Byg et citronbatteri:</strong> Konstruer batterier med frugt og mål spænding. Undersøg hvilke materialer der virker bedst.</li>
+                        <li><strong>Brintproduktion:</strong> Lav elektrolyse af vand og test brinten som brændstof.</li>
+                        <li><strong>Batteri-sammenligning:</strong> Undersøg forskellige batterityper og sammenlign kapacitet, levetid og miljø.</li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/sims/html/battery-resistor-circuit/latest/battery-resistor-circuit_da.html" target="_blank">PhET: Batterier og strøm</a> - Undersøg hvordan batterier virker</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=brint+brændselscelle+forklaret" target="_blank">Brint og brændselsceller</a> - Hvordan fungerer brint som energi</li>
+                        <li><span class="resource-tag tag-dr">DR</span><a href="https://www.dr.dk/skole/temaer/energi" target="_blank">DR: Brintbiler og P2X</a> - Dokumentar om fremtidens energilagring</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektrokemi og redoxreaktioner</li><li>Elektrolyse og vandspaltning</li><li>Energitæthed</li><li>Brændselscellers virkemåde</li><li>Power-to-X processer</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Råstofudvinding til batterier</li><li>Global fordeling af lithium og cobalt</li><li>Energiforsyningssikkerhed</li><li>Infrastruktur til brint</li><li>Grøn transport</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Miljøpåvirkning ved minedrift</li><li>Batterirecycling og affald</li><li>Sundhedskonsekvenser</li><li>Økotoksikologi</li><li>Bæredygtig udvinding</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Biogas fra landbrug</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Mini-biogasanlæg:</strong> Byg et lille biogasanlæg og mål gasproduktionen fra forskellige materialer.</li>
+                        <li><strong>Metan-indhold:</strong> Undersøg metanindholdet i biogas og sammenlign med naturgas.</li>
+                        <li><strong>Gødningsværdi:</strong> Sammenlign næringsindhold i gylle før og efter biogasproduktion.</li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_da.html" target="_blank">PhET: Energioverførsel</a> - Vis energioverførsel i biogas</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=biogas+forklaret" target="_blank">Biogas forklaret</a> - Hvordan produceres biogas</li>
+                        <li><span class="resource-tag tag-dr">DR</span><a href="https://www.dr.dk/skole/temaer/energi" target="_blank">DR: Biogas i Danmark</a> - Dokumentar om biogasproduktion</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Forbrænding og brændværdi</li><li>Metan som energikilde</li><li>Anaerobe processer</li><li>Drivhusgasser og klima</li><li>Energiudbytte</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Landbrugets energiproduktion</li><li>Bæredygtig landbrugspraksis</li><li>Cirkulær økonomi</li><li>Energiforsyning på landet</li><li>CO₂-regnskab</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Mikroorganismer i processen</li><li>Anaerob nedbrydning</li><li>Metanbakteriers stofskifte</li><li>Økologisk gødskning</li><li>Næringsstofkredsløb</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Havvindmøller og naturpåvirkning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Undervandsstøj:</strong> Undersøg hvordan havvindmøller påvirker dyrelivet under vandet.</li>
+                        <li><strong>Kunstige rev:</strong> Research hvordan vindmøllefundamenter fungerer som kunstige rev.</li>
+                        <li><strong>Fugletræk analyse:</strong> Analyser data om fugletræk og kollisioner med havvindmøller.</li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/sims/html/wave-on-a-string/latest/wave-on-a-string_da.html" target="_blank">PhET: Bølger på en snor</a> - Forstå lyd og bølger under vand</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=havvindmøller+danmark" target="_blank">Havvindmøller i Danmark</a> - Dokumentation om havmølleparker</li>
+                        <li><span class="resource-tag tag-dr">DR</span><a href="https://www.dr.dk/skole/temaer/natur" target="_blank">DR: Havets dyreliv</a> - Dokumentar om marine økosystemer</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Lydundervands og akustik</li><li>Energitransmission til lands</li><li>Korrosion i saltvand</li><li>Fundamentskonstruktion</li><li>Havstrømme og bølger</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Danmarks havområder</li><li>Havdybder og bundforhold</li><li>Fiskeri og konfliktområder</li><li>Energiforsyning fra havet</li><li>Havplanlægning</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Marine økosystemer</li><li>Fiskebestande og gydeområder</li><li>Marsvin og hvaler</li><li>Søfugle og trækfugle</li><li>Bundfauna og -flora</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Elbiler og bæredygtighed</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Livscyklusanalyse:</strong> Sammenlign CO₂-udledning fra elbil og benzinbil over hele levetiden.</li>
+                        <li><strong>Omkostningsberegning:</strong> Beregn totale ejeromkostninger for elbil vs. benzinbil.</li>
+                        <li><strong>Ladeinfrastruktur:</strong> Undersøg ladetid og energiforbrug ved forskellige ladetyper.</li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_da.html" target="_blank">PhET: Kredsløbssimulering</a> - Byg elektriske kredsløb</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=elbil+teknologi+forklaret" target="_blank">Elbil teknologi</a> - Hvordan virker elbiler</li>
+                        <li><span class="resource-tag tag-dr">DR</span><a href="https://www.dr.dk/skole/temaer/klima" target="_blank">DR: Grøn transport</a> - Dokumentar om elbilers fremtid</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektriske motorer og virkningsgrad</li><li>Batteriteknologi og kapacitet</li><li>Energiforbrug og rækkevidde</li><li>Opladning og effekt</li><li>Regenerativ bremsning</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Elbilers udbredelse i verden</li><li>Ladeinfrastruktur og planlægning</li><li>Elproduktion og bæredygtighed</li><li>Råstofudvinding til batterier</li><li>Transportpolitik</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Luftforurening i byer</li><li>Sundhedseffekter af udstødning</li><li>Støjforurening fra trafik</li><li>Minepåvirkning ved råstofudvinding</li><li>Batteri-affald og miljø</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Smart grid (intelligente elnet)</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Elforbrugsanalyse:</strong> Mål elforbruget i hjemmet over et døgn og identificer forbrugstoppe.</li>
+                        <li><strong>Prissignaler:</strong> Undersøg hvordan elprisen varierer over døgnet og beregn besparelser.</li>
+                        <li><strong>Model af smart grid:</strong> Byg en model af et intelligent elnet med solceller, batteri og forbrugere.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektricitet og effektmåling</li><li>Elnettet og spændingsniveauer</li><li>Energibalance og frekvens</li><li>Transformere og transmission</li><li>Digital styring</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Energiforsyningssystemer</li><li>International elhandel</li><li>Decentral vs. central forsyning</li><li>Energisikkerhed</li><li>Smart cities</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Elektromagnetiske felter og sundhed</li><li>Digitaliseringens miljøpåvirkning</li><li>E-waste fra komponenter</li><li>Bæredygtig ressourceanvendelse</li><li>Samfund og levevilkår</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Energitab ved transport af elektricitet</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Modstand i ledninger:</strong> Mål spændingstab over ledninger med forskellig længde og tykkelse.</li>
+                        <li><strong>Transformereffekt:</strong> Undersøg hvordan transformere reducerer energitab ved høj og lav spænding.</li>
+                        <li><strong>HVDC vs. AC:</strong> Research og sammenlign energitab ved jævnstrøm og vekselstrøm.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Ohms lov og modstand</li><li>Joulesk varme (P = I²R)</li><li>Transformere og induktion</li><li>Højspænding og sikkerhed</li><li>Superledere</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Elnettets opbygning i Danmark</li><li>International forbindelser</li><li>Energitransport på tværs af grænser</li><li>Produktions- og forbrugsområder</li><li>Infrastrukturplanlægning</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Elmaster og fugletræk</li><li>Kabler i havet og økosystemer</li><li>Elektromagnetiske felter</li><li>Landskabspåvirkning</li><li>Naturhensyn ved ledningsføring</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Geotermisk energi (jordvarme)</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Jordtemperatur-måling:</strong> Mål temperaturen i jorden ved forskellige dybder over året.</li>
+                        <li><strong>Varmepumpe-model:</strong> Byg en model der viser hvordan en varmepumpe fungerer og mål COP.</li>
+                        <li><strong>Energibesparelse:</strong> Beregn energibesparelse ved jordvarme vs. luftvarme.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Varmeledning i jord og sten</li><li>Varmepumpers virkemåde</li><li>Faseovergange og kølemiddel</li><li>Energi og effekt</li><li>Termodynamikkens love</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Jordens varme fra dyben</li><li>Geologiske forhold i Danmark</li><li>Fjernvarme og energiforsyning</li><li>Bæredygtig opvarmning</li><li>Energiforsyning af bygninger</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Påvirkning af grundvand</li><li>Jordbundens mikroorganismer</li><li>Rørtracéer og natur</li><li>Bæredygtig ressourceudnyttelse</li><li>Økosystempåvirkning ved boring</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Energioptimering i bygninger (isolering)</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Isoleringstest:</strong> Byg modeller med forskellige isoleringsmaterialer og mål varmetab.</li>
+                        <li><strong>Termofotografering:</strong> Brug varmekamera til at finde varmebroer i bygninger.</li>
+                        <li><strong>Energibesparelse:</strong> Beregn besparelse ved forskellige isoleringstiltag i en bolig.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Varmeledning og isolering</li><li>U-værdi beregninger</li><li>Varmekapacitet</li><li>Energibalance i bygninger</li><li>Lufttæthed og ventilation</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Bygninger og energiforbrug</li><li>Byplanlægning og bæredygtighed</li><li>Renovering af boligmasse</li><li>Energiforbrug i samfundet</li><li>Klimatilpasning</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Indeklima og sundhed</li><li>Skimmelsvamp og fugt</li><li>Materialers påvirkning af indeklima</li><li>Luftkvalitet indendørs</li><li>Bæredygtige byggematerialer</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Grøn energi i udviklingslande</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Solovn-model:</strong> Byg en solovn og test hvor varmt den kan blive. Diskuter anvendelse i udviklingslande.</li>
+                        <li><strong>Energiadgang analyse:</strong> Undersøg hvordan adgang til energi påvirker levevilkår i forskellige lande.</li>
+                        <li><strong>Mikro-netværk:</strong> Research hvordan små solcelleanlæg kan forsyne landsbyer.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Solenergi og indstråling</li><li>Energioverførsel</li><li>Enkle energiløsninger</li><li>Batterier og lagring</li><li>Energi og udvikling</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Energiadgang i verden</li><li>Udvikling og fattigdom</li><li>Bæredygtige løsninger</li><li>Klima og tilpasning</li><li>Internationalt samarbejde</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Sundhed og energiadgang</li><li>Indendørs luftforurening</li><li>Vandrensning og energi</li><li>Fødevareproduktion</li><li>Levevilkår og udvikling</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Energiforsyning i fremtidens byer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Fremtidsby design:</strong> Design en modelby med bæredygtig energiforsyning.</li>
+                        <li><strong>Energiforbrug analyse:</strong> Undersøg energiforbrug i en moderne by og foreslå forbedringer.</li>
+                        <li><strong>Case study:</strong> Research en by der er langt med grøn omstilling (fx København eller Amsterdam).</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiforsyningssystemer</li><li>Fjernvarme og køling</li><li>Effektiv energianvendelse</li><li>Transport og energi</li><li>Bygninger og energi</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Byudvikling og planlægning</li><li>Bæredygtige byer</li><li>Transport og infrastruktur</li><li>Grønne områder</li><li>Smarte byløsninger</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Byens økosystemer</li><li>Grønne tage og vægge</li><li>Luftkvalitet i byer</li><li>Sundhed og byliv</li><li>Biodiversitet i byer</li></ul></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- TEMA 2: Bæredygtig produktion -->
+        <section id="produktion" class="theme-section">
+            <div class="theme-header"><h2>2. Bæredygtig produktion</h2></div>
+
+            <article class="subtopic">
+                <h3>Plastikforurening og genanvendelse</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Plastikindsamling:</strong> Saml plastikaffald i lokalområdet og kategoriser det. Undersøg hvor meget der kan genanvendes.</li>
+                        <li><strong>Nedbrydningstest:</strong> Undersøg hvordan forskellige plasttyper nedbrydes over tid i forskellige miljøer.</li>
+                        <li><strong>Genanvendelsesforsøg:</strong> Smelt og støb genanvendt plastik og test materialets egenskaber.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Plasttyper og polymerer</li><li>Materialeegenskaber</li><li>Forbrænding og energi</li><li>Recycling processer</li><li>Kemiske bindinger</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Plastik i verdenshavene</li><li>Affaldshåndtering i Danmark</li><li>Global handel med affald</li><li>Forbrug og bæredygtighed</li><li>Cirkulær økonomi</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Plastik i havmiljøet</li><li>Dyr der spiser plastik</li><li>Mikroplast i fødekæden</li><li>Økosystempåvirkning</li><li>Sundhedskonsekvenser</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Tøjproduktion og miljøpåvirkning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Fiberanalyse:</strong> Undersøg forskellige tekstilfibre under mikroskop og test deres egenskaber.</li>
+                        <li><strong>Vandforbrug til tøj:</strong> Beregn hvor meget vand der bruges til at producere et par jeans eller en t-shirt.</li>
+                        <li><strong>Farvestoftest:</strong> Test hvordan forskellige stoffer optager farve og undersøg miljøpåvirkningen af farvestoffer.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Tekstilers kemiske egenskaber</li><li>Farvestoffer og kemi</li><li>Vandbehandling</li><li>Materialelære</li><li>Polymere og fibre</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Global tekstilhandel</li><li>Produktionslande og arbejdsvilkår</li><li>Vandforbrug i produktion</li><li>Forbrug og bæredygtighed</li><li>Transport og CO₂</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Økotoksikologi af farvestoffer</li><li>Naturlige vs. syntetiske fibre</li><li>Vandmiljøpåvirkning</li><li>Bomuldsdyrkning og pesticider</li><li>Genbrug af tøj</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Økologisk overfor konventionelt landbrug</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Jordprøveanalyse:</strong> Sammenlign jord fra økologisk og konventionelt landbrug. Undersøg mikroorganismer og næringsindhold.</li>
+                        <li><strong>Udbytte-sammenligning:</strong> Research og sammenlign udbytte fra økologisk og konventionel produktion.</li>
+                        <li><strong>Pris- og miljøanalyse:</strong> Beregn forskelle i pris, miljøpåvirkning og sundhed.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Gødning og næringsstoffer</li><li>Pesticiders kemi</li><li>Jordbundskemi</li><li>Vandkvalitet</li><li>Økologiske metoder</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Landbrugsarealer i Danmark</li><li>Fødevareproduktion og forbrug</li><li>Handel og eksport</li><li>Bæredygtigt landbrug</li><li>Arealanvendelse</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Biodiversitet i landbrug</li><li>Bestøvning og insekter</li><li>Jordbundens økosystem</li><li>Pesticiders påvirkning</li><li>Økologisk balance</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Madspild i husholdninger</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Madspilds-måling:</strong> Mål hvor meget mad der smides ud i hjemmet over en uge. Kategoriser og analyser.</li>
+                        <li><strong>Holdbarhedstest:</strong> Undersøg hvordan forskellige madvarer holder sig friske under forskellige betingelser.</li>
+                        <li><strong>CO₂-beregning:</strong> Beregn hvor meget CO₂ der spildes når mad smides ud.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Nedbrydningsprocesser</li><li>Opbevaring og konservering</li><li>Energiindhold i mad</li><li>Køleteknik</li><li>Forbrænding og energi</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Fødevareforsyning i verden</li><li>Forbrug og bæredygtighed</li><li>Transport af fødevarer</li><li>Madspild globalt</li><li>Ressourceanvendelse</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Nedbrydere og bakterier</li><li>Skimmel og gær</li><li>Næringsstoffer i mad</li><li>Økologisk nedbrydning</li><li>Metan fra affald</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Produktion af elektronik</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Mobilens livscyklus:</strong> Kortlæg alle faser fra råstof til affald for en mobiltelefon.</li>
+                        <li><strong>Ædelmetal-indsamling:</strong> Research hvordan man kan udvinde guld og andre metaller fra gammelt elektronik.</li>
+                        <li><strong>Reparation vs. nykøb:</strong> Beregn økonomi og miljøpåvirkning ved reparation af elektronik.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektronik og kredsløb</li><li>Ædelmetaller og sjældne jordarter</li><li>Batteriteknologi</li><li>Recycling af metaller</li><li>Energiforbrug i produktion</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Råstofudvinding i verden</li><li>Produktion og global handel</li><li>E-waste og affaldseksport</li><li>Arbejdsforhold i fabrikker</li><li>Bæredygtig elektronik</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Giftige stoffer i elektronik</li><li>Sundhed på arbejdspladser</li><li>Forurening fra minedrift</li><li>Affaldshåndtering</li><li>Økotoksikologi</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Emballage og bæredygtighed</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Emballageanalyse:</strong> Undersøg forskellige emballagetyper og deres miljøpåvirkning.</li>
+                        <li><strong>Genbrugstest:</strong> Test hvor mange gange forskellige emballager kan genbruges.</li>
+                        <li><strong>Alternativer til plastik:</strong> Undersøg og test bæredygtige alternativer som papir, glas eller bioplast.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Materialeegenskaber</li><li>Emballage og konservering</li><li>Recycling processer</li><li>Energiforbrug ved produktion</li><li>Bioplast kemi</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Emballageaffald i samfundet</li><li>Pantsystemer og genanvendelse</li><li>Global handel og emballage</li><li>Forbrug og affald</li><li>Cirkulær økonomi</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Nedbrydning af emballage</li><li>Plastik i naturen</li><li>Økosystempåvirkning</li><li>Composterbare materialer</li><li>Dyr og emballageaffald</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Produktion af bioplast</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Byg bioplast:</strong> Lav bioplast af majsstivelse eller kartofler og test egenskaberne.</li>
+                        <li><strong>Nedbrydningstest:</strong> Sammenlign hvordan bioplast og almindelig plastik nedbrydes.</li>
+                        <li><strong>Råstofanalyse:</strong> Undersøg hvilke planter der kan bruges til bioplast og hvor bæredygtigt det er.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Polymerkemi</li><li>Stivelse og kulhydrater</li><li>Materialeegenskaber</li><li>Forbrænding og CO₂</li><li>Biologisk nedbrydning</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Arealanvendelse til bioplast</li><li>Fødevarekonkurrence</li><li>Produktion og handel</li><li>Bæredygtige materialer</li><li>Grøn omstilling</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Planter som råstof</li><li>Fotosyntese og kulstof</li><li>Nedbrydningsprocesser</li><li>Økologisk balance</li><li>Landbrug og miljø</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Vandforbrug i industriproduktion</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Vandregnskab:</strong> Beregn hvor meget vand der bruges til at producere forskellige varer.</li>
+                        <li><strong>Vandrensning model:</strong> Byg en model der viser hvordan industri kan rense deres spildevand.</li>
+                        <li><strong>Lokal industri:</strong> Undersøg vandforbrug hos en lokal virksomhed og foreslag besparelser.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vandbehandling og rensning</li><li>Kemiske processer i industri</li><li>Vandkvalitet og måling</li><li>Energiforbrug til vand</li><li>Filtrering og separation</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandressourcer i verden</li><li>Industri og vandforbrug</li><li>Vandknaphed</li><li>Bæredygtig produktion</li><li>Global handel</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Vandmiljø og forurening</li><li>Akvatiske økosystemer</li><li>Sundhed og rent vand</li><li>Vandlevende organismer</li><li>Økotoksikologi</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Bæredygtig skovbrug</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Skovøkosystem:</strong> Undersøg biodiversiteten i en dansk skov og diskuter bæredygtig drift.</li>
+                        <li><strong>Træ som byggemateriale:</strong> Sammenlign træ med andre byggematerialers miljøpåvirkning.</li>
+                        <li><strong>Genplantningsanalyse:</strong> Research hvordan skove kan genplantes bæredygtigt.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Træ som materiale</li><li>Kulstoflagring i træ</li><li>Forbrænding af biomasse</li><li>Materialeegenskaber</li><li>Energiindhold</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Skovarealer i verden</li><li>Afskovning og klima</li><li>Bæredygtig skovdrift</li><li>Træhandel og certificering</li><li>Skov og klimabalance</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Skovøkosystemer</li><li>Biodiversitet i skove</li><li>Træarters vækst</li><li>Dyreliv i skoven</li><li>Næringsstofkredsløb</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Produktion af kød vs. plantebaseret mad</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>CO₂-beregning:</strong> Sammenlign klimaaftryk fra kødproduktion vs. planteproduktion.</li>
+                        <li><strong>Næringsindhold:</strong> Analyser protein og næringsstoffer i kød og plantebaserede alternativer.</li>
+                        <li><strong>Arealbehov:</strong> Beregn hvor meget areal der kræves til kødproduktion vs. planteproduktion.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiindhold i fødevarer</li><li>Forbrænding og CO₂</li><li>Kemiske processer i fødevareproduktion</li><li>Energiomdannelse i dyr</li><li>Vand og ressourcer</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Fødevareproduktion i verden</li><li>Arealanvendelse og landbrug</li><li>Kødforbrug og tendenser</li><li>Global handel med fødevarer</li><li>Bæredygtige kostvaner</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Fordøjelse og ernæring</li><li>Proteiner og aminosyrer</li><li>Dyrevelfærd</li><li>Metan fra kvæg</li><li>Plantebaserede alternativer</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Genbrug af metaller</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Metal-sortering:</strong> Undersøg forskellige metaller og hvordan de kan sorteres og genanvendes.</li>
+                        <li><strong>Energiforbrug:</strong> Beregn energibesparelse ved genbrug af aluminium, jern og andre metaller.</li>
+                        <li><strong>Skrotanalyse:</strong> Undersøg hvad der sker med metal fra skrot til nyt produkt.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Metalers egenskaber</li><li>Smeltning og støbning</li><li>Korrosion og beskyttelse</li><li>Elektrolyse og udvinding</li><li>Legeinger og materialer</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Minedrift i verden</li><li>Råstofhandel</li><li>Genanvendelse i Danmark</li><li>Affaldseksport</li><li>Ressourceknaphed</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Minepåvirkning på økosystemer</li><li>Giftige metaller i miljøet</li><li>Sundhed ved metaludvinding</li><li>Økotoksikologi</li><li>Bæredygtig udvinding</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Produktion af cement og CO₂-udledning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Cement-beton forsøg:</strong> Lav beton og test styrke. Undersøg cementens rolle.</li>
+                        <li><strong>CO₂-beregning:</strong> Beregn hvor meget CO₂ der udledes ved cementproduktion.</li>
+                        <li><strong>Alternativer til cement:</strong> Research grønne alternativer som geopolymerer eller CO₂-optagende beton.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Kemiske reaktioner ved cement</li><li>Forbrænding og CO₂</li><li>Materialeegenskaber</li><li>Styrke og belastning</li><li>Alternative bindemidler</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Cementindustrien i verden</li><li>Byggeboom og efterspørgsel</li><li>Klimapåvirkning</li><li>Grønne løsninger</li><li>Infrastruktur og udvikling</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Luftforurening fra fabrikker</li><li>Sundhedseffekter</li><li>CO₂ og klima</li><li>Havforsuring</li><li>Økosystempåvirkning</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Produktionsaffald og miljøpåvirkning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Affaldsanalyse:</strong> Undersøg hvad der sker med affald fra en fabrik.</li>
+                        <li><strong>Renseanlæg model:</strong> Byg en model der viser hvordan industrirensning virker.</li>
+                        <li><strong>Nul-affald strategi:</strong> Research hvordan virksomheder kan minimere affald.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Kemiske processer og affald</li><li>Filtrering og separation</li><li>Affaldsforbrænding</li><li>Energi fra affald</li><li>Giftige stoffer</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Affaldshåndtering i samfundet</li><li>Deponering og forurening</li><li>Cirkulær økonomi</li><li>Affaldseksport</li><li>Bæredygtig produktion</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Forurening af vand og jord</li><li>Økotoksikologi</li><li>Sundhedseffekter</li><li>Nedbrydning af affald</li><li>Økosystempåvirkning</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Energiforbrug i fødevareproduktion</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Fødevare-livscyklus:</strong> Kortlæg energiforbrug fra mark til bord for en vare.</li>
+                        <li><strong>Lokalt vs. importeret:</strong> Sammenlign energiforbrug ved lokale og importerede fødevarer.</li>
+                        <li><strong>Kølebehov:</strong> Beregn energiforbrug til køling af fødevarer.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiforbrug og effektivitet</li><li>Køleteknik</li><li>Forbrænding og energi</li><li>Transport og energi</li><li>Energibalance</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Fødevareforsyning</li><li>Transport og handel</li><li>Lokale fødevarer</li><li>Bæredygtigt forbrug</li><li>Madspild</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Landbrug og økosystemer</li><li>Fødevarekvalitet</li><li>Opbevaring og holdbarhed</li><li>Økologisk produktion</li><li>Bæredygtighed</li></ul></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- TEMA 3: Strålings indvirkning på levende organismer -->
+        <section id="straling" class="theme-section">
+            <div class="theme-header"><h2>3. Strålings indvirkning på levende organismer</h2></div>
+
+            <article class="subtopic">
+                <h3>UV-stråling og hudkræft</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Solcreme-test:</strong> Test forskellige solcremers beskyttelse med UV-perler eller UV-kort.</li>
+                        <li><strong>UV-måling:</strong> Mål UV-stråling på forskellige tidspunkter og steder. Sammenlign med vejrdata.</li>
+                        <li><strong>Hudtype-analyse:</strong> Undersøg forskellige hudtyper og deres følsomhed overfor UV.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>UV-stråling og elektromagnetisk spektrum</li><li>Strålingsintensitet</li><li>Ozonlaget og atmosfære</li><li>Absorption og reflektion</li><li>Bølgelængde og energi</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>UV-indeks i verden</li><li>Ozonhullet</li><li>Klima og solstråling</li><li>Sundhed og forebyggelse</li><li>Geografisk variation</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Hudens opbygning</li><li>DNA-skader fra UV</li><li>Hudkræfttyper</li><li>Vitamin D produktion</li><li>Forebyggelse og beskyttelse</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Røntgenstråling i sundhedsvæsenet</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Røntgen-billeder:</strong> Undersøg hvordan røntgenbilleder virker med enkle materialer.</li>
+                        <li><strong>Strålingsdosis:</strong> Sammenlign strålingsdosis fra forskellige røntgenundersøgelser.</li>
+                        <li><strong>Sikkerhedsforanstaltninger:</strong> Research hvordan hospitaler beskytter personale og patienter.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Røntgenstråling og fysik</li><li>Stråling og materie</li><li>Billededannelse</li><li>Strålingsdosis og måling</li><li>Beskyttelse og afskærmning</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Sundhedsvæsen og teknologi</li><li>Adgang til røntgen i verden</li><li>Sundhedspolitik</li><li>Ressourcefordeling</li><li>Forebyggelse</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Knogler og væv</li><li>Strålingsskader på celler</li><li>Kræftrisiko</li><li>Fosterpåvirkning</li><li>Diagnostik og behandling</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Radioaktiv stråling og mutationer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Geiger-tæller forsøg:</strong> Mål stråling fra forskellige kilder og undersøg afskærmning.</li>
+                        <li><strong>Mutations-simulation:</strong> Brug modeller til at vise hvordan stråling kan ændre DNA.</li>
+                        <li><strong>Halveringstid:</strong> Simulér halveringstid med terninger eller andre materialer.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Radioaktivitet og henfald</li><li>Strålingstyper</li><li>Halveringstid</li><li>Aktivitet og dosis</li><li>Detektion og måling</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Radioaktiv forurening</li><li>Tjernobyl og Fukushima</li><li>Atomvåben og prøvesprængninger</li><li>Risikostyring</li><li>Internationalt samarbejde</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>DNA og mutationer</li><li>Celledeling og vækst</li><li>Arvelige sygdomme</li><li>Evolution og mutation</li><li>Strålingsbiologi</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Mobilstråling og sundhed</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Signalstyrke-måling:</strong> Mål mobilsignalstyrke forskellige steder og undersøg variation.</li>
+                        <li><strong>Brugsvaner:</strong> Lav spørgeskema om mobilbrug og diskuter sundhedskonsekvenser.</li>
+                        <li><strong>Afskærmningstest:</strong> Test forskellige materialers evne til at blokere mobilsignal.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektromagnetiske bølger</li><li>Frekvens og bølgelængde</li><li>Signaludsendelse og modtagelse</li><li>Intensitet og afstand</li><li>Ikke-ioniserende stråling</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Mobilnetværk og infrastruktur</li><li>Teknologiudbredelse i verden</li><li>Sundhedspolitik</li><li>Forebyggelse og rådgivning</li><li>Samfund og teknologi</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Hjerne og væv</li><li>Potentiel kræftrisiko</li><li>Søvn og blå lys</li><li>Adfærd og afhængighed</li><li>Sundhed og forebyggelse</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Stråling i forbindelse med atomkraft</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Baggrundsstråling:</strong> Mål baggrundsstråling forskellige steder og sammenlign.</li>
+                        <li><strong>Affalds-problematik:</strong> Research hvordan radioaktivt affald opbevares sikkert.</li>
+                        <li><strong>Sikkerhedsanalyse:</strong> Undersøg sikkerhedssystemer på atomkraftværker.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Kernereaktioner</li><li>Neutronstråling</li><li>Aktivering af materialer</li><li>Strålingsbeskyttelse</li><li>Henfaldskæder</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Atomkraft i verden</li><li>Affaldsopbevaring</li><li>Risikoområder</li><li>Energiforsyning</li><li>Geopolitik</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålingsskader</li><li>Langtidsvirkninger</li><li>Økosystempåvirkning</li><li>Madkæde og ophobning</li><li>Sundhedsrisici</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Kosmisk stråling</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Højde-variation:</strong> Undersøg hvordan kosmisk stråling varierer med højden over havet.</li>
+                        <li><strong>Solaktivitet:</strong> Research sammenhæng mellem solaktivitet og kosmisk stråling.</li>
+                        <li><strong>Flyrejse-dosis:</strong> Beregn strålingsdosis på en flyrejse sammenlignet med baggrund.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Kosmisk stråling og partikler</li><li>Atmosfærisk beskyttelse</li><li>Magnetfelt og stråling</li><li>Detektion af partikler</li><li>Solstorme</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Jordens magnetfelt</li><li>Aurora borealis</li><li>Rumvejr og påvirkning</li><li>Højde og stråling</li><li>Polare områder</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålingspåvirkning i fly</li><li>Rumrejser og sundhed</li><li>DNA-skader</li><li>Evolution og stråling</li><li>Beskyttelsesmekanismer</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Stråling og DNA-skader</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>DNA-model:</strong> Byg en DNA-model og vis hvordan stråling kan skade det.</li>
+                        <li><strong>Reparationsmekanismer:</strong> Research hvordan celler reparerer DNA-skader.</li>
+                        <li><li><strong>Mutationsanalyse:</strong> Undersøg forskellige typer mutationer og deres effekter.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Ioniserende stråling</li><li>Energiabsorption</li><li>Radikaler og kemi</li><li>Strålingstype og skade</li><li>Dosis og effekt</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Strålingsrisiko i verden</li><li>Sundhedssystemer</li><li>Forebyggelse</li><li>Risikokommunikation</li><li>Internationalt samarbejde</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>DNA-struktur og funktion</li><li>Reparationsenzymer</li><li>Mutationstyper</li><li>Cellecyklus</li><li>Apoptose og kræft</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Radon i boliger</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Radonmåling:</strong> Mål radon-niveauer i forskellige lokaler med radonmåler.</li>
+                        <li><strong>Bygningsanalyse:</strong> Undersøg hvordan byggetype påvirker radon-niveauer.</li>
+                        <li><strong>Forebyggelsestiltag:</strong> Research hvordan man kan reducere radon i boliger.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Radon og radioaktivitet</li><li>Henfaldskæde</li><li>Alfastråling</li><li>Gas og diffusion</li><li>Måling og detektion</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Radon i Danmark</li><li>Geologiske forhold</li><li>Byggegrunde og risiko</li><li>Sundhedskortlægning</li><li>Regulering</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Lungekræft og radon</li><li>Indånding og deposition</li><li>Rygning og samspil</li><li>Sundhedsrisici</li><li>Forebyggelse</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Infrarød stråling og varmepåvirkning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>IR-termometer:</strong> Mål temperaturer med IR-termometer og undersøg emission.</li>
+                        <li><strong>Varmeabsorption:</strong> Test hvordan forskellige farver absorberer infrarød stråling.</li>
+                        <li><strong>Drivhuseffekt model:</strong> Byg en model der viser hvordan IR-stråling fanges.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Infrarød stråling</li><li>Varmeoverførsel</li><li>Sort legeme og emission</li><li>Drivhuseffekt</li><li>Termisk billeddannelse</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Klima og varmebalance</li><li>Drivhusgasser</li><li>Jordens energibalance</li><li>Isolering og energi</li><li>Bæredygtigt byggeri</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Planter og varme</li><li>Dyr og termoregulering</li><li>Varmestress</li><li>Tilpasning til klima</li><li>Økosystem og temperatur</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Stråling i rumrejser</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Rumstråling analyse:</strong> Research strålingsniveauer i rummet og på Mars.</li>
+                        <li><strong>Beskyttelses-systemer:</strong> Undersøg hvordan astronauter beskyttes.</li>
+                        <li><strong>Mars-mission beregning:</strong> Beregn strålingsdosis på en rejse til Mars.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Rumstråling og partikler</li><li>Solvind</li><li>Magnetfelt og beskyttelse</li><li>Afskærmningsmaterialer</li><li>Dosimetri</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Rumforskning</li><li>Internationale rumstationer</li><li>Rumkapløb</li><li>Fremtidens rumrejser</li><li>Planetkolonisering</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Astronauters sundhed</li><li>Strålingsskader</li><li>Muskler og knogler</li><li>Psykologi og isolation</li><li>Langtidsvirkninger</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Solstorme og påvirkning af Jorden</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Nordlys observation:</strong> Studer nordlys og diskuter sammenhæng med solstorme.</li>
+                        <li><strong>Strømnet-påvirkning:</strong> Research hvordan solstorme kan påvirke elnettet.</li>
+                        <li><strong>Satellit-problemer:</strong> Undersøg hvordan rumvejr påvirker satellitter.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Solstorme og CME</li><li>Plasma og partikler</li><li>Magnetosfære</li><li>Inducerede strømme</li><li>Rumvejr</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Jordens magnetfelt</li><li>Polare områder</li><li>Infrastruktur og sårbarhed</li><li>Beredskab</li><li>Overvågning</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålingsrisiko i fly</li><li>Astronauters sikkerhed</li><li>Dyrenes navigation</li><li>Trækfugle og magnetfelt</li><li>Sundhedseffekter</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>UV-stråling i økosystemer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Plante-vækst:</strong> Undersøg hvordan planter vokser under forskellige UV-niveauer.</li>
+                        <li><strong>Vand-økosystem:</strong> Research hvordan UV påvirker plankton og vandliv.</li>
+                        <li><strong>Ozon og økosystem:</strong> Undersøg sammenhæng mellem ozonhul og økosystemer.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>UV-spektrum</li><li>Ozon og absorption</li><li>Strålingsintensitet</li><li>Refleksion og spredning</li><li>Måling af UV</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Ozonhullet og Antarktis</li><li>Geografisk variation</li><li>Klimaændringer</li><li>Økosystemer i fare</li><li>International miljøpolitik</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Fotosyntese og UV</li><li>Plantevækst</li><li>Dyr og UV-beskyttelse</li><li>Marine økosystemer</li><li>Koralrev og blegning</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Strålingsskader på celler</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Celledeling model:</strong> Brug modeller til at vise hvordan stråling påvirker celledeling.</li>
+                        <li><strong>Antioxidant-test:</strong> Undersøg hvordan antioxidanter kan beskytte mod strålingsskader.</li>
+                        <li><strong>Dosis-respons:</strong> Research sammenhæng mellem strålingsdosis og celleskader.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energideponering</li><li>Ionisering og radikaler</li><li>LET og skade</li><li>Dosisberegning</li><li>Strålingskvalitet</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Strålingsbehandling i verden</li><li>Sundhedssystemer</li><li>Risikostyring</li><li>Arbejdsmiljø</li><li>Forebyggelse</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Cellestruktur</li><li>DNA-reparation</li><li>Apoptose</li><li>Strålingsbehandling af kræft</li><li>Akut og kronisk skade</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Dosering af stråling i behandling</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Stråleterapi analyse:</strong> Research hvordan kræftpatienter behandles med stråling.</li>
+                        <li><li><strong>Beskyttelse af væv:</strong> Undersøg hvordan man beskytter rask væv under behandling.</li>
+                        <li><li><strong>Dosis-beregning:</strong> Beregn strålingsdosis til tumor og omgivende væv.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Stråleterapi fysik</li><li>Dosisplanlægning</li><li>Beam shaping</li><li>Billedvejledning</li><li>Protonterapi</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Adgang til stråleterapi</li><li>Sundhedsressourcer</li><li>Behandlingscentre</li><li>Patientrejser</li><li>Sundhedsøkonomi</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Tumorbiologi</li><li>Strålingsfølsomhed</li><li>Vævsskader</li><li>Bivirkninger</li><li>Overlevelse og prognose</li></ul></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- TEMA 4: Vand til verden -->
+        <section id="vand" class="theme-section">
+            <div class="theme-header"><h2>4. Vand til verden</h2></div>
+
+            <article class="subtopic">
+                <h3>Rent drikkevand i Danmark</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Vandkvalitetstest:</strong> Test vandkvalitet fra vandværk, hane og grundvand. Sammenlign pH, hårdhed og nitrat.</li>
+                        <li><strong>Vandværksbesøg:</strong> Besøg lokalt vandværk og undersøg hvordan grundvand renses til drikkevand.</li>
+                        <li><strong>Forbrugsanalyse:</strong> Beregn hvor meget vand en husstand bruger på forskellige aktiviteter.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vands kemiske egenskaber</li><li>pH og vandkemi</li><li>Filtrering og rensning</li><li>Opløste stoffer</li><li>Vandbehandling</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Grundvand i Danmark</li><li>Vandværker og forsyning</li><li>Vandkvalitet og overvågning</li><li>Bæredygtig udnyttelse</li><li>Forsyningsnettet</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Drikkevand og sundhed</li><li>Bakterier i vand</li><li>Grundvandsbeskyttelse</li><li>Økosystemer i grundvand</li><li>Vandbårne sygdomme</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Vandmangel i udviklingslande</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Verdens vand-kort:</strong> Undersøg hvilke områder der har vandmangel og hvorfor.</li>
+                        <li><strong>Vand-indsamling:</strong> Simulér hvor lang tid det tager at hente vand når kilden er langt væk.</li>
+                        <li><strong>Løsningsmodeller:</strong> Research hvordan man kan skaffe vand i tørre områder (brønde, regnvand, afsaltning).</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vands kredsløb</li><li>Afsaltning og destillation</li><li>Pumpeteknik</li><li>Vandrensning</li><li>Energi og vand</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandmangel i verden</li><li>Klima og nedbør</li><li>Befolkning og vandbehov</li><li>Konflikter om vand</li><li>Udvikling og adgang</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Vand og sundhed</li><li>Vandbårne sygdomme</li><li>Hygiejne</li><li>Ernæring og vand</li><li>Dødelighed og vand</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Vandforbrug i husholdninger</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Eget forbrug:</strong> Mål hvor meget vand din familie bruger på en uge. Find besparelsesmuligheder.</li>
+                        <li><strong>Sparetiltag:</strong> Undersøg hvor meget vand der spares ved brusehoved med luftblanding.</li>
+                        <li><strong>Gråt vand:</strong> Research hvordan man kan genbruge vand fra håndvask og bruser.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vandmåling og flow</li><li>Tryk og ledninger</li><li>Vandvarmer og energi</li><li>Spareteknologi</li><li>Vandbehandling</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandforbrug i verden</li><li>Forskel på lande</li><li>Vandpriser og afgifter</li><li>Bæredygtigt forbrug</li><li>Infrastruktur</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Hygiejne og sundhed</li><li>Vandkvalitet i hjemmet</li><li>Bakterier og vand</li><li>Sundhedsrisici</li><li>Adfærd og vaner</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Landbrug og vandforurening</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Nitrat-test:</strong> Test vandprøver for nitrat fra landbrugsområder og sammenlign.</li>
+                        <li><strong>Algevækst:</strong> Undersøg hvordan gødning påvirker algevækst i vand.</li>
+                        <li><strong>Renseanlæg model:</strong> Byg en model der viser hvordan vand renses før det løber ud i naturen.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Nitrat og fosfat</li><li>Kemiske reaktioner i vand</li><li>Filtrering</li><li>Eutrofiering</li><li>Vandkemi</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Landbrug i Danmark</li><li>Vandløb og søer</li><li>Forureningskilder</li><li>Miljøregulering</li><li>Bæredygtigt landbrug</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Alger og iltsvind</li><li>Fisk og vandkvalitet</li><li>Økosystempåvirkning</li><li>Biodiversitet</li><li>Næringsstofkredsløb</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Oversvømmelser og klimatilpasning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Regnvands-model:</strong> Byg en model der viser hvordan kraftig regn påvirker by og land.</li>
+                        <li><strong>Lokal risiko:</strong> Undersøg om dit område er i farezonen for oversvømmelse.</li>
+                        <li><strong>Tilpasningsløsninger:</strong> Research hvordan byer kan sikres mod oversvømmelser.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vandstrøm og hastighed</li><li>Tryk og kraft</li><li>Erosion</li><li>Diger og barrierer</li><li>Pumpeteknik</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Klimaændringer</li><li>Havstigninger</li><li>Ekstremvejr</li><li>Byplanlægning</li><li>Risikostyring</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Vådområder</li><li>Økosystemer ved oversvømmelse</li><li>Sundhedsrisici</li><li>Vandbårne sygdomme</li><li>Naturbaserede løsninger</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Mikroplast i vandmiljøet</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Mikroplast indsamling:</strong> Saml vandprøver og undersøg under mikroskop for mikroplast.</li>
+                        <li><strong>Kosmetik analyse:</strong> Undersøg hvilke produkter der indeholder mikroplast.</li>
+                        <li><strong>Filtreringstest:</strong> Test hvordan mikroplast kan filtreres fra vand.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Plasttyper og polymerer</li><li>Partikelstørrelse</li><li>Filtrering og separation</li><li>Densitet og flydeevne</li><li>Kemiske tilsætninger</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Plastik i verdenshavene</li><li>Havstrømme og spredning</li><li>Affaldshåndtering</li><li>Forurening og kilder</li><li>Internationalt samarbejde</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Dyr der spiser plastik</li><li>Fødekæde og ophobning</li><li>Økotoksikologi</li><li>Koralrev og fisk</li><li>Sundhedskonsekvenser</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Vandbårne sygdomme</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Bakterievækst:</strong> Dyrk bakterier fra vandprøver og undersøg hvilke der er i.</li>
+                        <li><strong>Rensemetoder:</strong> Test forskellige metoder til at rense vand (kogning, filtre, UV).</li>
+                        <li><strong>Globalt overblik:</strong> Research hvilke sygdomme der spredes gennem vand i verden.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vandrensning og filtrering</li><li>UV-behandling</li><li>Kemisk desinfektion</li><li>Kogning og energi</li><li>Måling af renhed</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Sygdomme i verden</li><li>Adgang til rent vand</li><li>Sundhedssystemer</li><li>Forebyggelse</li><li>Udvikling og vand</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Bakterier og virus</li><li>Parasitter</li><li>Smitteveje</li><li>Immunforsvar</li><li>Epidemiologi</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Vandstandsstigninger</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Drivhuseffekt model:</strong> Byg en model der viser hvordan opvarmning får vand til at stige.</li>
+                        <li><strong>Is-smeltning:</strong> Undersøg forskel på landis og havis og deres påvirkning af vandstand.</li>
+                        <li><strong>Kystanalyse:</strong> Research hvordan danske kyster påvirkes af stigende vandstand.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Termisk udvidelse</li><li>Is og smeltning</li><li>Densitet og temperatur</li><li>Havstrømme</li><li>Klima og energi</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Klimaændringer</li><li>Indlandsis og gletsjere</li><li>Kystlinjer og erosion</li><li>Byer i farezoner</li><li>Tilpasningsstrategier</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Kystøkosystemer</li><li>Saltvand og ferskvand</li><li>Dyr og planter i fare</li><li>Koralrev</li><li>Mangroveskove</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Beskyttelse af drikkevandsressourcer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Grundvandskort:</strong> Undersøg hvor grundvandsmagasiner er i Danmark og hvordan de beskyttes.</li>
+                        <li><strong>Forureningskilder:</strong> Identificer potentielle forureningskilder i lokalområdet.</li>
+                        <li><li><strong>Beskyttelsesplan:</strong> Lav en plan for hvordan et grundvandsområde kan beskyttes.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Grundvand og geologi</li><li>Forureningsspredning</li><li>Vandkemi</li><li>Filtrering i jord</li><li>Måling og overvågning</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Grundvandsmagasiner</li><li>Indvindingsområder</li><li>Arealanvendelse</li><li>Regulering og zoner</li><li>Bæredygtig indvinding</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Grundvandsøkosystemer</li><li>Bakterier og rensning</li><li>Forurening og sundhed</li><li>Beskyttelse af natur</li><li>Økosystemtjenester</li></ul></div>
+                </div>
+            </article>
+
+            <article class="subtopic">
+                <h3>Vandets betydning for økosystemer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Sø-økosystem:</strong> Undersøg dyr og planter i en lokal sø eller å.</li>
+                        <li><li><strong>Vandkæde analyse:</strong> Kortlæg næringskæden i et vandområde.</li>
+                        <li><strong>Iltningsmåling:</strong> Mål iltindhold i vand og undersøg hvad der påvirker det.</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Opløst ilt i vand</li><li>Temperatur og kemi</li><li>Lys og dybde</li><li>Strøm og bevægelse</li><li>Vandkvalitet</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandløb og søer</li><li>Vådområder</li><li>Afvanding og genopretning</li><li>Naturbeskyttelse</li><li>Vandforvaltning</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Akvatiske økosystemer</li><li>Fisk og hvirvelløse</li><li>Planter og alger</li><li>Næringskæder</li><li>Biodiversitet</li></ul></div>
+                </div>
+            </article>
+        </section>
+
+        <footer>
+            <p>Naturfagsprøven 9. klasse - Delemner med undersøgelser og fokusområder</p>
+            <p>God arbejdslyst!</p>
+        </footer>
+    </div>
+</body>
+</html>
