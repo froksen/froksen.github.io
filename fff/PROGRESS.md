@@ -44,8 +44,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Vandmangel i udviklingslande
 - [x] Vandforbrug i husholdninger
 - [x] Landbrug og vandforurening
-- [ ] **Oversvømmelser og klimatilpasning** ← NÆSTE
-- [ ] Mikroplast i vandmiljøet
+- [x] Oversvømmelser og klimatilpasning
+- [ ] **Mikroplast i vandmiljøet** ← NÆSTE
 - [ ] Vandbårne sygdomme
 - [ ] Vandstandsstigninger
 - [ ] Beskyttelse af drikkevandsressourcer
