@@ -36,8 +36,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Stråling i rumrejser
 - [x] Solstorme og påvirkning af Jorden
 - [x] UV-stråling i økosystemer
-- [ ] **Strålingsskader på celler** ← NÆSTE
-- [ ] Dosering af stråling i behandling
+- [x] Strålingsskader på celler
+- [ ] **Dosering af stråling i behandling** ← NÆSTE
 
 ### Tema 4: Vand til verden
 - [ ] Rent drikkevand i Danmark
