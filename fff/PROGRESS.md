@@ -35,8 +35,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Infrarød stråling og varmepåvirkning
 - [x] Stråling i rumrejser
 - [x] Solstorme og påvirkning af Jorden
-- [ ] **UV-stråling i økosystemer** ← NÆSTE
-- [ ] Strålingsskader på celler
+- [x] UV-stråling i økosystemer
+- [ ] **Strålingsskader på celler** ← NÆSTE
 - [ ] Dosering af stråling i behandling
 
 ### Tema 4: Vand til verden
