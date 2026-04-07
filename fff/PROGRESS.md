@@ -43,8 +43,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Rent drikkevand i Danmark
 - [x] Vandmangel i udviklingslande
 - [x] Vandforbrug i husholdninger
-- [ ] **Landbrug og vandforurening** ← NÆSTE
-- [ ] Oversvømmelser og klimatilpasning
+- [x] Landbrug og vandforurening
+- [ ] **Oversvømmelser og klimatilpasning** ← NÆSTE
 - [ ] Mikroplast i vandmiljøet
 - [ ] Vandbårne sygdomme
 - [ ] Vandstandsstigninger
