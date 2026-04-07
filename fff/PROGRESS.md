@@ -49,7 +49,9 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Vandbårne sygdomme
 - [x] Vandstandsstigninger
 - [x] Beskyttelse af drikkevandsressourcer
-- [ ] **Vandets betydning for økosystemer** ← NÆSTE (SIDST!)
+- [x] Vandets betydning for økosystemer
 
 ---
-*Opdater dette dokument ved hvert commit. Marker færdige delemner med [x].*
+## ✅ ALLE 53 DELEMNER ER FÆRDIGE!
+
+*Opdateret: 2026-04-08. Alle ressourcer tilføjet og pushet til GitHub.*
