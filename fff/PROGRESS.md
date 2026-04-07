@@ -24,8 +24,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Energiforbrug i fødevareproduktion
 
 ### Tema 3: Strålings indvirkning på levende organismer
-- [ ] **UV-stråling og hudkræft** ← NÆSTE
-- [ ] Røntgenstråling i sundhedsvæsenet
+- [x] UV-stråling og hudkræft
+- [ ] **Røntgenstråling i sundhedsvæsenet** ← NÆSTE
 - [ ] Radioaktiv stråling og mutationer
 - [ ] Mobilstråling og sundhed
 - [ ] Stråling i forbindelse med atomkraft
