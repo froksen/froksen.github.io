@@ -48,8 +48,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Mikroplast i vandmiljøet
 - [x] Vandbårne sygdomme
 - [x] Vandstandsstigninger
-- [ ] **Beskyttelse af drikkevandsressourcer** ← NÆSTE
-- [ ] Vandets betydning for økosystemer
+- [x] Beskyttelse af drikkevandsressourcer
+- [ ] **Vandets betydning for økosystemer** ← NÆSTE (SIDST!)
 
 ---
 *Opdater dette dokument ved hvert commit. Marker færdige delemner med [x].*
