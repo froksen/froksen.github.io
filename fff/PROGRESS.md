@@ -31,8 +31,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Stråling i forbindelse med atomkraft
 - [x] Kosmisk stråling
 - [x] Stråling og DNA-skader
-- [ ] **Radon i boliger** ← NÆSTE
-- [ ] Infrarød stråling og varmepåvirkning
+- [x] Radon i boliger
+- [ ] **Infrarød stråling og varmepåvirkning** ← NÆSTE
 - [ ] Stråling i rumrejser
 - [ ] Solstorme og påvirkning af Jorden
 - [ ] UV-stråling i økosystemer
