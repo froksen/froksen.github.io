@@ -37,10 +37,10 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Solstorme og påvirkning af Jorden
 - [x] UV-stråling i økosystemer
 - [x] Strålingsskader på celler
-- [ ] **Dosering af stråling i behandling** ← NÆSTE
+- [x] Dosering af stråling i behandling
 
 ### Tema 4: Vand til verden
-- [ ] Rent drikkevand i Danmark
+- [ ] **Rent drikkevand i Danmark** ← NÆSTE
 - [ ] Vandmangel i udviklingslande
 - [ ] Vandforbrug i husholdninger
 - [ ] Landbrug og vandforurening
