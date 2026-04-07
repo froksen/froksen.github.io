@@ -29,8 +29,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Radioaktiv stråling og mutationer
 - [x] Mobilstråling og sundhed
 - [x] Stråling i forbindelse med atomkraft
-- [ ] **Kosmisk stråling** ← NÆSTE
-- [ ] Stråling og DNA-skader
+- [x] Kosmisk stråling
+- [ ] **Stråling og DNA-skader** ← NÆSTE
 - [ ] Radon i boliger
 - [ ] Infrarød stråling og varmepåvirkning
 - [ ] Stråling i rumrejser
