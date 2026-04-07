@@ -46,8 +46,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Landbrug og vandforurening
 - [x] Oversvømmelser og klimatilpasning
 - [x] Mikroplast i vandmiljøet
-- [ ] **Vandbårne sygdomme** ← NÆSTE
-- [ ] Vandstandsstigninger
+- [x] Vandbårne sygdomme
+- [ ] **Vandstandsstigninger** ← NÆSTE
 - [ ] Beskyttelse af drikkevandsressourcer
 - [ ] Vandets betydning for økosystemer
 
