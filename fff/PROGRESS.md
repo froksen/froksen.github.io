@@ -27,8 +27,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] UV-stråling og hudkræft
 - [x] Røntgenstråling i sundhedsvæsenet
 - [x] Radioaktiv stråling og mutationer
-- [ ] **Mobilstråling og sundhed** ← NÆSTE
-- [ ] Stråling i forbindelse med atomkraft
+- [x] Mobilstråling og sundhed
+- [ ] **Stråling i forbindelse med atomkraft** ← NÆSTE
 - [ ] Kosmisk stråling
 - [ ] Stråling og DNA-skader
 - [ ] Radon i boliger
