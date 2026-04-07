@@ -41,8 +41,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 
 ### Tema 4: Vand til verden
 - [x] Rent drikkevand i Danmark
-- [ ] **Vandmangel i udviklingslande** ← NÆSTE
-- [ ] Vandforbrug i husholdninger
+- [x] Vandmangel i udviklingslande
+- [ ] **Vandforbrug i husholdninger** ← NÆSTE
 - [ ] Landbrug og vandforurening
 - [ ] Oversvømmelser og klimatilpasning
 - [ ] Mikroplast i vandmiljøet
