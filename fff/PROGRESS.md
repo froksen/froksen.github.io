@@ -34,8 +34,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Radon i boliger
 - [x] Infrarød stråling og varmepåvirkning
 - [x] Stråling i rumrejser
-- [ ] **Solstorme og påvirkning af Jorden** ← NÆSTE
-- [ ] UV-stråling i økosystemer
+- [x] Solstorme og påvirkning af Jorden
+- [ ] **UV-stråling i økosystemer** ← NÆSTE
 - [ ] Strålingsskader på celler
 - [ ] Dosering af stråling i behandling
 
