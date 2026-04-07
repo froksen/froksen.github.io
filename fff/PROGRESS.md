@@ -40,8 +40,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Dosering af stråling i behandling
 
 ### Tema 4: Vand til verden
-- [ ] **Rent drikkevand i Danmark** ← NÆSTE
-- [ ] Vandmangel i udviklingslande
+- [x] Rent drikkevand i Danmark
+- [ ] **Vandmangel i udviklingslande** ← NÆSTE
 - [ ] Vandforbrug i husholdninger
 - [ ] Landbrug og vandforurening
 - [ ] Oversvømmelser og klimatilpasning
