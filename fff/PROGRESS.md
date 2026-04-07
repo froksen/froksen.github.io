@@ -28,8 +28,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 - [x] Røntgenstråling i sundhedsvæsenet
 - [x] Radioaktiv stråling og mutationer
 - [x] Mobilstråling og sundhed
-- [ ] **Stråling i forbindelse med atomkraft** ← NÆSTE
-- [ ] Kosmisk stråling
+- [x] Stråling i forbindelse med atomkraft
+- [ ] **Kosmisk stråling** ← NÆSTE
 - [ ] Stråling og DNA-skader
 - [ ] Radon i boliger
 - [ ] Infrarød stråling og varmepåvirkning
