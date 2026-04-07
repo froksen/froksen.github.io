@@ -26,8 +26,8 @@ Dette dokument holder styr på hvilke delemner der mangler digitale ressourcer
 ### Tema 3: Strålings indvirkning på levende organismer
 - [x] UV-stråling og hudkræft
 - [x] Røntgenstråling i sundhedsvæsenet
-- [ ] **Radioaktiv stråling og mutationer** ← NÆSTE
-- [ ] Mobilstråling og sundhed
+- [x] Radioaktiv stråling og mutationer
+- [ ] **Mobilstråling og sundhed** ← NÆSTE
 - [ ] Stråling i forbindelse med atomkraft
 - [ ] Kosmisk stråling
 - [ ] Stråling og DNA-skader
