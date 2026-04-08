@@ -44,6 +44,16 @@
         .tag-sim { background: #e3f2fd; color: #1565c0; }
         .tag-video { background: #ffebee; color: #c62828; }
         .tag-dr { background: #e8f5e9; color: #2e7d32; }
+        .toc-section { background: white; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .toc-title { font-size: 1.6em; color: #667eea; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 3px solid #667eea; }
+        .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .toc-column h3 { font-size: 1.05em; margin-bottom: 10px; }
+        .toc-column h3 a { color: #764ba2; text-decoration: none; font-weight: bold; }
+        .toc-column h3 a:hover { text-decoration: underline; }
+        .toc-column ol { padding-left: 20px; }
+        .toc-column li { padding: 3px 0; font-size: 0.9em; }
+        .toc-column li a { color: #0066cc; text-decoration: none; }
+        .toc-column li a:hover { text-decoration: underline; }
         footer { text-align: center; color: white; padding: 30px; opacity: 0.8; }
         @media (max-width: 768px) { header h1 { font-size: 1.8em; } .main-nav { flex-direction: column; align-items: center; } .main-nav a { width: 100%; max-width: 300px; text-align: center; } .theme-section { padding: 20px; } .focus-areas { grid-template-columns: 1fr; } }
     </style>
@@ -62,11 +72,90 @@
             <a href="#vand">4. Vand til verden</a>
         </nav>
 
+
+        <!-- INDHOLDSFORTEGNELSE -->
+        <section class="toc-section">
+            <h2 class="toc-title">Indholdsfortegnelse</h2>
+            <div class="toc-grid">
+                <div class="toc-column">
+                    <h3><a href="#energi">1. Bæredygtig energiforsyning</a></h3>
+                    <ol>
+                        <li><a href="#vindenergi">Vindenergi i Danmark</a></li>
+                        <li><a href="#solceller">Solceller på private boliger</a></li>
+                        <li><a href="#atomkraft">Atomkraft som energikilde</a></li>
+                        <li><a href="#energilagring">Energilagring (batterier, brint, P2X)</a></li>
+                        <li><a href="#biogas">Biogas fra landbrug</a></li>
+                        <li><a href="#havvindmoller">Havvindmøller og naturpåvirkning</a></li>
+                        <li><a href="#elbiler">Elbiler og bæredygtighed</a></li>
+                        <li><a href="#smartgrid">Smart grid (intelligente elnet)</a></li>
+                        <li><a href="#energitab">Energitab ved transport af elektricitet</a></li>
+                        <li><a href="#geotermisk">Geotermisk energi (jordvarme)</a></li>
+                        <li><a href="#isolering">Energioptimering i bygninger (isolering)</a></li>
+                        <li><a href="#groenenergi">Grøn energi i udviklingslande</a></li>
+                        <li><a href="#fremtidsbyer">Energiforsyning i fremtidens byer</a></li>
+                    </ol>
+                </div>
+                <div class="toc-column">
+                    <h3><a href="#produktion">2. Bæredygtig produktion</a></h3>
+                    <ol>
+                        <li><a href="#plastik">Plastikforurening og genanvendelse</a></li>
+                        <li><a href="#toej">Tøjproduktion og miljøpåvirkning</a></li>
+                        <li><a href="#oekolandbrug">Økologisk overfor konventionelt landbrug</a></li>
+                        <li><a href="#madspild">Madspild i husholdninger</a></li>
+                        <li><a href="#elektronik">Produktion af elektronik</a></li>
+                        <li><a href="#emballage">Emballage og bæredygtighed</a></li>
+                        <li><a href="#bioplast">Produktion af bioplast</a></li>
+                        <li><a href="#vandforbrugind">Vandforbrug i industriproduktion</a></li>
+                        <li><a href="#skovbrug">Bæredygtig skovbrug</a></li>
+                        <li><a href="#koed">Produktion af kød vs. plantebaseret mad</a></li>
+                        <li><a href="#metaller">Genbrug af metaller</a></li>
+                        <li><a href="#cement">Produktion af cement og CO₂-udledning</a></li>
+                        <li><a href="#produktionsaffald">Produktionsaffald og miljøpåvirkning</a></li>
+                        <li><a href="#energifodevare">Energiforbrug i fødevareproduktion</a></li>
+                    </ol>
+                </div>
+                <div class="toc-column">
+                    <h3><a href="#straling">3. Strålings indvirkning</a></h3>
+                    <ol>
+                        <li><a href="#uv-hud">UV-stråling og hudkræft</a></li>
+                        <li><a href="#roentgen">Røntgenstråling i sundhedsvæsenet</a></li>
+                        <li><a href="#radioaktiv">Radioaktiv stråling og mutationer</a></li>
+                        <li><a href="#mobilstraaling">Mobilstråling og sundhed</a></li>
+                        <li><a href="#straaling-atomkraft">Stråling i forbindelse med atomkraft</a></li>
+                        <li><a href="#kosmisk">Kosmisk stråling</a></li>
+                        <li><a href="#dna-straaling">Stråling og DNA-skader</a></li>
+                        <li><a href="#radon">Radon i boliger</a></li>
+                        <li><a href="#infrarod">Infrarød stråling og varmepåvirkning</a></li>
+                        <li><a href="#rumrejser">Stråling i rumrejser</a></li>
+                        <li><a href="#solstorme">Solstorme og påvirkning af Jorden</a></li>
+                        <li><a href="#uv-oekosystemer">UV-stråling i økosystemer</a></li>
+                        <li><a href="#stralingsskader">Strålingsskader på celler</a></li>
+                        <li><a href="#dosering">Dosering af stråling i behandling</a></li>
+                    </ol>
+                </div>
+                <div class="toc-column">
+                    <h3><a href="#vand">4. Vand til verden</a></h3>
+                    <ol>
+                        <li><a href="#drikkevand">Rent drikkevand i Danmark</a></li>
+                        <li><a href="#vandmangel">Vandmangel i udviklingslande</a></li>
+                        <li><a href="#vandforbrughush">Vandforbrug i husholdninger</a></li>
+                        <li><a href="#vandforurening">Landbrug og vandforurening</a></li>
+                        <li><a href="#oversvommelser">Oversvømmelser og klimatilpasning</a></li>
+                        <li><a href="#mikroplast">Mikroplast i vandmiljøet</a></li>
+                        <li><a href="#vandbaarne">Vandbårne sygdomme</a></li>
+                        <li><a href="#vandstand">Vandstandsstigninger</a></li>
+                        <li><a href="#drikkevandsressourcer">Beskyttelse af drikkevandsressourcer</a></li>
+                        <li><a href="#vand-oekosystemer">Vandets betydning for økosystemer</a></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
         <!-- TEMA 1: Bæredygtig energiforsyning -->
         <section id="energi" class="theme-section">
             <div class="theme-header"><h2>1. Bæredygtig energiforsyning</h2></div>
 
-            <article class="subtopic">
+            <article id="vindenergi" class="subtopic">
                 <h3>Vindenergi i Danmark</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -91,7 +180,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="solceller" class="subtopic">
                 <h3>Solceller på private boliger</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -116,7 +205,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="atomkraft" class="subtopic">
                 <h3>Atomkraft som energikilde</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -141,7 +230,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="energilagring" class="subtopic">
                 <h3>Energilagring (batterier, brint, P2X)</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -166,7 +255,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="biogas" class="subtopic">
                 <h3>Biogas fra landbrug</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -191,7 +280,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="havvindmoller" class="subtopic">
                 <h3>Havvindmøller og naturpåvirkning</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -216,7 +305,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="elbiler" class="subtopic">
                 <h3>Elbiler og bæredygtighed</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -241,7 +330,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="smartgrid" class="subtopic">
                 <h3>Smart grid (intelligente elnet)</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -266,7 +355,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="energitab" class="subtopic">
                 <h3>Energitab ved transport af elektricitet</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -291,7 +380,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="geotermisk" class="subtopic">
                 <h3>Geotermisk energi (jordvarme)</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -316,7 +405,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="isolering" class="subtopic">
                 <h3>Energioptimering i bygninger (isolering)</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -341,7 +430,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="groenenergi" class="subtopic">
                 <h3>Grøn energi i udviklingslande</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -366,7 +455,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="fremtidsbyer" class="subtopic">
                 <h3>Energiforsyning i fremtidens byer</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -396,7 +485,7 @@
         <section id="produktion" class="theme-section">
             <div class="theme-header"><h2>2. Bæredygtig produktion</h2></div>
 
-            <article class="subtopic">
+            <article id="plastik" class="subtopic">
                 <h3>Plastikforurening og genanvendelse</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -421,7 +510,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="toej" class="subtopic">
                 <h3>Tøjproduktion og miljøpåvirkning</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -446,7 +535,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="oekolandbrug" class="subtopic">
                 <h3>Økologisk overfor konventionelt landbrug</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -471,7 +560,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="madspild" class="subtopic">
                 <h3>Madspild i husholdninger</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -496,7 +585,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="elektronik" class="subtopic">
                 <h3>Produktion af elektronik</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -521,7 +610,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="emballage" class="subtopic">
                 <h3>Emballage og bæredygtighed</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -546,7 +635,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="bioplast" class="subtopic">
                 <h3>Produktion af bioplast</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -571,7 +660,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="vandforbrugind" class="subtopic">
                 <h3>Vandforbrug i industriproduktion</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -596,7 +685,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="skovbrug" class="subtopic">
                 <h3>Bæredygtig skovbrug</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -621,7 +710,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="koed" class="subtopic">
                 <h3>Produktion af kød vs. plantebaseret mad</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -646,7 +735,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="metaller" class="subtopic">
                 <h3>Genbrug af metaller</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -671,7 +760,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="cement" class="subtopic">
                 <h3>Produktion af cement og CO₂-udledning</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -696,7 +785,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="produktionsaffald" class="subtopic">
                 <h3>Produktionsaffald og miljøpåvirkning</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -721,7 +810,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="energifodevare" class="subtopic">
                 <h3>Energiforbrug i fødevareproduktion</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -751,7 +840,7 @@
         <section id="straling" class="theme-section">
             <div class="theme-header"><h2>3. Strålings indvirkning på levende organismer</h2></div>
 
-            <article class="subtopic">
+            <article id="uv-hud" class="subtopic">
                 <h3>UV-stråling og hudkræft</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -776,7 +865,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="roentgen" class="subtopic">
                 <h3>Røntgenstråling i sundhedsvæsenet</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -801,7 +890,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="radioaktiv" class="subtopic">
                 <h3>Radioaktiv stråling og mutationer</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -826,7 +915,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="mobilstraaling" class="subtopic">
                 <h3>Mobilstråling og sundhed</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -851,7 +940,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="straaling-atomkraft" class="subtopic">
                 <h3>Stråling i forbindelse med atomkraft</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -876,7 +965,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="kosmisk" class="subtopic">
                 <h3>Kosmisk stråling</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -901,7 +990,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="dna-straaling" class="subtopic">
                 <h3>Stråling og DNA-skader</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -926,7 +1015,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="radon" class="subtopic">
                 <h3>Radon i boliger</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -951,7 +1040,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="infrarod" class="subtopic">
                 <h3>Infrarød stråling og varmepåvirkning</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -976,7 +1065,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="rumrejser" class="subtopic">
                 <h3>Stråling i rumrejser</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1001,7 +1090,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="solstorme" class="subtopic">
                 <h3>Solstorme og påvirkning af Jorden</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1026,7 +1115,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="uv-oekosystemer" class="subtopic">
                 <h3>UV-stråling i økosystemer</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1051,7 +1140,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="stralingsskader" class="subtopic">
                 <h3>Strålingsskader på celler</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1076,7 +1165,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="dosering" class="subtopic">
                 <h3>Dosering af stråling i behandling</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1106,7 +1195,7 @@
         <section id="vand" class="theme-section">
             <div class="theme-header"><h2>4. Vand til verden</h2></div>
 
-            <article class="subtopic">
+            <article id="drikkevand" class="subtopic">
                 <h3>Rent drikkevand i Danmark</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1131,7 +1220,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="vandmangel" class="subtopic">
                 <h3>Vandmangel i udviklingslande</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1156,7 +1245,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="vandforbrughush" class="subtopic">
                 <h3>Vandforbrug i husholdninger</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1181,7 +1270,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="vandforurening" class="subtopic">
                 <h3>Landbrug og vandforurening</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1206,7 +1295,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="oversvommelser" class="subtopic">
                 <h3>Oversvømmelser og klimatilpasning</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1231,7 +1320,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="mikroplast" class="subtopic">
                 <h3>Mikroplast i vandmiljøet</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1256,7 +1345,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="vandbaarne" class="subtopic">
                 <h3>Vandbårne sygdomme</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1281,7 +1370,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="vandstand" class="subtopic">
                 <h3>Vandstandsstigninger</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1306,7 +1395,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="drikkevandsressourcer" class="subtopic">
                 <h3>Beskyttelse af drikkevandsressourcer</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
@@ -1331,7 +1420,7 @@
                 </div>
             </article>
 
-            <article class="subtopic">
+            <article id="vand-oekosystemer" class="subtopic">
                 <h3>Vandets betydning for økosystemer</h3>
                 <div class="investigations">
                     <h4>Undersøgelser elever kan lave:</h4>
