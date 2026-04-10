@@ -62,7 +62,13 @@
         .model-card p.model-desc { font-size: 0.95em; color: #444; line-height: 1.5; }
         .model-link { display: inline-block; margin-top: 10px; color: #0066cc; font-weight: bold; text-decoration: none; font-size: 0.9em; border: 1px solid #0066cc; padding: 3px 10px; border-radius: 4px; }
         .model-link:hover { background: #0066cc; color: white; }
-        @media (max-width: 768px) { header h1 { font-size: 1.8em; } .main-nav { flex-direction: column; align-items: center; } .main-nav a { width: 100%; max-width: 300px; text-align: center; } .theme-section { padding: 20px; } .focus-areas { grid-template-columns: 1fr; } }
+        .sdg-section { margin-top: 30px; padding: 20px 25px; background: linear-gradient(135deg, #f0f8ff 0%, #e8f0ff 100%); border-radius: 12px; border: 2px solid #667eea; }
+        .sdg-section h4 { color: #667eea; font-size: 1.1em; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #667eea; }
+        .sdg-goals { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; }
+        .sdg-goal { text-align: center; width: 120px; }
+        .sdg-goal img { width: 110px; height: 110px; border-radius: 8px; object-fit: cover; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+        .sdg-goal p { font-size: 0.82em; margin-top: 8px; color: #333; font-weight: bold; line-height: 1.3; }
+        @media (max-width: 768px) { header h1 { font-size: 1.8em; } .main-nav { flex-direction: column; align-items: center; } .main-nav a { width: 100%; max-width: 300px; text-align: center; } .theme-section { padding: 20px; } .focus-areas { grid-template-columns: 1fr; } .sdg-goals { gap: 15px; } .sdg-goal { width: 90px; } .sdg-goal img { width: 80px; height: 80px; } }
     </style>
 </head>
 <body>
@@ -203,6 +209,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Danmarks vindressourcer</li><li>Vindmøllers påvirkning af lokalmiljøet</li><li>Energiforsyning og forsyningsnet</li><li>Rumlig planlægning</li><li>CO₂-besparelser</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Påvirkning af fugle og flagermus</li><li>Støjgener for dyr og mennesker</li><li>Habitatpåvirkning</li><li>Skyggekast og biologiske rytmer</li><li>Marine økosystemer ved havmøller</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="solceller" class="subtopic">
@@ -227,6 +250,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Den fotoelektriske effekt</li><li>Elektrisk strøm og spænding</li><li>Energiomdannelse: lys → elektricitet</li><li>Halvledere og silicium</li><li>Virkningsgrad</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Danmarks solressourcer</li><li>Solindstrålingens variation</li><li>Energipolitik og tilskud</li><li>Decentral energiforsyning</li><li>Bæredygtig byudvikling</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Fotosyntese som inspiration</li><li>Økosystempåvirkning ved store anlæg</li><li>Arealanvendelse og naturhensyn</li><li>Produktion og miljø</li><li>Recycling af paneler</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -253,6 +293,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Atomkraft i verdens energiforsyning</li><li>Uranudvinding og fordeling</li><li>Radioaktivt affald</li><li>Energisikkerhed og geopolitik</li><li>Klimaargumenter</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålings påvirkning af celler</li><li>DNA-skader og mutationer</li><li>Akut strålingssyge</li><li>Langtidsvirkninger: kræftrisiko</li><li>Tjernobyl og Fukushima</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="energilagring" class="subtopic">
@@ -277,6 +334,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektrokemi og redoxreaktioner</li><li>Elektrolyse og vandspaltning</li><li>Energitæthed</li><li>Brændselscellers virkemåde</li><li>Power-to-X processer</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Råstofudvinding til batterier</li><li>Global fordeling af lithium og cobalt</li><li>Energiforsyningssikkerhed</li><li>Infrastruktur til brint</li><li>Grøn transport</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Miljøpåvirkning ved minedrift</li><li>Batterirecycling og affald</li><li>Sundhedskonsekvenser</li><li>Økotoksikologi</li><li>Bæredygtig udvinding</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -303,6 +377,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Landbrugets energiproduktion</li><li>Bæredygtig landbrugspraksis</li><li>Cirkulær økonomi</li><li>Energiforsyning på landet</li><li>CO₂-regnskab</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Mikroorganismer i processen</li><li>Anaerob nedbrydning</li><li>Metanbakteriers stofskifte</li><li>Økologisk gødskning</li><li>Næringsstofkredsløb</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2">
+                        <p>Mål 2: Stop sult</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="havvindmoller" class="subtopic">
@@ -327,6 +418,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Lydundervands og akustik</li><li>Energitransmission til lands</li><li>Korrosion i saltvand</li><li>Fundamentskonstruktion</li><li>Havstrømme og bølger</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Danmarks havområder</li><li>Havdybder og bundforhold</li><li>Fiskeri og konfliktområder</li><li>Energiforsyning fra havet</li><li>Havplanlægning</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Marine økosystemer</li><li>Fiskebestande og gydeområder</li><li>Marsvin og hvaler</li><li>Søfugle og trækfugle</li><li>Bundfauna og -flora</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14">
+                        <p>Mål 14: Livet i havet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -353,6 +461,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Elbilers udbredelse i verden</li><li>Ladeinfrastruktur og planlægning</li><li>Elproduktion og bæredygtighed</li><li>Råstofudvinding til batterier</li><li>Transportpolitik</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Luftforurening i byer</li><li>Sundhedseffekter af udstødning</li><li>Støjforurening fra trafik</li><li>Minepåvirkning ved råstofudvinding</li><li>Batteri-affald og miljø</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="smartgrid" class="subtopic">
@@ -377,6 +502,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektricitet og effektmåling</li><li>Elnettet og spændingsniveauer</li><li>Energibalance og frekvens</li><li>Transformere og transmission</li><li>Digital styring</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Energiforsyningssystemer</li><li>International elhandel</li><li>Decentral vs. central forsyning</li><li>Energisikkerhed</li><li>Smart cities</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Elektromagnetiske felter og sundhed</li><li>Digitaliseringens miljøpåvirkning</li><li>E-waste fra komponenter</li><li>Bæredygtig ressourceanvendelse</li><li>Samfund og levevilkår</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -403,6 +545,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Elnettets opbygning i Danmark</li><li>International forbindelser</li><li>Energitransport på tværs af grænser</li><li>Produktions- og forbrugsområder</li><li>Infrastrukturplanlægning</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Elmaster og fugletræk</li><li>Kabler i havet og økosystemer</li><li>Elektromagnetiske felter</li><li>Landskabspåvirkning</li><li>Naturhensyn ved ledningsføring</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="geotermisk" class="subtopic">
@@ -427,6 +586,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Varmeledning i jord og sten</li><li>Varmepumpers virkemåde</li><li>Faseovergange og kølemiddel</li><li>Energi og effekt</li><li>Termodynamikkens love</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Jordens varme fra dyben</li><li>Geologiske forhold i Danmark</li><li>Fjernvarme og energiforsyning</li><li>Bæredygtig opvarmning</li><li>Energiforsyning af bygninger</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Påvirkning af grundvand</li><li>Jordbundens mikroorganismer</li><li>Rørtracéer og natur</li><li>Bæredygtig ressourceudnyttelse</li><li>Økosystempåvirkning ved boring</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -453,6 +629,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Bygninger og energiforbrug</li><li>Byplanlægning og bæredygtighed</li><li>Renovering af boligmasse</li><li>Energiforbrug i samfundet</li><li>Klimatilpasning</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Indeklima og sundhed</li><li>Skimmelsvamp og fugt</li><li>Materialers påvirkning af indeklima</li><li>Luftkvalitet indendørs</li><li>Bæredygtige byggematerialer</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="groenenergi" class="subtopic">
@@ -478,6 +671,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Energiadgang i verden</li><li>Udvikling og fattigdom</li><li>Bæredygtige løsninger</li><li>Klima og tilpasning</li><li>Internationalt samarbejde</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Sundhed og energiadgang</li><li>Indendørs luftforurening</li><li>Vandrensning og energi</li><li>Fødevareproduktion</li><li>Levevilkår og udvikling</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-1.png" alt="Verdensmål 1">
+                        <p>Mål 1: Afskaf fattigdom</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="fremtidsbyer" class="subtopic">
@@ -502,6 +712,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiforsyningssystemer</li><li>Fjernvarme og køling</li><li>Effektiv energianvendelse</li><li>Transport og energi</li><li>Bygninger og energi</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Byudvikling og planlægning</li><li>Bæredygtige byer</li><li>Transport og infrastruktur</li><li>Grønne områder</li><li>Smarte byløsninger</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Byens økosystemer</li><li>Grønne tage og vægge</li><li>Luftkvalitet i byer</li><li>Sundhed og byliv</li><li>Biodiversitet i byer</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
                 </div>
             </article>
         </section>
@@ -533,6 +760,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Plastik i verdenshavene</li><li>Affaldshåndtering i Danmark</li><li>Global handel med affald</li><li>Forbrug og bæredygtighed</li><li>Cirkulær økonomi</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Plastik i havmiljøet</li><li>Dyr der spiser plastik</li><li>Mikroplast i fødekæden</li><li>Økosystempåvirkning</li><li>Sundhedskonsekvenser</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14">
+                        <p>Mål 14: Livet i havet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="toej" class="subtopic">
@@ -557,6 +801,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Tekstilers kemiske egenskaber</li><li>Farvestoffer og kemi</li><li>Vandbehandling</li><li>Materialelære</li><li>Polymere og fibre</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Global tekstilhandel</li><li>Produktionslande og arbejdsvilkår</li><li>Vandforbrug i produktion</li><li>Forbrug og bæredygtighed</li><li>Transport og CO₂</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Økotoksikologi af farvestoffer</li><li>Naturlige vs. syntetiske fibre</li><li>Vandmiljøpåvirkning</li><li>Bomuldsdyrkning og pesticider</li><li>Genbrug af tøj</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-8.png" alt="Verdensmål 8">
+                        <p>Mål 8: Anstændige jobs og økonomisk vækst</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -583,6 +844,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Landbrugsarealer i Danmark</li><li>Fødevareproduktion og forbrug</li><li>Handel og eksport</li><li>Bæredygtigt landbrug</li><li>Arealanvendelse</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Biodiversitet i landbrug</li><li>Bestøvning og insekter</li><li>Jordbundens økosystem</li><li>Pesticiders påvirkning</li><li>Økologisk balance</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2">
+                        <p>Mål 2: Stop sult</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="madspild" class="subtopic">
@@ -607,6 +885,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Nedbrydningsprocesser</li><li>Opbevaring og konservering</li><li>Energiindhold i mad</li><li>Køleteknik</li><li>Forbrænding og energi</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Fødevareforsyning i verden</li><li>Forbrug og bæredygtighed</li><li>Transport af fødevarer</li><li>Madspild globalt</li><li>Ressourceanvendelse</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Nedbrydere og bakterier</li><li>Skimmel og gær</li><li>Næringsstoffer i mad</li><li>Økologisk nedbrydning</li><li>Metan fra affald</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2">
+                        <p>Mål 2: Stop sult</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -633,6 +928,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Råstofudvinding i verden</li><li>Produktion og global handel</li><li>E-waste og affaldseksport</li><li>Arbejdsforhold i fabrikker</li><li>Bæredygtig elektronik</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Giftige stoffer i elektronik</li><li>Sundhed på arbejdspladser</li><li>Forurening fra minedrift</li><li>Affaldshåndtering</li><li>Økotoksikologi</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-8.png" alt="Verdensmål 8">
+                        <p>Mål 8: Anstændige jobs og økonomisk vækst</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="emballage" class="subtopic">
@@ -657,6 +969,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Materialeegenskaber</li><li>Emballage og konservering</li><li>Recycling processer</li><li>Energiforbrug ved produktion</li><li>Bioplast kemi</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Emballageaffald i samfundet</li><li>Pantsystemer og genanvendelse</li><li>Global handel og emballage</li><li>Forbrug og affald</li><li>Cirkulær økonomi</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Nedbrydning af emballage</li><li>Plastik i naturen</li><li>Økosystempåvirkning</li><li>Composterbare materialer</li><li>Dyr og emballageaffald</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14">
+                        <p>Mål 14: Livet i havet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -683,6 +1012,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Arealanvendelse til bioplast</li><li>Fødevarekonkurrence</li><li>Produktion og handel</li><li>Bæredygtige materialer</li><li>Grøn omstilling</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Planter som råstof</li><li>Fotosyntese og kulstof</li><li>Nedbrydningsprocesser</li><li>Økologisk balance</li><li>Landbrug og miljø</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="vandforbrugind" class="subtopic">
@@ -707,6 +1053,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vandbehandling og rensning</li><li>Kemiske processer i industri</li><li>Vandkvalitet og måling</li><li>Energiforbrug til vand</li><li>Filtrering og separation</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandressourcer i verden</li><li>Industri og vandforbrug</li><li>Vandknaphed</li><li>Bæredygtig produktion</li><li>Global handel</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Vandmiljø og forurening</li><li>Akvatiske økosystemer</li><li>Sundhed og rent vand</li><li>Vandlevende organismer</li><li>Økotoksikologi</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -733,6 +1096,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Skovarealer i verden</li><li>Afskovning og klima</li><li>Bæredygtig skovdrift</li><li>Træhandel og certificering</li><li>Skov og klimabalance</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Skovøkosystemer</li><li>Biodiversitet i skove</li><li>Træarters vækst</li><li>Dyreliv i skoven</li><li>Næringsstofkredsløb</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="koed" class="subtopic">
@@ -757,6 +1137,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiindhold i fødevarer</li><li>Forbrænding og CO₂</li><li>Kemiske processer i fødevareproduktion</li><li>Energiomdannelse i dyr</li><li>Vand og ressourcer</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Fødevareproduktion i verden</li><li>Arealanvendelse og landbrug</li><li>Kødforbrug og tendenser</li><li>Global handel med fødevarer</li><li>Bæredygtige kostvaner</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Fordøjelse og ernæring</li><li>Proteiner og aminosyrer</li><li>Dyrevelfærd</li><li>Metan fra kvæg</li><li>Plantebaserede alternativer</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2">
+                        <p>Mål 2: Stop sult</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -783,6 +1180,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Minedrift i verden</li><li>Råstofhandel</li><li>Genanvendelse i Danmark</li><li>Affaldseksport</li><li>Ressourceknaphed</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Minepåvirkning på økosystemer</li><li>Giftige metaller i miljøet</li><li>Sundhed ved metaludvinding</li><li>Økotoksikologi</li><li>Bæredygtig udvinding</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="cement" class="subtopic">
@@ -807,6 +1221,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Kemiske reaktioner ved cement</li><li>Forbrænding og CO₂</li><li>Materialeegenskaber</li><li>Styrke og belastning</li><li>Alternative bindemidler</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Cementindustrien i verden</li><li>Byggeboom og efterspørgsel</li><li>Klimapåvirkning</li><li>Grønne løsninger</li><li>Infrastruktur og udvikling</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Luftforurening fra fabrikker</li><li>Sundhedseffekter</li><li>CO₂ og klima</li><li>Havforsuring</li><li>Økosystempåvirkning</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -833,6 +1264,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Affaldshåndtering i samfundet</li><li>Deponering og forurening</li><li>Cirkulær økonomi</li><li>Affaldseksport</li><li>Bæredygtig produktion</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Forurening af vand og jord</li><li>Økotoksikologi</li><li>Sundhedseffekter</li><li>Nedbrydning af affald</li><li>Økosystempåvirkning</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="energifodevare" class="subtopic">
@@ -857,6 +1305,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiforbrug og effektivitet</li><li>Køleteknik</li><li>Forbrænding og energi</li><li>Transport og energi</li><li>Energibalance</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Fødevareforsyning</li><li>Transport og handel</li><li>Lokale fødevarer</li><li>Bæredygtigt forbrug</li><li>Madspild</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Landbrug og økosystemer</li><li>Fødevarekvalitet</li><li>Opbevaring og holdbarhed</li><li>Økologisk produktion</li><li>Bæredygtighed</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2">
+                        <p>Mål 2: Stop sult</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
                 </div>
             </article>
         </section>
@@ -888,6 +1353,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>UV-indeks i verden</li><li>Ozonhullet</li><li>Klima og solstråling</li><li>Sundhed og forebyggelse</li><li>Geografisk variation</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Hudens opbygning</li><li>DNA-skader fra UV</li><li>Hudkræfttyper</li><li>Vitamin D produktion</li><li>Forebyggelse og beskyttelse</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="roentgen" class="subtopic">
@@ -912,6 +1394,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Røntgenstråling og fysik</li><li>Stråling og materie</li><li>Billededannelse</li><li>Strålingsdosis og måling</li><li>Beskyttelse og afskærmning</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Sundhedsvæsen og teknologi</li><li>Adgang til røntgen i verden</li><li>Sundhedspolitik</li><li>Ressourcefordeling</li><li>Forebyggelse</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Knogler og væv</li><li>Strålingsskader på celler</li><li>Kræftrisiko</li><li>Fosterpåvirkning</li><li>Diagnostik og behandling</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-10.png" alt="Verdensmål 10">
+                        <p>Mål 10: Mindre ulighed</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -938,6 +1437,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Radioaktiv forurening</li><li>Tjernobyl og Fukushima</li><li>Atomvåben og prøvesprængninger</li><li>Risikostyring</li><li>Internationalt samarbejde</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>DNA og mutationer</li><li>Celledeling og vækst</li><li>Arvelige sygdomme</li><li>Evolution og mutation</li><li>Strålingsbiologi</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="mobilstraaling" class="subtopic">
@@ -962,6 +1478,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektromagnetiske bølger</li><li>Frekvens og bølgelængde</li><li>Signaludsendelse og modtagelse</li><li>Intensitet og afstand</li><li>Ikke-ioniserende stråling</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Mobilnetværk og infrastruktur</li><li>Teknologiudbredelse i verden</li><li>Sundhedspolitik</li><li>Forebyggelse og rådgivning</li><li>Samfund og teknologi</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Hjerne og væv</li><li>Potentiel kræftrisiko</li><li>Søvn og blå lys</li><li>Adfærd og afhængighed</li><li>Sundhed og forebyggelse</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -988,6 +1521,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Atomkraft i verden</li><li>Affaldsopbevaring</li><li>Risikoområder</li><li>Energiforsyning</li><li>Geopolitik</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålingsskader</li><li>Langtidsvirkninger</li><li>Økosystempåvirkning</li><li>Madkæde og ophobning</li><li>Sundhedsrisici</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7">
+                        <p>Mål 7: Bæredygtig energi</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="kosmisk" class="subtopic">
@@ -1012,6 +1562,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Kosmisk stråling og partikler</li><li>Atmosfærisk beskyttelse</li><li>Magnetfelt og stråling</li><li>Detektion af partikler</li><li>Solstorme</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Jordens magnetfelt</li><li>Aurora borealis</li><li>Rumvejr og påvirkning</li><li>Højde og stråling</li><li>Polare områder</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålingspåvirkning i fly</li><li>Rumrejser og sundhed</li><li>DNA-skader</li><li>Evolution og stråling</li><li>Beskyttelsesmekanismer</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-4.png" alt="Verdensmål 4">
+                        <p>Mål 4: Kvalitetsuddannelse</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1038,6 +1605,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Strålingsrisiko i verden</li><li>Sundhedssystemer</li><li>Forebyggelse</li><li>Risikokommunikation</li><li>Internationalt samarbejde</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>DNA-struktur og funktion</li><li>Reparationsenzymer</li><li>Mutationstyper</li><li>Cellecyklus</li><li>Apoptose og kræft</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="radon" class="subtopic">
@@ -1062,6 +1646,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Radon og radioaktivitet</li><li>Henfaldskæde</li><li>Alfastråling</li><li>Gas og diffusion</li><li>Måling og detektion</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Radon i Danmark</li><li>Geologiske forhold</li><li>Byggegrunde og risiko</li><li>Sundhedskortlægning</li><li>Regulering</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Lungekræft og radon</li><li>Indånding og deposition</li><li>Rygning og samspil</li><li>Sundhedsrisici</li><li>Forebyggelse</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1088,6 +1689,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Klima og varmebalance</li><li>Drivhusgasser</li><li>Jordens energibalance</li><li>Isolering og energi</li><li>Bæredygtigt byggeri</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Planter og varme</li><li>Dyr og termoregulering</li><li>Varmestress</li><li>Tilpasning til klima</li><li>Økosystem og temperatur</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="rumrejser" class="subtopic">
@@ -1112,6 +1730,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Rumstråling og partikler</li><li>Solvind</li><li>Magnetfelt og beskyttelse</li><li>Afskærmningsmaterialer</li><li>Dosimetri</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Rumforskning</li><li>Internationale rumstationer</li><li>Rumkapløb</li><li>Fremtidens rumrejser</li><li>Planetkolonisering</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Astronauters sundhed</li><li>Strålingsskader</li><li>Muskler og knogler</li><li>Psykologi og isolation</li><li>Langtidsvirkninger</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-4.png" alt="Verdensmål 4">
+                        <p>Mål 4: Kvalitetsuddannelse</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1138,6 +1773,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Jordens magnetfelt</li><li>Polare områder</li><li>Infrastruktur og sårbarhed</li><li>Beredskab</li><li>Overvågning</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Strålingsrisiko i fly</li><li>Astronauters sikkerhed</li><li>Dyrenes navigation</li><li>Trækfugle og magnetfelt</li><li>Sundhedseffekter</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="uv-oekosystemer" class="subtopic">
@@ -1162,6 +1814,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>UV-spektrum</li><li>Ozon og absorption</li><li>Strålingsintensitet</li><li>Refleksion og spredning</li><li>Måling af UV</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Ozonhullet og Antarktis</li><li>Geografisk variation</li><li>Klimaændringer</li><li>Økosystemer i fare</li><li>International miljøpolitik</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Fotosyntese og UV</li><li>Plantevækst</li><li>Dyr og UV-beskyttelse</li><li>Marine økosystemer</li><li>Koralrev og blegning</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14">
+                        <p>Mål 14: Livet i havet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1188,6 +1857,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Strålingsbehandling i verden</li><li>Sundhedssystemer</li><li>Risikostyring</li><li>Arbejdsmiljø</li><li>Forebyggelse</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Cellestruktur</li><li>DNA-reparation</li><li>Apoptose</li><li>Strålingsbehandling af kræft</li><li>Akut og kronisk skade</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="dosering" class="subtopic">
@@ -1212,6 +1898,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Stråleterapi fysik</li><li>Dosisplanlægning</li><li>Beam shaping</li><li>Billedvejledning</li><li>Protonterapi</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Adgang til stråleterapi</li><li>Sundhedsressourcer</li><li>Behandlingscentre</li><li>Patientrejser</li><li>Sundhedsøkonomi</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Tumorbiologi</li><li>Strålingsfølsomhed</li><li>Vævsskader</li><li>Bivirkninger</li><li>Overlevelse og prognose</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9">
+                        <p>Mål 9: Industri, innovation og infrastruktur</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-10.png" alt="Verdensmål 10">
+                        <p>Mål 10: Mindre ulighed</p>
+                    </div>
+                    </div>
                 </div>
             </article>
         </section>
@@ -1243,6 +1946,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Grundvand i Danmark</li><li>Vandværker og forsyning</li><li>Vandkvalitet og overvågning</li><li>Bæredygtig udnyttelse</li><li>Forsyningsnettet</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Drikkevand og sundhed</li><li>Bakterier i vand</li><li>Grundvandsbeskyttelse</li><li>Økosystemer i grundvand</li><li>Vandbårne sygdomme</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="vandmangel" class="subtopic">
@@ -1267,6 +1987,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Vands kredsløb</li><li>Afsaltning og destillation</li><li>Pumpeteknik</li><li>Vandrensning</li><li>Energi og vand</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandmangel i verden</li><li>Klima og nedbør</li><li>Befolkning og vandbehov</li><li>Konflikter om vand</li><li>Udvikling og adgang</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Vand og sundhed</li><li>Vandbårne sygdomme</li><li>Hygiejne</li><li>Ernæring og vand</li><li>Dødelighed og vand</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-1.png" alt="Verdensmål 1">
+                        <p>Mål 1: Afskaf fattigdom</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2">
+                        <p>Mål 2: Stop sult</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1293,6 +2030,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandforbrug i verden</li><li>Forskel på lande</li><li>Vandpriser og afgifter</li><li>Bæredygtigt forbrug</li><li>Infrastruktur</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Hygiejne og sundhed</li><li>Vandkvalitet i hjemmet</li><li>Bakterier og vand</li><li>Sundhedsrisici</li><li>Adfærd og vaner</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="vandforurening" class="subtopic">
@@ -1317,6 +2071,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Nitrat og fosfat</li><li>Kemiske reaktioner i vand</li><li>Filtrering</li><li>Eutrofiering</li><li>Vandkemi</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Landbrug i Danmark</li><li>Vandløb og søer</li><li>Forureningskilder</li><li>Miljøregulering</li><li>Bæredygtigt landbrug</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Alger og iltsvind</li><li>Fisk og vandkvalitet</li><li>Økosystempåvirkning</li><li>Biodiversitet</li><li>Næringsstofkredsløb</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2">
+                        <p>Mål 2: Stop sult</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1343,6 +2114,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Klimaændringer</li><li>Havstigninger</li><li>Ekstremvejr</li><li>Byplanlægning</li><li>Risikostyring</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Vådområder</li><li>Økosystemer ved oversvømmelse</li><li>Sundhedsrisici</li><li>Vandbårne sygdomme</li><li>Naturbaserede løsninger</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="mikroplast" class="subtopic">
@@ -1367,6 +2155,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Plasttyper og polymerer</li><li>Partikelstørrelse</li><li>Filtrering og separation</li><li>Densitet og flydeevne</li><li>Kemiske tilsætninger</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Plastik i verdenshavene</li><li>Havstrømme og spredning</li><li>Affaldshåndtering</li><li>Forurening og kilder</li><li>Internationalt samarbejde</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Dyr der spiser plastik</li><li>Fødekæde og ophobning</li><li>Økotoksikologi</li><li>Koralrev og fisk</li><li>Sundhedskonsekvenser</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14">
+                        <p>Mål 14: Livet i havet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12">
+                        <p>Mål 12: Ansvarligt forbrug og produktion</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1393,6 +2198,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Sygdomme i verden</li><li>Adgang til rent vand</li><li>Sundhedssystemer</li><li>Forebyggelse</li><li>Udvikling og vand</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Bakterier og virus</li><li>Parasitter</li><li>Smitteveje</li><li>Immunforsvar</li><li>Epidemiologi</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-1.png" alt="Verdensmål 1">
+                        <p>Mål 1: Afskaf fattigdom</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="vandstand" class="subtopic">
@@ -1417,6 +2239,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Termisk udvidelse</li><li>Is og smeltning</li><li>Densitet og temperatur</li><li>Havstrømme</li><li>Klima og energi</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Klimaændringer</li><li>Indlandsis og gletsjere</li><li>Kystlinjer og erosion</li><li>Byer i farezoner</li><li>Tilpasningsstrategier</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Kystøkosystemer</li><li>Saltvand og ferskvand</li><li>Dyr og planter i fare</li><li>Koralrev</li><li>Mangroveskove</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13">
+                        <p>Mål 13: Klimaindsats</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11">
+                        <p>Mål 11: Bæredygtige byer og lokalsamfund</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14">
+                        <p>Mål 14: Livet i havet</p>
+                    </div>
+                    </div>
                 </div>
             </article>
 
@@ -1443,6 +2282,23 @@
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Grundvandsmagasiner</li><li>Indvindingsområder</li><li>Arealanvendelse</li><li>Regulering og zoner</li><li>Bæredygtig indvinding</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Grundvandsøkosystemer</li><li>Bakterier og rensning</li><li>Forurening og sundhed</li><li>Beskyttelse af natur</li><li>Økosystemtjenester</li></ul></div>
                 </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3">
+                        <p>Mål 3: Sundhed og trivsel</p>
+                    </div>
+                    </div>
+                </div>
             </article>
 
             <article id="vand-oekosystemer" class="subtopic">
@@ -1467,6 +2323,23 @@
                     <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Opløst ilt i vand</li><li>Temperatur og kemi</li><li>Lys og dybde</li><li>Strøm og bevægelse</li><li>Vandkvalitet</li></ul></div>
                     <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Vandløb og søer</li><li>Vådområder</li><li>Afvanding og genopretning</li><li>Naturbeskyttelse</li><li>Vandforvaltning</li></ul></div>
                     <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Akvatiske økosystemer</li><li>Fisk og hvirvelløse</li><li>Planter og alger</li><li>Næringskæder</li><li>Biodiversitet</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6">
+                        <p>Mål 6: Rent vand og sanitet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14">
+                        <p>Mål 14: Livet i havet</p>
+                    </div>
+                    <div class="sdg-goal">
+                        <img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15">
+                        <p>Mål 15: Livet på land</p>
+                    </div>
+                    </div>
                 </div>
             </article>
         </section>
