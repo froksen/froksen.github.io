@@ -145,7 +145,7 @@
   /* ── Stats ── */
   .stats-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
   }
 
@@ -270,6 +270,13 @@
           <span id="paperVal" style="font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--highlight);min-width:110px;text-align:right;">1.0 mm (~10 A4)</span>
         </div>
       </div>
+      <div id="bioCtrl" style="display:none; margin-top:12px;">
+        <div class="slider-row">
+          <label>Tykkelse</label>
+          <input type="range" id="bioSlider" min="1" max="50" value="5" step="1" oninput="setBioThickness(this.value)">
+          <span id="bioVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:44px;text-align:right;">5 mm</span>
+        </div>
+      </div>
     </div>
 
     <!-- Rate + reset -->
@@ -312,6 +319,12 @@
       <div class="sub">af Geiger-rør</div>
       <div class="sub" id="sDetectPct" style="color:#22c55e;">–</div>
     </div>
+    <div class="stat-card">
+      <div class="label">Forbi</div>
+      <div class="value" id="sMissed" style="color:#64748b;">0</div>
+      <div class="sub">forbi Geiger-rør</div>
+      <div class="sub" id="sMissedPct" style="color:#64748b;">–</div>
+    </div>
   </div>
 
   <!-- Info -->
@@ -326,11 +339,13 @@
 let type           = 'alpha';
 let material       = 'ingen';
 let metalThickness = 5;
+let bioThickness   = 5;
 let paperSheets    = 10;
 let rate           = 6;
 let emitted  = 0;
 let blocked  = 0;
 let detected = 0;
+let missed   = 0;
 let particles = [];
 let frame    = 0;
 
@@ -354,15 +369,25 @@ const metals = ['aluminium', 'jern', 'bly'];
 // Paper: 1 A4 sheet ≈ 0.1 mm. μ derived from reference values at 1 mm (10 sheets).
 const paperMu = { beta: 0.0408, gamma: 0.0202 };
 
+// Bio materials: μ (per mm) derived from 5 mm reference values.
+const bioMu = {
+  beta:  { koed: 0.01452, kartofler: 0.01238, fisk: 0.01238 },
+  gamma: { koed: 0.01026, kartofler: 0.00816, fisk: 0.00610 },
+};
+const bioMaterials = ['koed', 'kartofler', 'fisk'];
+
 function getBlockChance(radType, mat) {
   if (mat === 'papir') {
     if (radType === 'alpha') return 0.99;
     return 1 - Math.exp(-paperMu[radType] * (paperSheets * 0.1));
   }
+  if (bioMaterials.includes(mat)) {
+    if (radType === 'alpha') return 0.99;
+    return 1 - Math.exp(-bioMu[radType][mat] * bioThickness);
+  }
   if (!metals.includes(mat)) return penetration[radType][mat];
   if (radType === 'alpha') return 1.0;
-  const mu = metalMu[radType][mat];
-  return 1 - Math.exp(-mu * metalThickness);
+  return 1 - Math.exp(-metalMu[radType][mat] * metalThickness);
 }
 
 // ── Info texts ─────────────────────────────────────────────────────────────
@@ -403,6 +428,7 @@ const GEI_X  = W - 100, GEI_Y = H/2, GEI_W = 60, GEI_H = 140;
 function getMatW() {
   if (metals.includes(material)) return metalThickness * 10;
   if (material === 'papir') return Math.max(3, paperSheets);
+  if (bioMaterials.includes(material)) return Math.max(3, bioThickness * 2);
   return MAT_W;
 }
 
@@ -476,7 +502,10 @@ class Particle {
     }
 
     // Off screen
-    if (this.x > W + 20) { this.alive = false; }
+    if (this.x > W + 20) {
+      if (!this.blocked && !this.detected) { missed++; updateStats(); }
+      this.alive = false;
+    }
   }
 
   draw() {
@@ -701,6 +730,7 @@ function setMaterial(m) {
   event.target.classList.add('active');
   document.getElementById('thicknessCtrl').style.display = metals.includes(m) ? 'block' : 'none';
   document.getElementById('paperCtrl').style.display = m === 'papir' ? 'block' : 'none';
+  document.getElementById('bioCtrl').style.display = bioMaterials.includes(m) ? 'block' : 'none';
   updateInfo();
 }
 
@@ -715,13 +745,18 @@ function setPaperSheets(v) {
   document.getElementById('paperVal').textContent = mm + ' mm (~' + paperSheets + ' A4)';
 }
 
+function setBioThickness(v) {
+  bioThickness = parseInt(v);
+  document.getElementById('bioVal').textContent = v + ' mm';
+}
+
 function setRate(v) {
   rate = parseInt(v);
   document.getElementById('rateVal').textContent = v;
 }
 
 function resetCounters() {
-  emitted = blocked = detected = 0;
+  emitted = blocked = detected = missed = 0;
   particles = [];
   updateStats();
 }
@@ -730,9 +765,11 @@ function updateStats() {
   document.getElementById('sEmit').textContent    = emitted;
   document.getElementById('sBlock').textContent   = blocked;
   document.getElementById('sDetect').textContent  = detected;
+  document.getElementById('sMissed').textContent  = missed;
   const pct = n => emitted > 0 ? (n / emitted * 100).toFixed(1) + ' %' : '–';
   document.getElementById('sBlockPct').textContent  = pct(blocked);
   document.getElementById('sDetectPct').textContent = pct(detected);
+  document.getElementById('sMissedPct').textContent = pct(missed);
 }
 
 function updateInfo() {
