@@ -304,11 +304,13 @@
       <div class="label">Blokeret</div>
       <div class="value val-blocked" id="sBlock">0</div>
       <div class="sub">af materialet</div>
+      <div class="sub" id="sBlockPct" style="color:#f87171;">–</div>
     </div>
     <div class="stat-card">
       <div class="label">Opfanget</div>
       <div class="value val-detected" id="sDetect">0</div>
       <div class="sub">af Geiger-rør</div>
+      <div class="sub" id="sDetectPct" style="color:#22c55e;">–</div>
     </div>
   </div>
 
@@ -725,9 +727,12 @@ function resetCounters() {
 }
 
 function updateStats() {
-  document.getElementById('sEmit').textContent   = emitted;
-  document.getElementById('sBlock').textContent  = blocked;
-  document.getElementById('sDetect').textContent = detected;
+  document.getElementById('sEmit').textContent    = emitted;
+  document.getElementById('sBlock').textContent   = blocked;
+  document.getElementById('sDetect').textContent  = detected;
+  const pct = n => emitted > 0 ? (n / emitted * 100).toFixed(1) + ' %' : '–';
+  document.getElementById('sBlockPct').textContent  = pct(blocked);
+  document.getElementById('sDetectPct').textContent = pct(detected);
 }
 
 function updateInfo() {
