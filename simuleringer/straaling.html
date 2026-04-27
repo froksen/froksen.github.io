@@ -252,6 +252,7 @@
         <button class="btn btn-mat" onclick="setMaterial('koed')">🥩 Kødpålæg</button>
         <button class="btn btn-mat" onclick="setMaterial('kartofler')">🥔 Kartofler</button>
         <button class="btn btn-mat" onclick="setMaterial('fisk')">🐟 Fisk</button>
+        <button class="btn btn-mat" onclick="setMaterial('aluminium')">🥫 Aluminium</button>
         <button class="btn btn-mat" onclick="setMaterial('jern')">🔩 Jern</button>
         <button class="btn btn-mat" onclick="setMaterial('bly')">⚫ Bly</button>
       </div>
@@ -319,9 +320,9 @@ let frame    = 0;
 // blockChance: probability (0-1) a particle is blocked by this material
 const penetration = {
   //          ingen   papir   koed   kartofler  fisk   jern   bly
-  alpha: {   ingen:0, papir:0.99, koed:0.99, kartofler:0.99, fisk:0.99, jern:1.00, bly:1.00 },
-  beta:  {   ingen:0, papir:0.04, koed:0.07, kartofler:0.06, fisk:0.06, jern:0.90, bly:0.98 },
-  gamma: {   ingen:0, papir:0.02, koed:0.05, kartofler:0.04, fisk:0.03, jern:0.45, bly:0.90 },
+  alpha: {   ingen:0, papir:0.99, koed:0.99, kartofler:0.99, fisk:0.99, aluminium:1.00, jern:1.00, bly:1.00 },
+  beta:  {   ingen:0, papir:0.04, koed:0.07, kartofler:0.06, fisk:0.06, aluminium:0.97, jern:0.90, bly:0.98 },
+  gamma: {   ingen:0, papir:0.02, koed:0.05, kartofler:0.04, fisk:0.03, aluminium:0.12, jern:0.45, bly:0.90 },
 };
 
 // ── Info texts ─────────────────────────────────────────────────────────────
@@ -337,6 +338,7 @@ const matInfo = {
   koed:      '🥩 Kødpålæg: Biologisk væv. Stopper alfa, bremser beta lidt, gamma næsten ikke.',
   kartofler: '🥔 Kartofler: Ligner biologisk væv. Stopper alfa, svagt mod beta og gamma.',
   fisk:      '🐟 Fisk: Biologisk væv med noget vand. Ligner kød.',
+  aluminium: '🥫 Aluminium: Let metal. Stopper alfa helt og er særlig effektiv mod betastråling – selv få mm aluminium stopper det meste beta. Bremser gamma kun meget lidt.',
   jern:      '🔩 Jern: Metal. Stopper alfa og bremser beta kraftigt. Bremser gamma delvist.',
   bly:       '⚫ Bly: Meget tæt metal. Den bedste afskærmning – bremser selv gammastråling kraftigt.',
 };
@@ -523,9 +525,9 @@ function drawScene() {
     const matColors = {
       papir:'rgba(240,220,180,0.85)', koed:'rgba(200,80,80,0.75)',
       kartofler:'rgba(180,160,60,0.75)', fisk:'rgba(60,160,200,0.75)',
-      jern:'rgba(120,130,150,0.85)', bly:'rgba(60,70,90,0.92)'
+      aluminium:'rgba(180,190,200,0.88)', jern:'rgba(120,130,150,0.85)', bly:'rgba(60,70,90,0.92)'
     };
-    const matEmoji = { papir:'📄', koed:'🥩', kartofler:'🥔', fisk:'🐟', jern:'🔩', bly:'⚫' };
+    const matEmoji = { papir:'📄', koed:'🥩', kartofler:'🥔', fisk:'🐟', aluminium:'🥫', jern:'🔩', bly:'⚫' };
 
     ctx.fillStyle = matColors[material] || 'rgba(150,150,150,0.7)';
     ctx.strokeStyle = '#334155';
