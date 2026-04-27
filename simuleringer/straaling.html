@@ -221,6 +221,101 @@
   .reset-btn:hover { background: #334155; color: var(--text); }
 
   .ctrl-footer { display: flex; justify-content: flex-end; }
+
+  /* ── Accordion ── */
+  .accordion-section { margin-top: 8px; }
+
+  .accordion-section details {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .accordion-section details[open] { border-color: rgba(240,192,64,0.3); }
+
+  .accordion-section summary {
+    padding: 14px 18px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--highlight);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+  }
+  .accordion-section summary::-webkit-details-marker { display: none; }
+  .accordion-section summary::before {
+    content: '▶';
+    font-size: 0.55rem;
+    color: var(--muted);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .accordion-section details[open] summary::before { transform: rotate(90deg); }
+  .accordion-section summary:hover { background: rgba(240,192,64,0.05); }
+
+  .acc-body {
+    padding: 14px 18px 18px;
+    font-size: 0.84rem;
+    line-height: 1.75;
+    color: #94a3b8;
+    border-top: 1px solid var(--border);
+  }
+  .acc-body h4 {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.64rem;
+    color: var(--highlight);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 16px 0 6px;
+  }
+  .acc-body h4:first-child { margin-top: 0; }
+  .acc-body strong { color: var(--text); }
+  .acc-body .formula {
+    background: #0a0e1a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.88rem;
+    color: var(--highlight);
+    text-align: center;
+    margin: 12px 0;
+    letter-spacing: 2px;
+  }
+  .acc-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.81rem;
+  }
+  .acc-body th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .acc-body td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(30,58,95,0.4);
+  }
+  .acc-body td:first-child { color: var(--text); }
+  .acc-body .note {
+    font-size: 0.76rem;
+    color: var(--muted);
+    margin-top: 10px;
+    font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -375,6 +470,82 @@
   <!-- Info -->
   <div class="info-box" id="infoBox">
     Vælg en strålingskilde og eventuelt et materiale for at starte simuleringen.
+  </div>
+
+  <!-- Accordion: baggrundsviden -->
+  <div class="accordion-section">
+
+    <details>
+      <summary>De tre strålingstyper</summary>
+      <div class="acc-body">
+        <h4>Alfastråling (α)</h4>
+        Alfastråling består af heliumkerner – to protoner og to neutroner bundet sammen. De er relativt tunge og bærer en dobbelt positiv ladning (+2e). Fordi de er store og ladede, veksler de kraftigt med elektroner i omgivende materiale og mister hurtigt al deres energi. Fra en typisk radioaktiv kilde rækker alfapartikler kun 3–7 cm i luft; et stykke papir eller hudens yderste, døde cellelag (~0,07 mm) er tilstrækkeligt til at stoppe dem fuldstændigt. Alfastråling er dog farlig, hvis kilden indtages eller indåndes, da partiklerne afgiver al energien direkte i levende væv.
+
+        <h4>Betastråling (β)</h4>
+        Betastråling er hurtige elektroner (β⁻) eller positroner (β⁺) udsendt fra kernen under et radioaktivt henfald. De er langt lettere end alfapartikler og bevæger sig med en hastighed tæt på lysets. Betapartikler trænger dybere ind end alfa, men stoppes effektivt af et par millimeter aluminium, plastik eller biologisk væv. I tunge metaller som bly kan den kraftige bremsning af betapartiklerne give anledning til sekundær røntgenstråling (kaldet bremsstråling), da de ladede partikler decelereres i det stærke elektriske felt nær atomkernerne.
+
+        <h4>Gammastråling (γ)</h4>
+        Gammastråling er elektromagnetisk stråling (fotoner) med meget høj energi – typisk 0,1–3 MeV fra radioaktive kilder. Den har ingen masse og ingen elektrisk ladning og veksler derfor langt svagere med materiale end alfa og beta. Gammastråling trænger igennem næsten alt og kan aldrig stoppes fuldstændigt, men dens intensitet reduceres gradvist med materialetykkelsen efter en eksponentiel lov. Effektiv afskærmning kræver tykke masser af tætte materialer som bly, stål eller beton.
+      </div>
+    </details>
+
+    <details>
+      <summary>Beregningsmodellen – eksponentiel dæmpning</summary>
+      <div class="acc-body">
+        For beta- og gammastråling beregnes blokeringssandsynligheden i simuleringen med formlen for eksponentiel dæmpning:
+        <div class="formula">P = 1 − e<sup style="font-size:0.6em">−μ · t</sup></div>
+        <strong>P</strong> er sandsynligheden for, at en partikel stoppes (0 = ingen blokering, 1 = fuldstændig blokering).<br>
+        <strong>μ</strong> (mu) er den lineære attenuationskoefficient med enheden mm⁻¹. Den beskriver, hvor effektivt et givet materiale absorberer strålingen. Høj μ betyder kraftig dæmpning. Koefficienten afhænger af materialets densitet, kemiske sammensætning og strålingspartikelens energi.<br>
+        <strong>t</strong> er materialets tykkelse i millimeter.
+        <br><br>
+        Formlen svarer til intensitetsformlen <em>I = I₀ · e<sup>−μt</sup></em>, hvor I₀ er intensiteten inden materialet og I er intensiteten bagved. Jo større produkt μ · t, desto større andel absorberes.
+        <br><br>
+        <strong>Alfastråling</strong> følger ikke den eksponentielle model. Alfapartikler har en veldefineret rækkevidde og stoppes brat, ikke gradvist. Simuleringen forenkler dette til en fast blokeringssandsynlighed på 99 % for papir og biologisk væv og 100 % for metaller.
+      </div>
+    </details>
+
+    <details>
+      <summary>Halveringstykkelse og praktisk afskærmning</summary>
+      <div class="acc-body">
+        En nyttig størrelse afledt af dæmpningsformlen er <strong>halveringstykkelsen</strong> – den materialetykkelse der præcist halverer strålingens intensitet:
+        <div class="formula">d<sub style="font-size:0.65em">½</sub> = ln(2) / μ ≈ 0,693 / μ</div>
+        Halveringstykkelsen for gammastråling fra Cs-137 (0,662 MeV) ser således ud for materialerne i simuleringen:
+        <table>
+          <tr><th>Materiale</th><th>μ (mm⁻¹)</th><th>Halveringstykkelse</th><th>Blokering ved 10 mm</th></tr>
+          <tr><td>Bly</td><td>0,142</td><td>~4,9 mm</td><td>~76 %</td></tr>
+          <tr><td>Jern</td><td>0,057</td><td>~12 mm</td><td>~44 %</td></tr>
+          <tr><td>Aluminium</td><td>0,026</td><td>~27 mm</td><td>~23 %</td></tr>
+          <tr><td>Biologisk væv</td><td>~0,009</td><td>~77 mm</td><td>~9 %</td></tr>
+        </table>
+        For at opnå 90 % blokering af gammastråling kræves fx ca. 16 mm bly eller ca. 40 mm jern. Gammastråling kan aldrig stoppes fuldstændigt med en endelig materialetykkelse – intensiteten nærmer sig blot nul asymptotisk med stigende tykkelse.
+        <br><br>
+        For betastråling er situationen anderledes: betapartikler har en endelig rækkevidde i materiale. Allerede 3–5 mm aluminium stopper det meste beta fra typiske skolekilder. Det eksponentielle udtryk er her en pædagogisk forenkling – i virkeligheden ophører transmissionen brat ved rækkeviddegrænsen.
+      </div>
+    </details>
+
+    <details>
+      <summary>Materialekoefficienter brugt i simuleringen</summary>
+      <div class="acc-body">
+        Koefficienterne er baseret på NIST Physical Measurement Laboratory-data for en typisk Cs-137-kilde (0,662 MeV gamma; 0,5–1 MeV beta som repræsentativ skolekildeenergi).
+        <h4>Metaller</h4>
+        <table>
+          <tr><th>Metal</th><th>Densitet (g/cm³)</th><th>μ beta (mm⁻¹)</th><th>μ gamma (mm⁻¹)</th></tr>
+          <tr><td>Aluminium</td><td>2,70</td><td>0,701</td><td>0,0256</td></tr>
+          <tr><td>Jern</td><td>7,87</td><td>0,461</td><td>0,0572</td></tr>
+          <tr><td>Bly</td><td>11,35</td><td>0,782</td><td>0,142</td></tr>
+        </table>
+        <h4>Papir og biologiske materialer</h4>
+        <table>
+          <tr><th>Materiale</th><th>μ beta (mm⁻¹)</th><th>μ gamma (mm⁻¹)</th></tr>
+          <tr><td>Papir (~0,8 g/cm³)</td><td>0,150</td><td>0,020</td></tr>
+          <tr><td>Kødpålæg (~1,06 g/cm³)</td><td>0,200</td><td>0,0103</td></tr>
+          <tr><td>Kartofler (~1,08 g/cm³)</td><td>0,170</td><td>0,0082</td></tr>
+          <tr><td>Fisk (~1,05 g/cm³)</td><td>0,175</td><td>0,0061</td></tr>
+        </table>
+        <p class="note">Kilde: NIST Physical Measurement Laboratory – X-Ray Mass Attenuation Coefficients (physics.nist.gov). Beta-μ er beregnet ud fra CSDA-rækkevidde i vandækvivalent materiale skaleret med densitet. Alfastråling beregnes ikke med μ-koefficienter – se modelbeskrivelsen ovenfor.</p>
+      </div>
+    </details>
+
   </div>
 
 </div>
