@@ -267,7 +267,9 @@
         <div class="slider-row">
           <label>Ark</label>
           <input type="range" id="paperSlider" min="1" max="100" value="10" step="1" oninput="setPaperSheets(this.value)">
-          <span id="paperVal" style="font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--highlight);min-width:110px;text-align:right;">1.0 mm (~10 A4)</span>
+        </div>
+        <div style="text-align:right; margin-top:3px;">
+          <span id="paperVal" style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--highlight);">1.0 mm (~10 A4)</span>
         </div>
       </div>
       <div id="bioCtrl" style="display:none; margin-top:12px;">
@@ -290,6 +292,19 @@
       </div>
       <div class="ctrl-footer" style="margin-top:12px;">
         <button class="reset-btn" onclick="resetCounters()">↺ Nulstil tæller</button>
+      </div>
+    </div>
+
+    <!-- Distance -->
+    <div class="ctrl-box">
+      <h3>Afstand til Geiger</h3>
+      <div class="slider-row">
+        <label>Nær</label>
+        <input type="range" id="distSlider" min="100" max="720" value="720" step="10" oninput="setDistance(this.value)">
+        <label>Fjern</label>
+      </div>
+      <div style="text-align:right; margin-top:3px;">
+        <span id="distVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);">720 mm</span>
       </div>
     </div>
 
@@ -421,8 +436,10 @@ canvas.width  = W;
 canvas.height = H;
 
 // Layout constants
-const SRC_X  = 80,  SRC_Y  = H/2;
-const MAT_X  = 330, MAT_W  = 50;
+let   srcX   = 80;
+const SRC_Y  = H/2;
+const MAT_W  = 50;
+function getMatX() { return Math.round(srcX + (GEI_X - srcX) * 0.35); }
 const GEI_X  = W - 100, GEI_Y = H/2, GEI_W = 60, GEI_H = 140;
 
 function getMatW() {
@@ -435,7 +452,7 @@ function getMatW() {
 // ── Particle class ─────────────────────────────────────────────────────────
 class Particle {
   constructor() {
-    this.x    = SRC_X + 20;
+    this.x    = srcX + 20;
     this.y    = SRC_Y + (Math.random()-0.5)*30;
     this.vy   = (Math.random()-0.5)*1.2;
     this.speed = type==='gamma' ? 6 : type==='beta' ? 4 : 2.8;
@@ -476,7 +493,7 @@ class Particle {
     if (this.y < 10 || this.y > H-10) this.vy *= -1;
 
     // Hit material?
-    if (material !== 'ingen' && this.x >= MAT_X && this.x <= MAT_X + getMatW() && !this.blocked) {
+    if (material !== 'ingen' && this.x >= getMatX() && this.x <= getMatX() + getMatW() && !this.blocked) {
       const chance = getBlockChance(this.type, material);
       if (Math.random() < chance) {
         this.blocked = true;
@@ -566,37 +583,37 @@ function drawScene() {
   const sg = typeGlow[type];
 
   // Glow
-  const srcGrad = ctx.createRadialGradient(SRC_X, SRC_Y, 5, SRC_X, SRC_Y, 50);
+  const srcGrad = ctx.createRadialGradient(srcX, SRC_Y, 5, srcX, SRC_Y, 50);
   srcGrad.addColorStop(0, sg);
   srcGrad.addColorStop(1, 'transparent');
   ctx.fillStyle = srcGrad;
-  ctx.fillRect(SRC_X-50, SRC_Y-50, 100, 100);
+  ctx.fillRect(srcX-50, SRC_Y-50, 100, 100);
 
   // Body
   ctx.fillStyle = '#1e293b';
   ctx.strokeStyle = sc;
   ctx.lineWidth = 2;
-  roundRect(ctx, SRC_X-28, SRC_Y-38, 56, 76, 10);
+  roundRect(ctx, srcX-28, SRC_Y-38, 56, 76, 10);
   ctx.fill(); ctx.stroke();
 
   // Warning symbol
   ctx.font = '22px serif';
   ctx.textAlign = 'center';
-  ctx.fillText('☢', SRC_X, SRC_Y+4);
+  ctx.fillText('☢', srcX, SRC_Y+4);
 
   // Label
   ctx.fillStyle = sc;
   ctx.font = 'bold 11px "Exo 2", sans-serif';
-  ctx.fillText(type.toUpperCase(), SRC_X, SRC_Y+26);
+  ctx.fillText(type.toUpperCase(), srcX, SRC_Y+26);
 
   // Emission port
   ctx.fillStyle = sc;
   ctx.beginPath();
-  ctx.arc(SRC_X+28, SRC_Y, 5, 0, Math.PI*2);
+  ctx.arc(srcX+28, SRC_Y, 5, 0, Math.PI*2);
   ctx.fill();
 
   // ── Material ──
-  if (material !== 'ingen') {
+  if (material !== 'ingen' && srcX < getMatX()) {
     const matColors = {
       papir:'rgba(240,220,180,0.85)', koed:'rgba(200,80,80,0.75)',
       kartofler:'rgba(180,160,60,0.75)', fisk:'rgba(60,160,200,0.75)',
@@ -608,15 +625,15 @@ function drawScene() {
     ctx.fillStyle = matColors[material] || 'rgba(150,150,150,0.7)';
     ctx.strokeStyle = '#334155';
     ctx.lineWidth = 1.5;
-    roundRect(ctx, MAT_X, 20, mw, H-40, 6);
+    roundRect(ctx, getMatX(), 20, mw, H-40, 6);
     ctx.fill(); ctx.stroke();
 
     ctx.font = '20px serif';
     ctx.textAlign = 'center';
-    ctx.fillText(matEmoji[material]||'?', MAT_X + mw/2, H/2 - 14);
+    ctx.fillText(matEmoji[material]||'?', getMatX() + mw/2, H/2 - 14);
 
     ctx.save();
-    ctx.translate(MAT_X + mw/2, H/2 + 14);
+    ctx.translate(getMatX() + mw/2, H/2 + 14);
     ctx.rotate(-Math.PI/2);
     ctx.font = 'bold 10px "Exo 2", sans-serif';
     ctx.fillStyle = '#e2e8f0';
@@ -687,6 +704,53 @@ function drawScene() {
 
   // Pulse decay
   if (geigerPulse > 0) geigerPulse = Math.max(0, geigerPulse - 0.06);
+
+  // ── Lineal ──
+  const rY    = H - 18;
+  const rSrc  = srcX + 28;
+  const rGei  = GEI_X - GEI_W / 2;
+  const distMm = Math.round(GEI_X - srcX);
+
+  ctx.save();
+  // Ruler background
+  ctx.fillStyle = 'rgba(240,192,64,0.06)';
+  ctx.fillRect(rSrc, rY - 10, rGei - rSrc, 20);
+
+  // End caps
+  ctx.strokeStyle = 'rgba(240,192,64,0.8)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(rSrc, rY - 10); ctx.lineTo(rSrc, rY + 10); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(rGei, rY - 10); ctx.lineTo(rGei, rY + 10); ctx.stroke();
+
+  // Main line
+  ctx.strokeStyle = 'rgba(240,192,64,0.55)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(rSrc, rY); ctx.lineTo(rGei, rY); ctx.stroke();
+
+  // Tick marks (every 50px = 50 mm, major every 100)
+  for (let d = 0; d <= rGei - rSrc; d += 50) {
+    const tx = rSrc + d;
+    const major = d % 100 === 0;
+    ctx.strokeStyle = `rgba(240,192,64,${major ? 0.65 : 0.35})`;
+    ctx.lineWidth = major ? 1.2 : 0.8;
+    ctx.beginPath();
+    ctx.moveTo(tx, rY - (major ? 8 : 4));
+    ctx.lineTo(tx, rY + (major ? 8 : 4));
+    ctx.stroke();
+    if (major && d > 0 && tx < rGei - 30) {
+      ctx.fillStyle = 'rgba(240,192,64,0.45)';
+      ctx.font = '7px "Exo 2", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(d, tx, rY + 17);
+    }
+  }
+
+  // Distance label centeret
+  ctx.fillStyle = 'rgba(240,192,64,0.95)';
+  ctx.font = 'bold 11px "Orbitron", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(distMm + ' mm', (rSrc + rGei) / 2, rY - 13);
+  ctx.restore();
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -748,6 +812,11 @@ function setPaperSheets(v) {
 function setBioThickness(v) {
   bioThickness = parseInt(v);
   document.getElementById('bioVal').textContent = v + ' mm';
+}
+
+function setDistance(v) {
+  srcX = GEI_X - parseInt(v);
+  document.getElementById('distVal').textContent = v + ' mm';
 }
 
 function setRate(v) {
