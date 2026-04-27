@@ -414,16 +414,16 @@ const penetration = {
 // Formula: blockChance(t) = 1 - exp(-mu * t)
 const metalMu = {
   beta:  { aluminium: 0.701, jern: 0.461, bly: 0.782 },
-  gamma: { aluminium: 0.0256, jern: 0.1196, bly: 0.461 },
+  gamma: { aluminium: 0.0256, jern: 0.0572, bly: 0.142 },
 };
 const metals = ['aluminium', 'jern', 'bly'];
 
-// Paper: 1 A4 sheet ≈ 0.1 mm. μ derived from reference values at 1 mm (10 sheets).
-const paperMu = { beta: 0.0408, gamma: 0.0202 };
+// Paper: 1 A4 sheet ≈ 0.1 mm. μ (per mm) from NIST data for cellulose at ~1 MeV beta / 0.662 MeV gamma.
+const paperMu = { beta: 0.150, gamma: 0.0202 };
 
-// Bio materials: μ (per mm) derived from 5 mm reference values.
+// Bio materials: μ (per mm) from NIST water-equivalent data at 0.5-1 MeV beta / 0.662 MeV gamma.
 const bioMu = {
-  beta:  { koed: 0.01452, kartofler: 0.01238, fisk: 0.01238 },
+  beta:  { koed: 0.200, kartofler: 0.170, fisk: 0.175 },
   gamma: { koed: 0.01026, kartofler: 0.00816, fisk: 0.00610 },
 };
 const bioMaterials = ['koed', 'kartofler', 'fisk'];
