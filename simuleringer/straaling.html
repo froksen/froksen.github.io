@@ -243,6 +243,20 @@
       </div>
     </div>
 
+    <!-- Rate + reset -->
+    <div class="ctrl-box">
+      <h3>Antal partikler</h3>
+      <div class="slider-row">
+        <label>Lav</label>
+        <input type="range" id="rateSlider" min="1" max="20" value="6" oninput="setRate(this.value)">
+        <label>Høj</label>
+        <span id="rateVal">6</span>
+      </div>
+      <div class="ctrl-footer" style="margin-top:12px;">
+        <button class="reset-btn" onclick="resetCounters()">↺ Nulstil tæller</button>
+      </div>
+    </div>
+
     <!-- Material -->
     <div class="ctrl-box">
       <h3>Materiale foran kilden</h3>
@@ -285,17 +299,23 @@
       </div>
     </div>
 
-    <!-- Rate + reset -->
+    <!-- Measurement -->
     <div class="ctrl-box">
-      <h3>Antal partikler</h3>
-      <div class="slider-row">
-        <label>Lav</label>
-        <input type="range" id="rateSlider" min="1" max="20" value="6" oninput="setRate(this.value)">
-        <label>Høj</label>
-        <span id="rateVal">6</span>
+      <h3>Måling</h3>
+      <div class="btn-group" style="margin-bottom:10px;">
+        <button id="modeContBtn" class="btn active" onclick="setMeasureMode('continuous')" style="color:#94a3b8;">∞ Kontinuerlig</button>
+        <button id="modeTimedBtn" class="btn" onclick="setMeasureMode('timed')" style="color:var(--highlight);">⏱ Tidsmåling</button>
       </div>
-      <div class="ctrl-footer" style="margin-top:12px;">
-        <button class="reset-btn" onclick="resetCounters()">↺ Nulstil tæller</button>
+      <div id="timedSettings" style="display:none;">
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;">Varighed</div>
+        <div class="slider-row">
+          <input type="range" id="durSlider" min="1" max="60" value="10" step="1" oninput="setDuration(this.value)">
+        </div>
+        <div style="text-align:right;margin-top:3px;margin-bottom:10px;">
+          <span id="durVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);">10 sek</span>
+        </div>
+        <button id="startBtn" class="btn" onclick="startMeasure()" style="color:#22c55e;width:100%;justify-content:center;">▶ Start måling</button>
+        <div id="timerDisplay" style="display:none;text-align:center;margin-top:8px;font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--highlight);"></div>
       </div>
     </div>
 
@@ -373,6 +393,13 @@ let detected = 0;
 let missed   = 0;
 let particles = [];
 let frame    = 0;
+
+// ── Timed measurement ──────────────────────────────────────────────────────
+let timedMode       = false;
+let measureDuration = 10;   // seconds
+let measureActive   = false;
+let measureStartTime = null;
+let spawning        = true;
 
 // ── Penetration table ──────────────────────────────────────────────────────
 // blockChance: probability (0-1) a particle is blocked by this material
@@ -789,7 +816,27 @@ function roundRect(ctx, x, y, w, h, r) {
 function loop() {
   frame++;
   drawScene();
-  maybeSpawn();
+
+  if (spawning) {
+    if (timedMode && measureActive) {
+      const elapsed = (performance.now() - measureStartTime) / 1000;
+      const remaining = measureDuration - elapsed;
+      if (remaining <= 0) {
+        spawning = false;
+        const td = document.getElementById('timerDisplay');
+        td.textContent = '0.0 sek';
+        document.getElementById('startBtn').style.display = 'block';
+        document.getElementById('startBtn').textContent = '▶ Start måling';
+        measureActive = false;
+      } else {
+        maybeSpawn();
+        const td = document.getElementById('timerDisplay');
+        td.textContent = remaining.toFixed(1) + ' sek';
+      }
+    } else {
+      maybeSpawn();
+    }
+  }
 
   // Update & draw particles
   particles = particles.filter(p => p.alive);
@@ -873,7 +920,54 @@ function setRate(v) {
 function resetCounters() {
   emitted = blocked = detected = missed = 0;
   particles = [];
+  measureActive = false;
+  measureStartTime = null;
+  spawning = !timedMode;
+  if (timedMode) {
+    document.getElementById('startBtn').textContent = '▶ Start måling';
+    document.getElementById('startBtn').style.display = 'block';
+    const td = document.getElementById('timerDisplay');
+    td.textContent = measureDuration.toFixed(1) + ' sek';
+  }
   updateStats();
+}
+
+function setMeasureMode(mode) {
+  timedMode = (mode === 'timed');
+  document.getElementById('modeContBtn').classList.toggle('active', !timedMode);
+  document.getElementById('modeTimedBtn').classList.toggle('active', timedMode);
+  document.getElementById('timedSettings').style.display = timedMode ? 'block' : 'none';
+  if (!timedMode) {
+    spawning = true;
+    measureActive = false;
+  } else {
+    spawning = false;
+    const td = document.getElementById('timerDisplay');
+    td.style.display = 'block';
+    td.textContent = measureDuration.toFixed(1) + ' sek';
+  }
+}
+
+function setDuration(v) {
+  measureDuration = parseInt(v);
+  document.getElementById('durVal').textContent = v + ' sek';
+  if (!measureActive) {
+    const td = document.getElementById('timerDisplay');
+    td.textContent = measureDuration.toFixed(1) + ' sek';
+  }
+}
+
+function startMeasure() {
+  emitted = blocked = detected = missed = 0;
+  particles = [];
+  updateStats();
+  spawning = true;
+  measureActive = true;
+  measureStartTime = performance.now();
+  document.getElementById('startBtn').style.display = 'none';
+  const td = document.getElementById('timerDisplay');
+  td.style.display = 'block';
+  td.textContent = measureDuration.toFixed(1) + ' sek';
 }
 
 function updateStats() {
