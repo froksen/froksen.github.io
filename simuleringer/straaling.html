@@ -256,6 +256,13 @@
         <button class="btn btn-mat" onclick="setMaterial('jern')">🔩 Jern</button>
         <button class="btn btn-mat" onclick="setMaterial('bly')">⚫ Bly</button>
       </div>
+      <div id="thicknessCtrl" style="display:none; margin-top:12px;">
+        <div class="slider-row">
+          <label>Tykkelse</label>
+          <input type="range" id="thicknessSlider" min="1" max="10" value="5" step="1" oninput="setThickness(this.value)">
+          <span id="thicknessVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:44px;text-align:right;">5 mm</span>
+        </div>
+      </div>
     </div>
 
     <!-- Rate + reset -->
@@ -307,9 +314,10 @@
 
 <script>
 // ── State ──────────────────────────────────────────────────────────────────
-let type     = 'alpha';
-let material = 'ingen';
-let rate     = 6;
+let type           = 'alpha';
+let material       = 'ingen';
+let metalThickness = 5;
+let rate           = 6;
 let emitted  = 0;
 let blocked  = 0;
 let detected = 0;
@@ -324,6 +332,21 @@ const penetration = {
   beta:  {   ingen:0, papir:0.04, koed:0.07, kartofler:0.06, fisk:0.06, aluminium:0.97, jern:0.90, bly:0.98 },
   gamma: {   ingen:0, papir:0.02, koed:0.05, kartofler:0.04, fisk:0.03, aluminium:0.12, jern:0.45, bly:0.90 },
 };
+
+// ── Metal attenuation coefficients (per mm), derived from 5mm reference values ──
+// Formula: blockChance(t) = 1 - exp(-mu * t)
+const metalMu = {
+  beta:  { aluminium: 0.701, jern: 0.461, bly: 0.782 },
+  gamma: { aluminium: 0.0256, jern: 0.1196, bly: 0.461 },
+};
+const metals = ['aluminium', 'jern', 'bly'];
+
+function getBlockChance(radType, mat) {
+  if (!metals.includes(mat)) return penetration[radType][mat];
+  if (radType === 'alpha') return 1.0;
+  const mu = metalMu[radType][mat];
+  return 1 - Math.exp(-mu * metalThickness);
+}
 
 // ── Info texts ─────────────────────────────────────────────────────────────
 const typeInfo = {
@@ -405,7 +428,7 @@ class Particle {
 
     // Hit material?
     if (material !== 'ingen' && this.x >= MAT_X && this.x <= MAT_X + MAT_W && !this.blocked) {
-      const chance = penetration[this.type][material];
+      const chance = getBlockChance(this.type, material);
       if (Math.random() < chance) {
         this.blocked = true;
         blocked++;
@@ -652,7 +675,13 @@ function setMaterial(m) {
   material = m;
   document.querySelectorAll('.btn-mat').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
+  document.getElementById('thicknessCtrl').style.display = metals.includes(m) ? 'block' : 'none';
   updateInfo();
+}
+
+function setThickness(v) {
+  metalThickness = parseInt(v);
+  document.getElementById('thicknessVal').textContent = v + ' mm';
 }
 
 function setRate(v) {
