@@ -249,18 +249,25 @@
       <div class="btn-group">
         <button class="btn btn-mat none-btn active" onclick="setMaterial('ingen')">Ingen</button>
         <button class="btn btn-mat" onclick="setMaterial('papir')">📄 Papir</button>
+        <button class="btn btn-mat" onclick="setMaterial('aluminium')">🥫 Aluminium</button>
+        <button class="btn btn-mat" onclick="setMaterial('bly')">⚫ Bly</button>
+        <button class="btn btn-mat" onclick="setMaterial('jern')">🔩 Jern</button>
         <button class="btn btn-mat" onclick="setMaterial('koed')">🥩 Kødpålæg</button>
         <button class="btn btn-mat" onclick="setMaterial('kartofler')">🥔 Kartofler</button>
         <button class="btn btn-mat" onclick="setMaterial('fisk')">🐟 Fisk</button>
-        <button class="btn btn-mat" onclick="setMaterial('aluminium')">🥫 Aluminium</button>
-        <button class="btn btn-mat" onclick="setMaterial('jern')">🔩 Jern</button>
-        <button class="btn btn-mat" onclick="setMaterial('bly')">⚫ Bly</button>
       </div>
       <div id="thicknessCtrl" style="display:none; margin-top:12px;">
         <div class="slider-row">
           <label>Tykkelse</label>
           <input type="range" id="thicknessSlider" min="1" max="10" value="5" step="1" oninput="setThickness(this.value)">
           <span id="thicknessVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:44px;text-align:right;">5 mm</span>
+        </div>
+      </div>
+      <div id="paperCtrl" style="display:none; margin-top:12px;">
+        <div class="slider-row">
+          <label>Ark</label>
+          <input type="range" id="paperSlider" min="1" max="100" value="10" step="1" oninput="setPaperSheets(this.value)">
+          <span id="paperVal" style="font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--highlight);min-width:110px;text-align:right;">1.0 mm (~10 A4)</span>
         </div>
       </div>
     </div>
@@ -317,6 +324,7 @@
 let type           = 'alpha';
 let material       = 'ingen';
 let metalThickness = 5;
+let paperSheets    = 10;
 let rate           = 6;
 let emitted  = 0;
 let blocked  = 0;
@@ -341,7 +349,14 @@ const metalMu = {
 };
 const metals = ['aluminium', 'jern', 'bly'];
 
+// Paper: 1 A4 sheet ≈ 0.1 mm. μ derived from reference values at 1 mm (10 sheets).
+const paperMu = { beta: 0.0408, gamma: 0.0202 };
+
 function getBlockChance(radType, mat) {
+  if (mat === 'papir') {
+    if (radType === 'alpha') return 0.99;
+    return 1 - Math.exp(-paperMu[radType] * (paperSheets * 0.1));
+  }
   if (!metals.includes(mat)) return penetration[radType][mat];
   if (radType === 'alpha') return 1.0;
   const mu = metalMu[radType][mat];
@@ -382,6 +397,12 @@ canvas.height = H;
 const SRC_X  = 80,  SRC_Y  = H/2;
 const MAT_X  = 330, MAT_W  = 50;
 const GEI_X  = W - 100, GEI_Y = H/2, GEI_W = 60, GEI_H = 140;
+
+function getMatW() {
+  if (metals.includes(material)) return metalThickness * 10;
+  if (material === 'papir') return Math.max(3, paperSheets);
+  return MAT_W;
+}
 
 // ── Particle class ─────────────────────────────────────────────────────────
 class Particle {
@@ -427,7 +448,7 @@ class Particle {
     if (this.y < 10 || this.y > H-10) this.vy *= -1;
 
     // Hit material?
-    if (material !== 'ingen' && this.x >= MAT_X && this.x <= MAT_X + MAT_W && !this.blocked) {
+    if (material !== 'ingen' && this.x >= MAT_X && this.x <= MAT_X + getMatW() && !this.blocked) {
       const chance = getBlockChance(this.type, material);
       if (Math.random() < chance) {
         this.blocked = true;
@@ -552,18 +573,19 @@ function drawScene() {
     };
     const matEmoji = { papir:'📄', koed:'🥩', kartofler:'🥔', fisk:'🐟', aluminium:'🥫', jern:'🔩', bly:'⚫' };
 
+    const mw = getMatW();
     ctx.fillStyle = matColors[material] || 'rgba(150,150,150,0.7)';
     ctx.strokeStyle = '#334155';
     ctx.lineWidth = 1.5;
-    roundRect(ctx, MAT_X, 20, MAT_W, H-40, 6);
+    roundRect(ctx, MAT_X, 20, mw, H-40, 6);
     ctx.fill(); ctx.stroke();
 
     ctx.font = '20px serif';
     ctx.textAlign = 'center';
-    ctx.fillText(matEmoji[material]||'?', MAT_X + MAT_W/2, H/2 - 14);
+    ctx.fillText(matEmoji[material]||'?', MAT_X + mw/2, H/2 - 14);
 
     ctx.save();
-    ctx.translate(MAT_X + MAT_W/2, H/2 + 14);
+    ctx.translate(MAT_X + mw/2, H/2 + 14);
     ctx.rotate(-Math.PI/2);
     ctx.font = 'bold 10px "Exo 2", sans-serif';
     ctx.fillStyle = '#e2e8f0';
@@ -676,12 +698,19 @@ function setMaterial(m) {
   document.querySelectorAll('.btn-mat').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById('thicknessCtrl').style.display = metals.includes(m) ? 'block' : 'none';
+  document.getElementById('paperCtrl').style.display = m === 'papir' ? 'block' : 'none';
   updateInfo();
 }
 
 function setThickness(v) {
   metalThickness = parseInt(v);
   document.getElementById('thicknessVal').textContent = v + ' mm';
+}
+
+function setPaperSheets(v) {
+  paperSheets = parseInt(v);
+  const mm = (paperSheets * 0.1).toFixed(1);
+  document.getElementById('paperVal').textContent = mm + ' mm (~' + paperSheets + ' A4)';
 }
 
 function setRate(v) {
