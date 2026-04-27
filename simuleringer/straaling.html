@@ -295,16 +295,22 @@
       </div>
     </div>
 
-    <!-- Distance -->
+    <!-- Distances -->
     <div class="ctrl-box">
-      <h3>Afstand til Geiger</h3>
-      <div class="slider-row">
-        <label>Nær</label>
-        <input type="range" id="distSlider" min="100" max="720" value="720" step="10" oninput="setDistance(this.value)">
-        <label>Fjern</label>
+      <h3>Afstande</h3>
+      <div id="d1Ctrl" style="display:none; margin-bottom:10px;">
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;">Kilde → Materiale</div>
+        <div class="slider-row">
+          <input type="range" id="d1Slider" min="50" max="600" value="250" step="10" oninput="setD1(this.value)">
+          <span id="d1Val" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:60px;text-align:right;">250 mm</span>
+        </div>
       </div>
-      <div style="text-align:right; margin-top:3px;">
-        <span id="distVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);">720 mm</span>
+      <div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;" id="d2Label">Kilde → Geiger</div>
+        <div class="slider-row">
+          <input type="range" id="d2Slider" min="50" max="720" value="720" step="10" oninput="setD2(this.value)">
+          <span id="d2Val" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:60px;text-align:right;">720 mm</span>
+        </div>
       </div>
     </div>
 
@@ -436,11 +442,19 @@ canvas.width  = W;
 canvas.height = H;
 
 // Layout constants
-let   srcX   = 80;
-const SRC_Y  = H/2;
-const MAT_W  = 50;
-function getMatX() { return Math.round(srcX + (GEI_X - srcX) * 0.35); }
-const GEI_X  = W - 100, GEI_Y = H/2, GEI_W = 60, GEI_H = 140;
+const srcX  = 80;
+const SRC_Y = H/2;
+const MAT_W = 50;
+let   d1    = 250;   // source → material (mm)
+let   d2    = 720;   // material → Geiger (or source → Geiger when no material)
+let   geiX  = 800;   // dynamic: srcX + d1 + d2 (material) or srcX + d2 (ingen)
+const GEI_Y = H/2, GEI_W = 60, GEI_H = 140;
+
+function getMatX() { return srcX + d1; }
+function updateGeiX() {
+  const total = material !== 'ingen' ? d1 + d2 : d2;
+  geiX = Math.min(srcX + total, W - GEI_W/2 - 10);
+}
 
 function getMatW() {
   if (metals.includes(material)) return metalThickness * 10;
@@ -508,7 +522,7 @@ class Particle {
     }
 
     // Hit geiger?
-    if (!this.detected && this.x >= GEI_X - GEI_W/2 && this.x <= GEI_X + GEI_W/2
+    if (!this.detected && this.x >= geiX - GEI_W/2 && this.x <= geiX + GEI_W/2
         && this.y >= GEI_Y - GEI_H/2 && this.y <= GEI_Y + GEI_H/2) {
       this.detected = true;
       detected++;
@@ -647,47 +661,47 @@ function drawScene() {
 
   // Glow when pulsing
   if (gp > 0) {
-    const gg = ctx.createRadialGradient(GEI_X, GEI_Y, 10, GEI_X, GEI_Y, 90);
+    const gg = ctx.createRadialGradient(geiX, GEI_Y, 10, geiX, GEI_Y, 90);
     gg.addColorStop(0, `rgba(34,197,94,${gp*0.6})`);
     gg.addColorStop(1, 'transparent');
     ctx.fillStyle = gg;
-    ctx.fillRect(GEI_X-90, GEI_Y-90, 180, 180);
+    ctx.fillRect(geiX-90, GEI_Y-90, 180, 180);
   }
 
   // Tube body
   ctx.fillStyle = '#111827';
   ctx.strokeStyle = gp > 0.3 ? '#22c55e' : '#1e3a5f';
   ctx.lineWidth = 2.5;
-  roundRect(ctx, GEI_X - GEI_W/2, GEI_Y - GEI_H/2, GEI_W, GEI_H, 10);
+  roundRect(ctx, geiX - GEI_W/2, GEI_Y - GEI_H/2, GEI_W, GEI_H, 10);
   ctx.fill(); ctx.stroke();
 
   // Inner tube
   ctx.fillStyle = `rgba(34,197,94,${0.06 + gp*0.2})`;
-  roundRect(ctx, GEI_X - GEI_W/2 + 8, GEI_Y - GEI_H/2 + 10, GEI_W-16, GEI_H-20, 6);
+  roundRect(ctx, geiX - GEI_W/2 + 8, GEI_Y - GEI_H/2 + 10, GEI_W-16, GEI_H-20, 6);
   ctx.fill();
 
   // Detection window (left side)
   ctx.strokeStyle = '#22c55e';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(GEI_X - GEI_W/2, GEI_Y-20);
-  ctx.lineTo(GEI_X - GEI_W/2, GEI_Y+20);
+  ctx.moveTo(geiX - GEI_W/2, GEI_Y-20);
+  ctx.lineTo(geiX - GEI_W/2, GEI_Y+20);
   ctx.stroke();
 
   // Label
   ctx.fillStyle = '#22c55e';
   ctx.font = 'bold 10px "Orbitron", monospace';
   ctx.textAlign = 'center';
-  ctx.fillText('GEIGER', GEI_X, GEI_Y - GEI_H/2 - 8);
+  ctx.fillText('GEIGER', geiX, GEI_Y - GEI_H/2 - 8);
 
   // Count display
   ctx.fillStyle = gp > 0.5 ? '#86efac' : '#22c55e';
   ctx.font = `bold ${gp>0.5?'18':'15'}px "Orbitron", monospace`;
-  ctx.fillText(detected, GEI_X, GEI_Y + 6);
+  ctx.fillText(detected, geiX, GEI_Y + 6);
 
   ctx.fillStyle = '#475569';
   ctx.font = '9px "Exo 2", sans-serif';
-  ctx.fillText('opfanget', GEI_X, GEI_Y + 18);
+  ctx.fillText('opfanget', geiX, GEI_Y + 18);
 
   // Click tick lines
   if (gp > 0.6) {
@@ -696,8 +710,8 @@ function drawScene() {
     for (let i=0;i<4;i++) {
       const a = (i/4)*Math.PI*2 + frame*0.1;
       ctx.beginPath();
-      ctx.moveTo(GEI_X + Math.cos(a)*GEI_W*0.55, GEI_Y + Math.sin(a)*GEI_H*0.55);
-      ctx.lineTo(GEI_X + Math.cos(a)*GEI_W*0.75, GEI_Y + Math.sin(a)*GEI_H*0.75);
+      ctx.moveTo(geiX + Math.cos(a)*GEI_W*0.55, GEI_Y + Math.sin(a)*GEI_H*0.55);
+      ctx.lineTo(geiX + Math.cos(a)*GEI_W*0.75, GEI_Y + Math.sin(a)*GEI_H*0.75);
       ctx.stroke();
     }
   }
@@ -708,8 +722,8 @@ function drawScene() {
   // ── Lineal ──
   const rY    = H - 18;
   const rSrc  = srcX + 28;
-  const rGei  = GEI_X - GEI_W / 2;
-  const distMm = Math.round(GEI_X - srcX);
+  const rGei  = geiX - GEI_W / 2;
+  const distMm = Math.round(geiX - srcX);
 
   ctx.save();
   // Ruler background
@@ -789,12 +803,33 @@ function setType(t) {
 }
 
 function setMaterial(m) {
+  const wasNone = material === 'ingen';
+  const isNone  = m === 'ingen';
   material = m;
   document.querySelectorAll('.btn-mat').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById('thicknessCtrl').style.display = metals.includes(m) ? 'block' : 'none';
   document.getElementById('paperCtrl').style.display = m === 'papir' ? 'block' : 'none';
   document.getElementById('bioCtrl').style.display = bioMaterials.includes(m) ? 'block' : 'none';
+  if (wasNone && !isNone) {
+    // ingen → materiale: fordel d2 i d1 (35%) og ny d2 (65%)
+    d1 = Math.round(d2 * 0.35 / 10) * 10;
+    d2 = d2 - d1;
+    document.getElementById('d1Slider').value = d1;
+    document.getElementById('d1Val').textContent = d1 + ' mm';
+    document.getElementById('d2Slider').value = d2;
+    document.getElementById('d2Val').textContent = d2 + ' mm';
+    document.getElementById('d1Ctrl').style.display = 'block';
+    document.getElementById('d2Label').textContent = 'Materiale → Geiger';
+  } else if (!wasNone && isNone) {
+    // materiale → ingen: kombiner d1+d2 til d2
+    d2 = Math.min(d1 + d2, 720);
+    document.getElementById('d2Slider').value = d2;
+    document.getElementById('d2Val').textContent = d2 + ' mm';
+    document.getElementById('d1Ctrl').style.display = 'none';
+    document.getElementById('d2Label').textContent = 'Kilde → Geiger';
+  }
+  updateGeiX();
   updateInfo();
 }
 
@@ -814,9 +849,16 @@ function setBioThickness(v) {
   document.getElementById('bioVal').textContent = v + ' mm';
 }
 
-function setDistance(v) {
-  srcX = GEI_X - parseInt(v);
-  document.getElementById('distVal').textContent = v + ' mm';
+function setD1(v) {
+  d1 = parseInt(v);
+  document.getElementById('d1Val').textContent = v + ' mm';
+  updateGeiX();
+}
+
+function setD2(v) {
+  d2 = parseInt(v);
+  document.getElementById('d2Val').textContent = v + ' mm';
+  updateGeiX();
 }
 
 function setRate(v) {
