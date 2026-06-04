@@ -299,6 +299,61 @@ def add_focus_table(doc, fysik_items, geo_items, bio_items):
         cell.width = Cm(5.3)
     doc.add_paragraph().paragraph_format.space_after = Pt(3)
 
+def _parse_forsog(details_el):
+    """Udtræk forsøgsbeskrivelse fra <details class='forsog-detaljer'>."""
+    div = details_el.find('div', class_='forsog-beskrivelse')
+    if not div:
+        return None
+    data = {}
+    for p_el in div.find_all('p', recursive=False):
+        strong = p_el.find('strong')
+        if not strong:
+            continue
+        key = strong.get_text(strip=True).rstrip(':')
+        strong.extract()
+        value = p_el.get_text(separator=' ', strip=True).lstrip(':').strip()
+        data[key] = value
+    ol = div.find('ol')
+    if ol:
+        data['_steps'] = [li.get_text(strip=True) for li in ol.find_all('li')]
+    return data
+
+
+def add_forsog_beskrivelse(doc, forsog):
+    """Tilføj forsøgsbeskrivelse som indrykkede underafsnit."""
+    if not forsog:
+        return
+    for key in ['Formål', 'Materialer', 'Fremgangsmåde', 'Databehandling', 'Diskussion']:
+        if key == 'Fremgangsmåde' and '_steps' in forsog:
+            p_hdr = doc.add_paragraph()
+            p_hdr.paragraph_format.space_before = Pt(1)
+            p_hdr.paragraph_format.space_after = Pt(0)
+            p_hdr.paragraph_format.left_indent = Cm(1.0)
+            rb = p_hdr.add_run('Fremgangsmåde:')
+            rb.font.bold = True
+            rb.font.size = Pt(8)
+            rb.font.color.rgb = RGBColor(0x2C, 0x5F, 0x7F)
+            for i, step in enumerate(forsog['_steps'], 1):
+                ps = doc.add_paragraph()
+                ps.paragraph_format.space_before = Pt(0)
+                ps.paragraph_format.space_after = Pt(0)
+                ps.paragraph_format.left_indent = Cm(1.5)
+                ps.add_run(f'{i}. {step}').font.size = Pt(8)
+        elif key in forsog and forsog[key]:
+            p = doc.add_paragraph()
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(0)
+            p.paragraph_format.left_indent = Cm(1.0)
+            rb = p.add_run(key + ': ')
+            rb.font.bold = True
+            rb.font.size = Pt(8)
+            rb.font.color.rgb = RGBColor(0x2C, 0x5F, 0x7F)
+            p.add_run(forsog[key]).font.size = Pt(8)
+    # Lille luft efter beskrivelsen
+    sp = doc.add_paragraph()
+    sp.paragraph_format.space_after = Pt(3)
+
+
 def add_resource_line(doc, tag, link_text, url, description):
     """Ressource-linje med klikbart hyperlink."""
     p = doc.add_paragraph(style='List Bullet')
@@ -351,8 +406,14 @@ def parse_article(article):
             bold = strong.get_text(strip=True).rstrip(':') if strong else None
             if strong:
                 strong.extract()
+            # Udtræk og fjern <details> inden get_text()
+            details_el = li.find('details', class_='forsog-detaljer')
+            forsog = None
+            if details_el:
+                forsog = _parse_forsog(details_el)
+                details_el.extract()
             rest = li.get_text(separator=' ', strip=True).strip().lstrip(':').strip()
-            result['investigations'].append((bold, rest))
+            result['investigations'].append((bold, rest, forsog))
 
     # Ressourcer – nu med URL
     result['resources'] = []
@@ -524,8 +585,9 @@ for sec_idx, section in enumerate(theme_sections):
 
         if data['investigations']:
             add_subsection_label(doc, 'Undersøgelser elever kan lave', '1A6A9A')
-            for bold, text in data['investigations']:
+            for bold, text, forsog in data['investigations']:
                 add_bullet(doc, text, bold_part=bold)
+                add_forsog_beskrivelse(doc, forsog)
 
         if data['resources']:
             add_subsection_label(doc, 'Digitale ressourcer', 'B8860B')
