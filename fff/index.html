@@ -90,6 +90,9 @@
             <a href="#produktion">2. Bæredygtig produktion</a>
             <a href="#straling">3. Strålings indvirkning</a>
             <a href="#vand">4. Vand til verden</a>
+            <a href="#sundhed">5. Teknologi og sundhed</a>
+            <a href="#madkemi">6. Madens kemi og kvalitet</a>
+            <a href="#raastoffer">7. Råstoffers kredsløb</a>
             <a href="#modeller">Modeller</a>
         </nav>
 
@@ -167,6 +170,45 @@
                         <li><a href="#vandstand">Vandstandsstigninger</a></li>
                         <li><a href="#drikkevandsressourcer">Beskyttelse af drikkevandsressourcer</a></li>
                         <li><a href="#vand-oekosystemer">Vandets betydning for økosystemer</a></li>
+                    </ol>
+                </div>
+                <div class="toc-column">
+                    <h3><a href="#sundhed">5. Teknologiens betydning for sundhed</a></h3>
+                    <ol>
+                        <li><a href="#vacciner">Vacciner og immunitet</a></li>
+                        <li><a href="#antibiotika">Antibiotika og resistens</a></li>
+                        <li><a href="#billeddiagnostik">Medicinsk billeddiagnostik</a></li>
+                        <li><a href="#kraeftbehandling">Kræftbehandling og teknologi</a></li>
+                        <li><a href="#crispr">CRISPR og genetisk teknologi</a></li>
+                        <li><a href="#sanitet">Sanitet og hygiejne i verden</a></li>
+                        <li><a href="#luftforurening-sundhed">Luftforurening og folkesundhed</a></li>
+                        <li><a href="#sovn">Søvn og biologiske rytmer</a></li>
+                    </ol>
+                </div>
+                <div class="toc-column">
+                    <h3><a href="#madkemi">6. Madens kemi og kvalitet</a></h3>
+                    <ol>
+                        <li><a href="#maillard">Madlavningens kemi (Maillard)</a></li>
+                        <li><a href="#konservering">Konservering og holdbarhed</a></li>
+                        <li><a href="#tilsaetningsstoffer">Tilsætningsstoffer og E-numre</a></li>
+                        <li><a href="#ph-mad">pH og syre-base i madlavning</a></li>
+                        <li><a href="#naeringsstoffer">Næringsstoffer og energiindhold</a></li>
+                        <li><a href="#pesticider">Pesticider i frugt og grøntsager</a></li>
+                        <li><a href="#fermentering">Fermentering og mikroorganismer</a></li>
+                        <li><a href="#sukker">Sukker og sundhed</a></li>
+                    </ol>
+                </div>
+                <div class="toc-column">
+                    <h3><a href="#raastoffer">7. Råstoffers kredsløb</a></h3>
+                    <ol>
+                        <li><a href="#lithium">Lithium og batteriteknologi</a></li>
+                        <li><a href="#sjaeldne-jordarter">Sjældne jordarter og elektronik</a></li>
+                        <li><a href="#sand-beton">Sand og beton som ressource</a></li>
+                        <li><a href="#kobber">Kobber i elektricitet og teknologi</a></li>
+                        <li><a href="#olie-naturgas">Olie og naturgas som råstoffer</a></li>
+                        <li><a href="#jern-staal">Jern, stål og genanvendelse</a></li>
+                        <li><a href="#kalk-kredsloeb">Kalkkredsløbet</a></li>
+                        <li><a href="#fosfor">Fosfor og gødning</a></li>
                     </ol>
                 </div>
                 <div class="toc-column">
@@ -1051,14 +1093,14 @@
             <p><strong>Materialer:</strong> Computer med internet, data fra Energinet.dk og teknisk litteratur, lommeregner.</p>
             <p><strong>Fremgangsmåde:</strong></p>
             <ol>
-                <li>Find en beskrivelse af det HVDC-kabel der forbinder Danmark og England (Vikings).</li>
-                <li>Find tab pr. km for HVDC: ca. 2-3 W/km pr. MW vs. HVAC: ca. 3-5 W/km pr. MW.</li>
-                <li>Beregn tabet over 750 km HVDC vs. HVAC ved 1.400 MW kapacitet.</li>
-                <li>Find engangsomkostninger til omformerstation (HVDC er dyrere at installere).</li>
-                <li>Beregn, ved hvilken kabelafstand HVDC er billigere end HVAC.</li>
+                <li>Find en beskrivelse af det HVDC-kabel der forbinder Danmark og England (Vikings Link – 760 km).</li>
+                <li>Hvad er forskellen på jævnstrøm (DC) og vekselstrøm (AC)?</li>
+                <li>Notér: HVDC-kabler mister ca. 2-3% pr. 1000 km, HVAC-kabler lidt mere over lange afstande.</li>
+                <li>Beregn: Hvis kablet overfører 1.400 MW og taber 2,5% over 760 km, hvor mange MW når England?</li>
+                <li>Diskutér: Hvorfor er det svært at lave AC over 500+ km under vand?</li>
             </ol>
-            <p><strong>Databehandling:</strong> Opstil en tabel med tab, installationsomkostninger og total-økonomi over 30 år for begge løsninger.</p>
-            <p><strong>Diskussion:</strong> Hvad er HVDC og hvad er det bedst egnet til? Hvad er break-even-afstanden for HVDC?</p>
+            <p><strong>Databehandling:</strong> Opstil en tabel med kabelnavn, afstand (km), teknologi (HVDC/HVAC) og beregnet tab (MW). Sammenlign.</p>
+            <p><strong>Diskussion:</strong> Hvad er HVDC, og hvorfor bruges det til lange undersøiske kabler? Hvornår er det en fordel frem for AC?</p>
         </div>
     </details>
                 </li>
@@ -1334,7 +1376,7 @@
                 <li>Diskutér korrelation og kausalitet.</li>
                 <li>Find eksempler på landsbyer der er gået fra ingen el til solceller.</li>
             </ol>
-            <p><strong>Databehandling:</strong> Lav et scatter-plot og beregn korrelationskoefficient (Pearson r). Diskutér styrken af sammenhængen.</p>
+            <p><strong>Databehandling:</strong> Lav et scatter-plot. Vurder visuelt: ser det ud til, at der er en sammenhæng? Beskriv mønstret med ord.</p>
             <p><strong>Diskussion:</strong> Er energiadgang en forudsætning for udvikling, eller er det omvendt? Hvad er chicken-and-egg problemet?</p>
         </div>
     </details>
@@ -5272,6 +5314,1655 @@
                     </div>
                 </div>
             </article>
+        </section>
+
+        <!-- TEMA 5: Teknologiens betydning for menneskers sundhed og levevilkår -->
+        <section id="sundhed" class="theme-section">
+            <div class="theme-header"><h2>5. Teknologiens betydning for menneskers sundhed og levevilkår</h2></div>
+
+            <article id="vacciner" class="subtopic">
+                <h3>Vacciner og immunitet</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Flokimmunitetsberegning:</strong> Beregn den nødvendige vaccinationsdækningsgrad for sygdomme med forskellig smitsomhed (R₀).
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå sammenhængen mellem en sygdoms smitsomhed (R₀) og den vaccinationsdækning, der er nødvendig for flokimmunitet.</p>
+                                    <p><strong>Materialer:</strong> Lommeregner, data om R₀ for mæslinger (12-18), influenza (2-3) og COVID-19 (2-6).</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Lær formlen: nødvendig dækning = 1 − 1/R₀</li>
+                                        <li>Beregn den nødvendige dækning for mæslinger (R₀ = 15), influenza (R₀ = 2,5) og COVID-19 (R₀ = 4).</li>
+                                        <li>Slå den faktiske vaccinationsdækning i Danmark op på ssi.dk og sammenlign.</li>
+                                        <li>Diskutér, hvad det betyder, hvis 10 % af befolkningen ikke vaccineres.</li>
+                                        <li>Lav et søjlediagram over nødvendig vs. faktisk dækning.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Opstil tabel med sygdom, R₀, nødvendig dækning (%) og faktisk dækning (%). Tegn søjlediagram.</p>
+                                    <p><strong>Diskussion:</strong> Hvilke sygdomme er tættest på udryddelse? Hvad sker der, hvis vaccinationsdækningen falder under grænsen?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Antistof-model:</strong> Simulér antigen-antistof-genkendelse med papirmodeller og forstå, hvordan vacciner aktiverer immunforsvaret og skaber hukommelsesceller.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå specificiteten i antigen-antistof-reaktioner og hukommelsescellernes rolle ved revaccination.</p>
+                                    <p><strong>Materialer:</strong> Farvede papirstykker i forskellige former (til antigener og antistoffer), saks, tape.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Klip "antigener" i 5 forskellige former (stjerne, cirkel, trekant, kvadrat, halvmåne).</li>
+                                        <li>Klip "antistoffer" som spejlbilleder af to af formerne.</li>
+                                        <li>Test hvilke antistoffer der binder til hvilke antigener.</li>
+                                        <li>Simulér vaccinationen: svækket antigen → kroppen danner hukommelsesceller (gemte skabeloner).</li>
+                                        <li>Simulér geninfektion: hukommelsescellerne reagerer hurtigt og producerer mange antistoffer.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tegn et diagram over immunrespons (antistofmængde) ved første eksponering vs. ved geninfektion.</p>
+                                    <p><strong>Diskussion:</strong> Hvorfor kræver nogle vacciner boosterdoser? Hvad er forskellen på mRNA-vacciner og klassiske vacciner?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Vaccinationsstatistik:</strong> Analyser data fra Statens Serum Institut om mæslingers forekomst i Danmark 1960-2020 og kobl det til vaccinationsprogrammets start i 1987.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge sammenhængen mellem vaccinationsprogrammer og sygdomsforekomst ved brug af epidemiologiske data.</p>
+                                    <p><strong>Materialer:</strong> Computer, adgang til ssi.dk og WHO's Global Health Observatory.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Søg data om mæslingetilfælde i Danmark 1960-2020 fra SSI.</li>
+                                        <li>Identificér hvornår mæslingevaccinen blev indført i det danske vaccinationsprogram (1987).</li>
+                                        <li>Tegn en kurve over tilfælde pr. år og markér vaccinetidspunktet med en lodret linje.</li>
+                                        <li>Sammenlign med et land med lav vaccinationsdækning fra WHO-data.</li>
+                                        <li>Beregn reduktionen i % efter vaccinationsprogrammets start.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tidsgraf over antal mæslingetilfælde pr. år. Beregn procentvis reduktion.</p>
+                                    <p><strong>Diskussion:</strong> Kan man se "vaccinetrætheds"-effekten i data? Hvad koster et mæslingeudbrud samfundsøkonomisk?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/natural-selection" target="_blank">PhET: Naturlig selektion</a> - Simuler hvordan selektionstryk aendrer en population over tid - analogi til vaccinedaekningens effekt paa sygdomsspredning</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=vacciner+immunforsvar+forklaret+dansk" target="_blank">Vacciner og immunforsvar forklaret</a> - Animeret gennemgang af, hvordan vacciner aktiverer T- og B-celler og skaber hukommelsesceller</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=vacciner+immunforsvar" target="_blank">DR DRTV: Vacciner og immunforsvar</a> - Find DR-udsendelser om vacciners virkningsmaade, flokimmunitet og vaccinationsprogrammer</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Proteinstukturer og antigen-antistof-binding</li><li>mRNA-teknologi og lipidnanopartikler</li><li>Frysekæde: temperaturkrav til vacciner</li><li>pH og stabilitet af biologiske præparater</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Global vaccinationsdækning og geografisk ulighed</li><li>COVAX og adgang til vacciner i fattige lande</li><li>Rejsevaccination og global sygdomsspredning</li><li>WHO's rolle i global sundhed</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Immunforsvarets opbygning: T- og B-celler</li><li>Antistoffer og hukommelsesceller</li><li>Aktiv vs. passiv immunisering</li><li>Virus- og bakteriestrukturer som antigener</li><li>Flokimmunitet og epidemiologi (R₀)</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-10.png" alt="Verdensmål 10"><p>Mål 10: Mindre ulighed</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="antibiotika" class="subtopic">
+                <h3>Antibiotika og resistens</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Naturlige antimikrobielle stoffer:</strong> Test effekten af hvidløg, eddike og salt på skimmelsvampevækst på brødstykker – som model for naturlige stoffer med antibiotikalignende egenskaber.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge, om naturlige stoffer kan hæmme mikroorganismevækst, og sammenligne med princippet bag antibiotika.</p>
+                                    <p><strong>Materialer:</strong> 5 skiver toastbrød (uden konserveringsmidler), hvidløgspure, hvid eddike (5%), saltvand (10%), vand (kontrol), plastikposer med lynlås, vatpinde, linjal.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Dyp en vatpind i hvert stof og smør en circle (ca. 3 cm diameter) midt på et brødstykke.</li>
+                                        <li>Sæt hvert brødstykke i en lukket plastikpose med en fugtig vatpude (fugtigt miljø fremmer vækst).</li>
+                                        <li>Lad poserne ligge ved stuetemperatur i 5-7 dage.</li>
+                                        <li>Observer dagligt og noter hvornår og hvor megen skimmel der dannes uden for cirklen.</li>
+                                        <li>Mål, om der er en klar zone (hæmningszone) rundt om det behandlede område.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over stof, antal dage til skimmel opstod, og om der ses en hæmningszone (ja/nej). Rangér stofferne efter effektivitet.</p>
+                                    <p><strong>Diskussion:</strong> Hvorfor kan vi ikke bare bruge hvidløg som antibiotikum mod infektioner i kroppen? Hvad er forskellen på at dræbe bakterier udenpå mad og inde i kroppen?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Resistensevolution-simulation:</strong> Simulér, hvordan bakterier udvikler resistens ved naturlig selektion med et kortspil over flere behandlingsrunder.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå evolutionær selektion som drivkraft bag antibiotikaresistens.</p>
+                                    <p><strong>Materialer:</strong> Papirlappar i 4 farver: rød = følsom (20 stk.), orange = lidt resistent (4 stk.), gul = meget resistent (1 stk.), grøn = fuldt resistent (0 stk.).</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Start med 20 røde, 4 orange, 1 gul og 0 grønne lappar (bakteriepopulationen).</li>
+                                        <li>"Antibiotikabehandling" runde 1: fjern alle røde og orange lappar. Lad de tilbageværende "formere sig" (fordobl antal).</li>
+                                        <li>Gentag behandlingen i 4 runder. Tæl lappar efter hver runde.</li>
+                                        <li>Tegn en graf over andelen af resistente bakterier over tid.</li>
+                                        <li>Simulér, hvad der sker, hvis man stopper behandlingen tidligt (alle farver overlever og formerer sig).</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Graf over andel af resistente bakterier (%) over antal behandlingsrunder.</p>
+                                    <p><strong>Diskussion:</strong> Hvad sker der, når man giver antibiotika til dyr i landbrug? Hvad er AMR, og hvorfor kalder WHO det en global trussel?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/natural-selection" target="_blank">PhET: Naturlig selektion</a> - Simuler resistensudvikling ved naturlig selektion - samme princip som naar antibiotika driver frem af resistente bakteriestammer</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=antibiotika+resistens+forklaret+dansk" target="_blank">Antibiotikaresistens forklaret</a> - Forklaring af, hvordan bakterier udvikler resistens, og hvorfor det er en global sundhedskrise</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=antibiotika+resistens" target="_blank">DR DRTV: Antibiotika og resistens</a> - Find DR-udsendelser om antibiotikaresistens, overforbrug og fremtidens behandlingsudfordringer</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Antibiotikamolekylers struktur (beta-laktam)</li><li>Diffusion af stoffer i agargelé</li><li>Enzymhæmning som virkningsmekanisme</li><li>Koncentration og effekt (dosis-respons)</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Antibiotikaresistens som global trussel (AMR)</li><li>Forbrug i landbrug og husdyrhold globalt</li><li>WHO's handlingsplan mod AMR</li><li>Geografiske forskelle i antibiotikaresistens</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Bakteriers cellevæg og resistensmekanismer</li><li>Naturlig selektion og evolution</li><li>Plasmider og horisontal genoverførsel</li><li>Forskel på bakterier og virus</li><li>Normalfloraens rolle i immunforsvaret</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="billeddiagnostik" class="subtopic">
+                <h3>Medicinsk billeddiagnostik</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Gennemlysningsmodel:</strong> Byg en simpel model af røntgenbilleddannelse med en lommelygte og genstande af forskellig tæthed og sammenlign skyggebillederne.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at røntgenbilleder dannes fordi stråler absorberes forskelligt af væv med forskellig tæthed.</p>
+                                    <p><strong>Materialer:</strong> Stærk lommelygte, hvidt papir (som "detektor"), kyllingeben, stykke kød, ærtepose, sten, mørkt rum.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Mørklæg rummet og hold lommelygten bag genstandene.</li>
+                                        <li>Hold hvidt papir foran og observer skyggebilledet for hvert objekt.</li>
+                                        <li>Sammenlign skyggen fra tætte (knogle, sten) og blødere (kød, ært) genstande.</li>
+                                        <li>Prøv at stable to genstande og observer, hvordan de overlapper i billedet.</li>
+                                        <li>Rangér genstandene fra mest til mindst lysabsorberende.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tegn eller fotografér "skyggebillederne". Rangér genstandene fra mest til mindst absorberende.</p>
+                                    <p><strong>Diskussion:</strong> Hvorfor kan man se knogler på røntgen men ikke muskler? Hvad bruges kontrastvæske til?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Stråledosis-sammenligning:</strong> Sammenlign stråledoser fra røntgen, CT og naturlig baggrundsstråling med data fra Sundhedsstyrelsen og lav et diagram.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At sætte medicinske stråledoser i perspektiv og forstå princippet om ALARA (As Low As Reasonably Achievable).</p>
+                                    <p><strong>Materialer:</strong> Lommeregner, data om effektive stråledoser (søges online fra Sundhedsstyrelsen eller Statens Institut for Strålebeskyttelse).</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Slå effektive doser op: røntgen bryst (~0,1 mSv), røntgen hånd (~0,001 mSv), CT abdomen (~8 mSv).</li>
+                                        <li>Find den naturlige baggrundsstråling i Danmark (~3 mSv/år).</li>
+                                        <li>Beregn: Hvor mange røntgenbilleder af brystet svarer til ét CT-scan? Til ét år med naturlig stråling?</li>
+                                        <li>Lav to søjlediagrammer: ét for de lave doser (røntgen-typer + baggrundsstråling) og ét for CT-scan, så man kan sammenligne tallene tydeligt.</li>
+                                        <li>Sammenlign kræftrisiko ved CT med risiko ved bilkørsel 1000 km.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> To søjlediagrammer (lave doser og CT separat). Tabel der sammenligner, hvor mange bryst-røntgenbilleder der svarer til ét CT-scan.</p>
+                                    <p><strong>Diskussion:</strong> Hvornår opvejer fordelene ved et CT-scan risikoen? Hvad mener du med princippet: "brug den mindst mulige dosis til at stille diagnosen"?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/molecules-and-light" target="_blank">PhET: Molekyler og lys</a> - Undersog, hvordan elektromagnetisk straaling (herunder roentgenstroem) absorberes af forskelligt vaev</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=roentgen+MRI+ultralyd+billeddiagnostik+forklaret" target="_blank">Roentgen, MRI og ultralyd forklaret</a> - Animeret gennemgang af de tre billeddiagnostiske metoder og deres fysiske principper</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=laeger+scanner+hjerne" target="_blank">DR DRTV: Medicinsk teknologi og scanning</a> - Find DR-udsendelser om medicinsk billeddiagnostik og moderne laegeteknologi</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Røntgenstrålingens bølgelængde og energi</li><li>Absorption i forskelligt væv (atommasse)</li><li>Ultralydsbølger og ekko-princippet</li><li>Magnetfelter og kernespinresonans (MRI)</li><li>Radioaktive isotoper i PET-scanning</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Adgang til avanceret medicinsk udstyr globalt</li><li>Sundhedssystemers kapacitet: Norden vs. lavindkomstlande</li><li>WHO's sundhedsindeks og levetidsforventning</li><li>Telemedicin i fjerntliggende områder</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Knoglernes opbygning og tæthed</li><li>Ioniserende strålings effekt på celler og DNA</li><li>Kræftrisiko ved gentagen stråleeksponering</li><li>Organers placering og anatomi</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-10.png" alt="Verdensmål 10"><p>Mål 10: Mindre ulighed</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="kraeftbehandling" class="subtopic">
+                <h3>Kræftbehandling og teknologi</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Celledeling i mikroskop:</strong> Observer løgrodsspidser for at se celler i forskellige faser af mitosen og forstå, hvad ukontrolleret celledeling betyder.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå celledeling (mitose) og at ukontrolleret celledeling er kræftens biologiske kendetegn.</p>
+                                    <p><strong>Materialer:</strong> Spiredygtige løg, vand, petriskål, kniv, fortyndet eddike, metylengroft farveopløsning (eller safranin), lysmikroskop, objektglas, dækglas.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Lad løget spire i vand i 2-3 dage til rødder er ~1 cm lange.</li>
+                                        <li>Skær 2-3 mm af rodspidsen og placer på objektglas.</li>
+                                        <li>Tilsæt 1 dråbe eddike og varm forsigtigt i 10 sek. over stearinlys.</li>
+                                        <li>Tilsæt 1 dråbe farveopløsning, læg dækglas på og tryk let ned.</li>
+                                        <li>Observer under 40× forstørrelse og led efter celler med synlige kromosomer.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tegn 3-4 celler i forskellig fase (profase, metafase, anafase). Tæl antal celler i hvile vs. deling i ét synsfelt.</p>
+                                    <p><strong>Diskussion:</strong> Hvad sker der, hvis reguleringsgenerne (fx p53) muterer? Hvorfor angriber kemoterapi hurtigt delende celler – og hvad er bivirkningerne?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Strålebehandlingsberegning:</strong> Beregn, hvordan stråling fra mange vinkler summerer i tumoren, mens raskt væv skånes.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå princippet bag stereotaktisk strålebehandling, hvor stråler fra mange vinkler summerer i tumoren.</p>
+                                    <p><strong>Materialer:</strong> Lommeregner, papir, lineal, farveblyanter.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Tegn en stor cirkel (krop) med en lille cirkel indeni (tumor).</li>
+                                        <li>Tegn 8 "stråler" fra yderkanten ind til tumoren fra 8 jævnt fordelte vinkler.</li>
+                                        <li>Farv med lysere farve der, hvor strålerne krydser sundt væv (1 gang), og mørkere i tumoren (8 gange).</li>
+                                        <li>Beregn: Hvis hvert felt giver 1 Gy – hvad er dosis i tumor og i randzonen?</li>
+                                        <li>Sammenlign med én enkelt bestråling der giver 8 Gy direkte.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Sammenlign doser i tumor vs. sundt væv for de to metoder som tabel.</p>
+                                    <p><strong>Diskussion:</strong> Hvorfor er præcision vigtig ved strålebehandling? Hvad sker der med det raske væv, som strålerne passerer igennem på vej til tumoren?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/nuclear-fission" target="_blank">PhET: Kernefiission</a> - Undersog radioaktivt henfald og straalings natur - baggrundsviden for straalebehandling af kraeft</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=kraeftbehandling+straalebehandling+kemoterapi+forklaret" target="_blank">Kraeftbehandling og straalebehandling forklaret</a> - Animeret gennemgang af, hvordan straaling og kemoterapi virker mod kraeftceller</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=kraeft+behandling+overlevelse" target="_blank">DR DRTV: Kraeft og behandling</a> - Find DR-udsendelser om kraeftbehandlingens udvikling, teknologi og patienthistorier</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Ioniserende stråling og DNA-strængsdobbeltbrud</li><li>Radioaktive isotoper i diagnostik (Tc-99m)</li><li>Foton- vs. protonbehandling</li><li>Kemoterapimolekylers virkningsmekanisme</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Kræftforekomst og livsstils- og miljøfaktorer globalt</li><li>Adgang til kræftbehandling i rige vs. fattige lande</li><li>Luftforurening og kræftrisiko i storbyer</li><li>Kræftregistre og internationale sammenligninger</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Celledeling og mitose</li><li>Onkogener og tumorsuppressorgener (p53)</li><li>Metastasering og kræftspredning</li><li>Immunterapi: kroppens eget forsvar mod kræft</li><li>Kræftscreening og tidlig diagnose</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-10.png" alt="Verdensmål 10"><p>Mål 10: Mindre ulighed</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="crispr" class="subtopic">
+                <h3>CRISPR og genetisk teknologi</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>DNA-ekstraktion fra jordbær:</strong> Udtræk synligt DNA fra jordbær med køkkenmaterialer og forstå, hvad DNA er.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At isolere og se DNA med det blotte øje og forstå, at DNA er det genetiske materiale i alle celler.</p>
+                                    <p><strong>Materialer:</strong> 2-3 modne jordbær, ziplock-pose, opvaskemiddel (2 spsk), salt (½ tsk), vand (100 ml), sil eller kaffefilter, kold isopropanol (90%) eller kold sprit, gennemsigtigt glas.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Knus jordbærrene i ziplock-posen til en jævn mos.</li>
+                                        <li>Bland opvaskemiddel, salt og vand og tilsæt til posen. Klem forsigtigt i 1 minut.</li>
+                                        <li>Si blandingen gennem et kaffefilter ned i et glas.</li>
+                                        <li>Hæld forsigtigt kold sprit ned langs kanten af glasset, så der dannes to lag.</li>
+                                        <li>Observer den hvide, trådede masse (DNA) i grænsefladen mellem lag.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tegn processen som et flowdiagram med forklaring af hvert trin.</p>
+                                    <p><strong>Diskussion:</strong> Hvad gør sæben ved cellerne? Hvad gør saltet? Hvorfor udfælder DNA'et i alkohol?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Etisk rollespil om CRISPR:</strong> Debattér etiske dilemmaer ved genetisk redigering af mennesker og afgrøder i en struktureret rolleleg.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge de etiske, sociale og biologiske aspekter af CRISPR-teknologien.</p>
+                                    <p><strong>Materialer:</strong> Rollekort med roller: patient med genetisk sygdom, forælder til sygt barn, forsker, etiker/filosof, politiker.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Læs grundlæggende om CRISPR (fx fra lex.dk).</li>
+                                        <li>Uddel roller og giv 5 min til forberedelse af argumenter.</li>
+                                        <li>Debattér scenariet: "Skal vi bruge CRISPR til at fjerne genet for Huntingtons sygdom i et befrugtet æg?"</li>
+                                        <li>Skift til scenariet: "Skal vi bruge CRISPR til at gøre hvede resistent mod svampesygdomme?"</li>
+                                        <li>Opsamling: Hvad er alle enige om? Hvad er de grundlæggende uenige om?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Skriv et referat med de vigtigste argumenter for og imod. Lav en pro/con-tabel.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er forskellen på somatisk genterapi og kimbaneredigering? Hvornår er det etisk acceptabelt?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/gene-expression-essentials" target="_blank">PhET: Genekspression</a> - Visualiser, hvordan DNA aflaeses til RNA og protein - grundlaget for at forsta CRISPR-redigering</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=CRISPR+Cas9+forklaret+dansk" target="_blank">CRISPR-Cas9 forklaret</a> - Animeret forklaring af, hvordan CRISPR fungerer som en praecis molekylaer saks i DNA</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=CRISPR+genteknologi+DNA" target="_blank">DR DRTV: CRISPR og genteknologi</a> - Find DR-udsendelser om CRISPR-teknologien, etiske dilemmaer og fremtidens medicin</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>DNA's kemiske opbygning (baser, sukker, fosfat)</li><li>Enzymer som biologiske "sakse" (Cas9-proteinet)</li><li>Elektroforese til separation af DNA-fragmenter</li><li>PCR-teknologi og DNA-kopiering</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>GMO-regulering: EU vs. USA og Kina</li><li>CRISPR-modificerede afgrøder og global fødevaresikkerhed</li><li>Patent på gensekvenser: etik og økonomi</li><li>Bioprospektering i og fra udviklingslandene</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>DNA-struktur og basepar-komplementaritet</li><li>Genekspression: DNA → mRNA → protein</li><li>Genetiske sygdomme (Huntington, cystisk fibrose)</li><li>CRISPR-Cas9: guide-RNA og præcis klipning</li><li>GMO og biodiversitet</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9"><p>Mål 9: Innovation og infrastruktur</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="sanitet" class="subtopic">
+                <h3>Sanitet og hygiejne i verden</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Håndvask-effektivitetstest:</strong> Simulér bakterier med glitrervand og test effekten af kortvarig vs. grundig håndvask med og uden sæbe.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge og sammenligne effektiviteten af forskellige håndvaskteknikker.</p>
+                                    <p><strong>Materialer:</strong> Glitrervand eller UV-gel (simulerer bakterier), sæbe, håndsprit, UV-lampe (eller stærk lommelygte), stoppur.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Gnid glitrervand ind på hænderne (fordel jævnt).</li>
+                                        <li>Vask hænder i 5 sekunder med koldt vand – undersøg med UV-lampe og bedøm rest.</li>
+                                        <li>Gentag med 20 sekunders vask med sæbe – undersøg igen.</li>
+                                        <li>Test håndsprit som alternativ til vask.</li>
+                                        <li>Test WHO's 7-trins håndvask og sammenlign resultatet.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Bedøm rest-"bakterier" på en skala 0-5 for hver metode. Lav et søjlediagram.</p>
+                                    <p><strong>Diskussion:</strong> Hvad sker der i lande uden rent vand til håndvask? Hvad er de vanligste smitteveje for diarésygdomme?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Simpel vandfiltrering:</strong> Byg et vandfilter af naturmaterialer og test dets evne til at rense grumset vand – og forstå dets begrænsninger.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå principperne bag mekanisk vandrensning og dens begrænsninger (bakterier passerer igennem).</p>
+                                    <p><strong>Materialer:</strong> Plastikflaske (1,5 l), groft grus, fint sand, aktivt kul (fra akvarium), kaffefilter, grumsede vandprøver (vand + lerjord), klart glas.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Skær bunden af plastikflasken og vend den om (hals nedad over glasset).</li>
+                                        <li>Anbring lag (nedefra op): kaffefilter, groft grus, fint sand, aktivt kul, groft grus.</li>
+                                        <li>Hæld det grumset vand langsomt i toppen og saml filtreret vand nedenfor.</li>
+                                        <li>Sammenlign farve og klarhed af vand før og efter filtrering.</li>
+                                        <li>Test pH før og efter med pH-papir.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Vurder turbiditet (uklarhed) på en skala 0-5. Diskutér hvad filteret ikke kan fjerne.</p>
+                                    <p><strong>Diskussion:</strong> Kan filteret fjerne bakterier? Hvad kræver det at give rent drikkevand til alle (SDG 6)?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/sugar-and-salt-solutions" target="_blank">PhET: Sukker- og saltoplosninger</a> - Undersog, hvordan ioner oplosses i vand - baggrundsviden for osmose og vandrensningsteknikker</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=sanitet+rent+vand+verden+hygiejne" target="_blank">Sanitet og rent vand i verden</a> - Dokumentarisk forklaring af sanitetsudfordringer i lavindkomstlande og loesninger hertil</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=rent+vand+udviklingslande+sanitet" target="_blank">DR DRTV: Rent vand og sanitet i verden</a> - Find DR-udsendelser om adgangen til rent vand og sanitet i fattige lande</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Filtrering og partikkelstørrelser</li><li>Klors virkning mod mikroorganismer (oxidation)</li><li>Osmose og vandmolekylernes bevægelse</li><li>UV-stråling til vanddesinfektion</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>SDG 6: adgang til rent vand og sanitet globalt</li><li>Åbne toiletforhold i Sydøstasien og Afrika</li><li>Vandinfrastruktur: rørlagte vs. urørlagte samfund</li><li>Klimaforandringer og vandknaphed</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Vandbårne sygdomme: kolera, tyfus, dysenteri</li><li>Bakteriers og virus' smitteveje</li><li>Immunforsvarets reaktion på tarminfektioner</li><li>Oral rehydrering (ORS) og elektrolytbalance</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6"><p>Mål 6: Rent vand og sanitet</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="luftforurening-sundhed" class="subtopic">
+                <h3>Luftforurening og folkesundhed</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Partikelopsamling inde og ude:</strong> Saml luftpartikler på vaseline-bestrøgne kaffefiltre på 4-5 steder og sammenlign mørkning.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At visualisere og sammenligne mængden af luftpartikler på steder med forskellig trafikbelastning og vegetation.</p>
+                                    <p><strong>Materialer:</strong> Hvide kaffefiltre, vaseline, lup eller stereomikroskop, kamera, tape.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Smør et tyndt lag vaseline på hvide kaffefiltre.</li>
+                                        <li>Placer filtre på 4-5 steder i 24-48 timer: trafikeret vej, skolegård, skov/park, inden i klasseværelset, nær en parkeringsplads.</li>
+                                        <li>Saml filtrene og observer med lup og stereomikroskop.</li>
+                                        <li>Sammenlign visuelt mørkning og partikelantal.</li>
+                                        <li>Rangér stederne fra mest til mindst forurenet.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Bedøm mørkning på skala 0-5. Fotografér og sammenlign. Lav rangordning med begrundelse.</p>
+                                    <p><strong>Diskussion:</strong> Hvilke typer partikler er farligst for helbredet? Hvad er PM2.5 og PM10?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>CO₂-måling i klasseværelset:</strong> Mål CO₂-koncentrationen over en dobbelttime med og uden ventilation og diskutér effekten på indlæring.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At måle CO₂-niveauet som indikator for indendørs luftkvalitet og forstå ventilationens betydning.</p>
+                                    <p><strong>Materialer:</strong> CO₂-måler (kan lånes af Kemi-læreren), stoppur, notesbog.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Mål CO₂-niveauet, når klassen er tom (reference, ~400 ppm).</li>
+                                        <li>Mål hvert 10. minut i en dobbelttime med lukkede vinduer og fuldt klasse.</li>
+                                        <li>Åbn vinduer i 5 minutter og mål igen.</li>
+                                        <li>Gentag med åbne vs. lukkede vinduer i to parallelperioder.</li>
+                                        <li>Diskutér: Ved hvilken grænse påvirkes koncentrationen og velvære? (Over 1000-1500 ppm)</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tidsgraf over CO₂-niveau. Markér hvornår vinduer åbnes/lukkes.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er den anbefalede grænseværdi? Hvad er sammenhængen mellem CO₂-niveau og læringsevne?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/greenhouse-effect" target="_blank">PhET: Drivhuseffekten</a> - Visualiser, hvordan gasmolekyler i atmosfaeren absorberer og re-emitterer straaling - relevant for forstaaelse af luftforurening</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=luftforurening+partikler+sundhed+forklaret" target="_blank">Luftforurening og sundhedseffekter forklaret</a> - Gennemgang af, hvordan PM2.5-partikler og gasser pavirker lunger og hjerte-kar-systemet</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=luftforurening+sundhed+storbyer" target="_blank">DR DRTV: Luftforurening og sundhed</a> - Find DR-udsendelser om luftkvalitet i byer og luftforureningens sundhedskonsekvenser</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Partikkelstørrelser: PM2.5 og PM10</li><li>NOₓ, ozon og sekundære partikler</li><li>CO₂ og drivhuseffekten</li><li>Fotokemisk smog: reaktioner i atmosfæren</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Luftkvalitetsindex i storbyer (Delhi, Beijing, Dhaka)</li><li>Industrizoner og befolkningseksponering</li><li>Grønne områder i byer og luftkvalitet</li><li>Sæsonbetinget smog og vejrforhold</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Luftvejenes opbygning og forsvarssystemer</li><li>Partiklers vej ned til alveolerne</li><li>Kronisk obstruktiv lungesygdom (KOL)</li><li>Allergi og astma: immunrespons</li><li>Hjerte-kar-sygdomme og luftforurening</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11"><p>Mål 11: Bæredygtige byer</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13"><p>Mål 13: Klimaindsats</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="sovn" class="subtopic">
+                <h3>Søvn og biologiske rytmer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Søvndagbog og reaktionstest:</strong> Registrér søvnmønstre i en uge og mål reaktionstid på dage med forskellig søvnlængde.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge sammenhængen mellem søvnlængde og kognitiv funktion hos unge.</p>
+                                    <p><strong>Materialer:</strong> Søvndagbog (skema), lineal til faldreaktionstest, stoppur.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Lav søvndagbog i 7 dage: sengetid, opvågningstid, morgenfølelse (1-5 skala).</li>
+                                        <li>Udfør faldreaktionstest: En person holder en lineal lodret, den anden griber den, når den slippes. Mål faldafstand i cm og omregn til ms.</li>
+                                        <li>Udfør testen om morgenen og eftermiddagen alle 7 dage.</li>
+                                        <li>Plot reaktionstid (ms) mod antal timers søvn foregående nat.</li>
+                                        <li>Analyser data fra hele klassen samlet.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Korrelationsgraf: søvntimer (x-akse) vs. reaktionstid (y-akse). Beregn klassens gennemsnit.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er den anbefalede søvnmængde for 14-16-årige? Hvad sker der i hjernen under søvn?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Skærmtid og søvn – spørgeskemaundersøgelse:</strong> Kortlæg sammenhæng mellem skærmtid om aftenen og søvnkvalitet i klassen med et spørgeskema.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge, om blåt lys fra skærme påvirker søvnen hos unge.</p>
+                                    <p><strong>Materialer:</strong> Spørgeskema (laves i Google Forms), computer eller tablet.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Udform spørgeskema med spørgsmål om: tidspunkt for slukket skærm, indsovningstid, samlet søvnlængde, morgenfølelse.</li>
+                                        <li>Indsaml svar fra klassen over 5 dage.</li>
+                                        <li>Beregn gennemsnit for dage med skærmtid efter kl. 22 vs. dage uden.</li>
+                                        <li>Test: halvdelen slukker skærm kl. 21, resten som normalt. Sammenlign søvn.</li>
+                                        <li>Analyser og visualisér data i regneark.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Punktgraf over skærmtid vs. indsovningstid. Sammenlign gennemsnit for de to grupper.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er melatonin, og hvordan hæmmes det af blåt lys (ca. 450 nm)? Hvad er den cirkadiane rytme?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/neuron" target="_blank">PhET: Neuron</a> - Visualiser, hvordan nerveceller sender signaler - baggrundsviden for hjernens regulering af soevn og vaagentilstand</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=soevn+biologiske+rytmer+melatonin+forklaret" target="_blank">Soevn og biologiske rytmer forklaret</a> - Animeret gennemgang af cirkadiane rytmer, melatonin og soevncyklusser hos unge</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=soevn+unge+skarm+helbred" target="_blank">DR DRTV: Soevn og unge</a> - Find DR-udsendelser om soevnens betydning for unges helbred og skaermenes pavirkning</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Blåt lys: bølgelængde ~450 nm og høj energi</li><li>Lys som elektromagnetisk stråling</li><li>Melatoninmolekylets kemiske struktur</li><li>Cirkadiane ur-proteiner (CLOCK, BMAL1)</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Lysforurening i byer og søvnforstyrrelser</li><li>Jetlag, tidszoner og international arbejdskraft</li><li>Søvnvaner i kulturelle sammenhænge (siesta)</li><li>Skifteholdsarbejde og folkesundhed</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Melatonin og pinealkirtlen</li><li>Cirkadiane rytmer: 24-timers indre ur</li><li>Søvncyklusser: REM og NREM</li><li>Hjernens konsolidering af hukommelse under søvn</li><li>Konsekvenser af søvnmangel: hormoner og kognition</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- TEMA 6: Madens kemi og kvalitet -->
+        <section id="madkemi" class="theme-section">
+            <div class="theme-header"><h2>6. Madens kemi og kvalitet</h2></div>
+
+            <article id="maillard" class="subtopic">
+                <h3>Madlavningens kemi (Maillard-reaktionen)</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Ristningseksperiment:</strong> Rist brødskiver ved forskellig temperatur og tid og observer farve, duft og smag som mål for Maillard-reaktionens forløb.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At observere Maillard-reaktionen og forstå, at farve og smag dannes ved kemiske reaktioner mellem aminosyrer og sukker ved høj temperatur.</p>
+                                    <p><strong>Materialer:</strong> Toaster eller pande, brød (hvidt og fuldkorn), stoppur, farvekartkort (til sammenligning), kamera.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Rist brødskiver i 30, 60, 90 og 120 sekunder ved samme temperatur.</li>
+                                        <li>Fotografér og bedøm farven på en skala 1-5 (lys til mørkebrun).</li>
+                                        <li>Smag på skiverne og bedøm sødme og bitterhed.</li>
+                                        <li>Gentag med fuldkornsbrød og sammenlign med hvidt brød.</li>
+                                        <li>Prøv med og uden smør og observer forskel i bruning.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel og graf: ristningstid (x) vs. farve-score (y). Beskriv smags­ændringen.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er forskellen på Maillard-reaktionen og karamellisering? Hvorfor smager brændt mad bittert?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>pH-indikator fra rødkål:</strong> Lav en naturlig pH-indikator og test pH i udvalgte madvarer og madlavningssituationer.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at pH spiller en afgørende rolle for madens smag, farve og tekstur.</p>
+                                    <p><strong>Materialer:</strong> Rødkål, vand, gryde, si, gennemsigtige glas eller isbakke, madvarer: citronsaft, eddike, mælk, bagepulver, vand, æblejuice.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Kog hakket rødkål i vand i 10 min og si den blå/lilla saft fra.</li>
+                                        <li>Hæld lidt indikator i hvert glas og tilsæt den madvare, der skal testes.</li>
+                                        <li>Observer farveændringen: rød/pink = surt, lilla = neutralt, grøn/gul = basisk.</li>
+                                        <li>Rangér madderne fra mest surt til mest basisk.</li>
+                                        <li>Gentag med en kogt rødkålsopskrift: tilsæt eddike vs. bagepulver og observer farveforskellen.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over madvare og observeret farve/estimeret pH. Sammenlign med pH-papir.</p>
+                                    <p><strong>Diskussion:</strong> Hvorfor bliver rødkål blå, hvis man tilsætter natron? Hvad betyder pH for enzymer i maden?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/reactions-and-rates" target="_blank">PhET: Reaktioner og hastigheder</a> - Undersog, hvordan temperatur pavirker kemiske reaktionshastigheder - direkte relevant for Maillard-reaktionen ved opvarmning</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=maillard+reaktion+madkemi+bruning+forklaret" target="_blank">Maillard-reaktionen forklaret</a> - Animeret gennemgang af den kemiske reaktion bag bruning og aromaer i madlavning</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=madlavning+kemi+mad" target="_blank">DR DRTV: Madlavningens kemi</a> - Find DR-udsendelser om videnskaben bag madlavning og de kemiske processer i koekkenet</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Maillard-reaktion: aminosyrer + reducerende sukker ved høj temp.</li><li>Karamellisering: sukker alene ved høj temperatur</li><li>Denaturering af proteiner ved varme</li><li>pH-skalaen og syrer/baser i madlavning</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Tilberedningsmetoder i kulturer: stegning, kogning, fermentering</li><li>Klimaets indflydelse på tilgængelige råvarer</li><li>Brødtraditioner i Europa og verden</li><li>Energiforbrug til madlavning i rige vs. fattige lande</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Aminosyrernes rolle i proteiner og smag</li><li>Enzymer og temperaturafhængighed</li><li>Smag og duft: kemoreceptorer</li><li>Fordøjelsens enzymatiske processer</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="konservering" class="subtopic">
+                <h3>Konservering og holdbarhed</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Salt og mikroorganismevækst:</strong> Sammenlign forrådnelseshastighed i brødstykker med og uden salt og undersøg saltets osmotiske effekt.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, hvordan salt hæmmer mikroorganismernes vækst ved at trække vand ud af cellerne (osmose).</p>
+                                    <p><strong>Materialer:</strong> Brødstykker, salt, plastikposer med lynlås, lup, fugtig vatpude.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Fugt to brødstykker let med vand (lige meget).</li>
+                                        <li>Drys rigelig salt på det ene stykke. Lad det andet være uden salt.</li>
+                                        <li>Placer begge i separate poser og luk dem. Opbevar ved stuetemperatur.</li>
+                                        <li>Observer dagligt i 7 dage: registrér første synlige skimmelsporer.</li>
+                                        <li>Fotografér og sammenlign.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over dag og observeret skimmel (0 = ingen, 3 = fuld). Graf over vækst over tid.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er plasmolysering? Hvorfor fungerer sukker som konserveringsmiddel på samme måde?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Marmelade-holdbarhedstest:</strong> Fremstil syltetøj med forskellig sukkermængde og mål pH og skimmelrisiko over tid.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, hvordan sukker, varme og syre kombineres til effektiv konservering i syltetøj.</p>
+                                    <p><strong>Materialer:</strong> Jordbær, sukker, citronsaft, gryde, pH-papir, sterile glas med låg, vægt.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Lav tre portioner jordbærsyltetøj: med 30%, 50% og 70% sukker (af frugtens vægt).</li>
+                                        <li>Tilsæt 1 spsk citronsaft til alle portioner og kog i 10 min.</li>
+                                        <li>Mål pH i hver portion med pH-papir og notér.</li>
+                                        <li>Hæld på sterile glas, luk og opbevar ved stuetemperatur.</li>
+                                        <li>Observer i 3 uger: hvilken portion får skimmel først?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over sukkerkoncentration, pH og dage til skimmel. Diskutér det optimale niveau.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er gelering med pektin? Hvorfor tilsættes citronsaft til syltetøj?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/sugar-and-salt-solutions" target="_blank">PhET: Sukker- og saltoplosninger</a> - Undersog osmose og ioners oplosning - princippet bag salt og sukker som konserveringsmidler</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=konservering+mad+holdbarhed+salt+sukker+kemi" target="_blank">Konservering og holdbarhed forklaret</a> - Gennemgang af, hvordan salt, sukker, syre og varme forhindrer mikrobiel vaekst i madvarer</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=madspild+konservering+holdbarhed" target="_blank">DR DRTV: Konservering og madspild</a> - Find DR-udsendelser om konservering, madspild og madens holdbarhed</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Osmose og saltets/sukkerets vandbindende effekt</li><li>pH som konserveringsmiddel (syre hæmmer bakterier)</li><li>Frysning og tørring: vandaktivitet (aw)</li><li>Varmebehandling og pasteurisering</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Konserveringsmetoder i tropisk vs. tempereret klima</li><li>Madspild og manglende konserveringsinfrastruktur</li><li>Traditionelle konserveringsmetoder globalt (tørfisk, kimchi)</li><li>Kølekædens geografi og energiforbrug</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Bakterier, svampe og gær som forrådnelsesoorganismer</li><li>Mikroorganismernes vækstbetingelser</li><li>Plasmolysering: osmose i mikrobielle celler</li><li>Patogene bakterier i mad (Salmonella, Listeria)</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="tilsaetningsstoffer" class="subtopic">
+                <h3>Tilsætningsstoffer og E-numre</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>E-numre-analyse:</strong> Analyser indholdsfortegnelserne på 10 fødevareprodukter og kortlæg hvilke E-numre der optræder hyppigst og hvad de bruges til.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At kortlægge tilsætningsstoffer i dagligdagsmad og forstå deres funktion.</p>
+                                    <p><strong>Materialer:</strong> 10 forskellige forarbejdede fødevareprodukter, E-nummerliste (fås fra Fødevarestyrelsen eller apps som "E-tjek"), papir.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Aflæs indholdsfortegnelserne på alle 10 produkter og noter alle E-numre.</li>
+                                        <li>Slå hvert E-nummer op og find: navn, funktion (farvestof, konserveringsmiddel, emulgator osv.) og eventuelle advarsler.</li>
+                                        <li>Lav en tabel over E-numre og hyppighed på tværs af produkterne.</li>
+                                        <li>Sammenlign et "naturligt" produkt med et stærkt forarbejdet og tæl E-numre.</li>
+                                        <li>Diskutér: Hvad er forskellen på "naturligt" og "kunstigt" tilsætningsstof?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Søjlediagram over de 5 hyppigste E-numre. Kategorisér efter funktion.</p>
+                                    <p><strong>Diskussion:</strong> Er alle E-numre skadelige? Hvad ville ske med vores mad uden tilsætningsstoffer?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Papierkromatografi af farvestoffer:</strong> Separér farvestoffer i farvet sodavand eller slik og identificér, om det er ét eller flere farvestoffer.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at mange farver i mad er blandinger af farvestoffer, og at de kan separeres ved kromatografi.</p>
+                                    <p><strong>Materialer:</strong> Kaffefilterstrip (ca. 2×10 cm), farvet sodavand eller farvede slik (M&Ms), varmt vand + lidt salt som mobilfase, blyant, lineal, glas.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Tegn en blyantslinje 1 cm fra bunden af filterstriperne.</li>
+                                        <li>Placer en dråbe farvet sodavand eller fugtet slik-farvestof på linjen.</li>
+                                        <li>Lad tørre og gentag 3 gange for koncentration.</li>
+                                        <li>Sæt strippen i en smule saltvand (1% NaCl) i glasset – farvestoffet må ikke røre vandet.</li>
+                                        <li>Lad vandet stige op og observer separation af farver.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Mål Rf-værdier (afstand stof rejst / afstand opløsningsmiddel rejst). Tegn og beskriv mønstret.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er E102 (tartrazin) og E110? Hvorfor er nogle farvestoffer mere mobile end andre?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/molecule-polarity" target="_blank">PhET: Molekylaer polaritet</a> - Undersog molekylers polaritet og oplosningsevne - baggrundsviden for, hvordan emulgatorer binder fedt og vand</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=E-numre+tilsaetningsstoffer+mad+forklaret" target="_blank">E-numre og tilsaetningsstoffer forklaret</a> - Gennemgang af de mest brugte tilsaetningsstoffer, deres funktion og regulering i EU</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=tilsaetningsstoffer+E-numre+mad" target="_blank">DR DRTV: Tilsaetningsstoffer i maden</a> - Find DR-udsendelser om tilsaetningsstoffer, E-numre og forbrugernes valg</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Emulgatorer og overfladespænding (lecitin)</li><li>Farvestofmolekylers lys-absorbtion</li><li>Kromatografi: polaritet og mobilitet</li><li>pH-regulatorer og buffervirkning</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>EU-regulering af tilsætningsstoffer vs. USA og Kina</li><li>Global fødevareindustri og standardisering</li><li>Eksport af forbudte stoffer til lavindkomstlande</li><li>Forbrugerbevægelser og "ren mærkning"</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Kroppens reaktion på fremmedstoffer: lever og nyrer</li><li>Allergi og intolerance over for tilsætningsstoffer</li><li>Tarmfloraens følsomhed over for tilsætninger</li><li>ADI: acceptabelt dagligt indtag</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="ph-mad" class="subtopic">
+                <h3>pH og syre-base i madlavning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>pH-måling i maden:</strong> Mål pH i citronsaft, mælk, eddike, bikarbonat og andre madvarer og opstil dem på pH-skalaen.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå pH-skalaen og at mange processer i madlavning er syre-base-reaktioner.</p>
+                                    <p><strong>Materialer:</strong> pH-papir eller pH-meter, citronsaft, eddike, mælk, vand, bikarbonat (opløst), cola, æblejuice, æg (hvide).</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Forbered 8 prøver af de nævnte madvarer i separate glas.</li>
+                                        <li>Dyp pH-papir i hvert glas og aflæs pH-værdien.</li>
+                                        <li>Tegn en pH-skala fra 0-14 og placer alle madvarer på skalaen.</li>
+                                        <li>Tilsæt eddike til mælken og observer, hvad der sker (kasein udfælder).</li>
+                                        <li>Bland bikarbonat og citronsaft og mål pH-ændringen.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tegn pH-skala med madvarer placeret. Beskriv ændringerne ved blandingsforsøgene.</p>
+                                    <p><strong>Diskussion:</strong> Hvad sker der med enzymer, når pH ændres? Hvorfor syrner mælk?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Hævning med bagepulver:</strong> Undersøg CO₂-produktionen ved blanding af syre og base i en dej og mål effekten på volumen.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at bagepulver er en kemisk reaktion (syre + base → CO₂) og at CO₂ gør kager lette og luftige.</p>
+                                    <p><strong>Materialer:</strong> Bagepulver, natron, citronsyre eller eddike, vand, mellemstore balloner, tomme flasker, målecylinder.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Hæld 1 dl vand i en flaske og tilsæt 1 tsk bagepulver.</li>
+                                        <li>Træk en ballon over flaskehalsen og observer oppustningen.</li>
+                                        <li>Gentag med 1 tsk natron + 1 tsk citronsyre og sammenlign CO₂-mængden.</li>
+                                        <li>Gentag med ½ tsk og 2 tsk og sammenlign.</li>
+                                        <li>Mål ballonernes omfang med en snor.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over mængde bagepulver og ballonens omfang (cm). Graf.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er reaktionsligningen for bagepulver? Hvorfor bruges syrnet mælk i opskrifter med natron?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/acid-base-solutions" target="_blank">PhET: Syre-base-oplosninger</a> - Interaktiv simulering af syrer og baser, pH-skalaen og ionkoncentration - direkte anvendelig i madlavningskontekst</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=pH+syre+base+madlavning+kemi+forklaret" target="_blank">pH og syre-base i madlavning forklaret</a> - Gennemgang af, hvordan pH pavirker smag, tekstur og kemiske reaktioner i koekkenet</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=kemi+madlavning+syre" target="_blank">DR DRTV: Kemi i koekkenet</a> - Find DR-udsendelser om kemien bag madlavning og de reaktioner der former vores mad</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Syrer og baser: Brønsted-Lowry definition</li><li>pH-skalaen og [H⁺]-koncentration</li><li>Neutralisationsreaktioner i madlavning</li><li>CO₂-produktion og gaslovene</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Syreholdige råvarer og jordbundsforhold</li><li>Kalkrige vs. sure jordtyper og landbrugskvalitet</li><li>Citronsyreindustrien: Sicilien og Brasilien</li><li>Mavesyrens funktion i kroppen globalt</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Enzymer og pH-afhængighed (optimum-pH)</li><li>Proteindenaturering ved syre</li><li>Mavesyre (HCl) og fordøjelsen</li><li>Mælkesyrebakteriernes rolle i fermentering</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="naeringsstoffer" class="subtopic">
+                <h3>Næringsstoffer og energiindhold</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Energiindhold i madpakken:</strong> Beregn det samlede energiindhold i en typisk madpakke og sammenlign med anbefalet dagligt energiindtag.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At koble kemisk energiindhold til praktisk ernæring og forstå, hvad kcal og kJ betyder.</p>
+                                    <p><strong>Materialer:</strong> Madpakke med emballage, næringsdeklarationer, lommeregner, vægt.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Vej hvert element i madpakken (brød, pålæg, frugt, drikke).</li>
+                                        <li>Aflæs energiindholdet pr. 100 g fra næringsdeklarationen.</li>
+                                        <li>Beregn energi (kJ) pr. element: (vægt/100) × kJ pr. 100 g.</li>
+                                        <li>Læg sammen til total og sammenlign med anbefaling for 14-16-årige (2000-2500 kcal/dag).</li>
+                                        <li>Udregn fordelingen af energi fra kulhydrat, fedt og protein i procent.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Cirkeldiagram over energifordeling (kulhydrat/fedt/protein). Søjlediagram over elementer.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er forskellen på kcal og kJ? Hvad sker der, hvis man konsekvent spiser for lidt eller for meget?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Biokemiske påvisningsreaktioner:</strong> Påvis protein med biuret-test og stivelse med jodtest i udvalgte madvarer.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At bruge kemiske påvisningsreaktioner til at identificere næringsstoffer i mad.</p>
+                                    <p><strong>Materialer:</strong> Madvarer: brød, kød, æg, kartoffel, sukker, salat. Jodopløsning (fra apotek eller naturfagslokalet), brunt bagepapir, hvide tallerkener, pipetter eller dråbeflasker. (Læreren klargør evt. biuret-reagens: 5% NaOH + 1% CuSO₄ – håndteres af læreren pga. ætsende NaOH.)</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Placer en lille smule af hvert madvare på en hvid tallerken.</li>
+                                        <li>Jodtest (stivelse): dryp 1 dråbe jodopløsning. Blåsort farve = stivelse til stede.</li>
+                                        <li>Fedttest: gnid madvaren på brunt bagepapir. Hold op mod lyset – gennemsigtigt plet = fedt til stede.</li>
+                                        <li>Protein-test (valgfrit med lærers biuret-reagens): tilsæt 2-3 dråber, lila/violet = protein til stede.</li>
+                                        <li>Opsaml resultaterne i en tabel.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Skema med madvare og +/− for stivelse, protein og fedt.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er funktionen af kulhydrater, fedt og protein i kroppen? Hvad er et vitamin?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/energy-forms-and-changes" target="_blank">PhET: Energiformer og omdannelse</a> - Visualiser energiomdannelse - baggrundsviden for, hvordan kroppen omdanner naeringssstoffer til brugbar energi</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=naeringssstoffer+kemi+fordojelse+forklaret" target="_blank">Naeringssstoffer og fordojelse forklaret</a> - Gennemgang af kulhydrater, fedtstoffer og proteiner - opbygning, funktion og fordojelse</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=ernaring+kost+sundhed" target="_blank">DR DRTV: Ernaering og kost</a> - Find DR-udsendelser om naeringssstoffer, kostanbefalinger og sundhedseffekter af vores foedevarer</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Energiindhold: 1 g kulhydrat = 17 kJ, fedt = 37 kJ, protein = 17 kJ</li><li>Kalorimetri: forbrænding og varmeudvikling</li><li>Molekylstruktur: mono-, di- og polysaccharider</li><li>Kemiske påvisningsreaktioner (jod, biuret)</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Underernæring og fejlernæring globalt</li><li>Fedme som global folkesundhedsudfordring</li><li>Madkultur og kostmønstre i verdensregioner</li><li>Fødevareproduktion og ressourceforbrug</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Kulhydrater, fedt og protein: opbygning og funktion</li><li>Vitaminer og mineraler: essensen af mikronæringsstoffer</li><li>Fordøjelsessystemets enzymatiske nedbrydning</li><li>Blodsukkerregulering og insulin</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="pesticider" class="subtopic">
+                <h3>Pesticider i frugt og grøntsager</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Vaskning og skrælningstest:</strong> Brug farvestof som model for "pesticidrester" og test, om vask og skrælning fjerner dem fra frugter.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At modellere, om vask og skrælning kan reducere rester af overfladebelæg på frugt.</p>
+                                    <p><strong>Materialer:</strong> Æbler, fødevaresikker rød farve (model for pesticid), pensel, vand, opvaskebørste, kniv, hvide servietter.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Pensél rød farve på 4 æbler som model for pesticid.</li>
+                                        <li>Lad tørre i 5 min (simulerer indbinding i overflade).</li>
+                                        <li>Æble 1: ingen behandling (kontrol).</li>
+                                        <li>Æble 2: skyl 10 sek under koldt vand.</li>
+                                        <li>Æble 3: vask 30 sek med opvaskebørste og sæbe.</li>
+                                        <li>Æble 4: skræl skallen helt af.</li>
+                                        <li>Aftør med hvid serviet og sammenlign farverest.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Bedøm farverest 0-5 for hvert æble. Diskutér modellens begrænsninger.</p>
+                                    <p><strong>Diskussion:</strong> Kan alle pesticider vaskes af? Hvad er systemiske pesticider, og hvorfor er de anderledes?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Pesticiddata fra Fødevarestyrelsen:</strong> Analyser officielle overvågningsdata og sammenlign pesticidniveauer i konventionelle og økologiske produkter.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At bruge offentlige data til at vurdere pesticidforekomst i dansk dagligmad.</p>
+                                    <p><strong>Materialer:</strong> Computer, adgang til Fødevarestyrelsens pesticidrapport (pesticidrester.foedevarestyrelsen.dk).</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Hent den seneste pesticidovervågningsrapport fra Fødevarestyrelsen.</li>
+                                        <li>Find tabellen over andelen af prøver med overskridelse af grænseværdier.</li>
+                                        <li>Sammenlign konventionelle vs. økologiske produkter.</li>
+                                        <li>Find de 3 produkter med flest overskridelser og undersøg, hvilke pesticider det drejer sig om.</li>
+                                        <li>Søg information om de identificerede pesticidforbindelsers giftighed og nedbrydelighed.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Søjlediagram over overskridelsesprocenter. Sammenligning konventionel/økologisk.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er MRL (maksimalgrænseværdi)? Er alle pesticider i maden farlige?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/natural-selection" target="_blank">PhET: Naturlig selektion</a> - Simuler, hvordan selektionstryk skaber resistente populationer - samme princip som pesticidresistens i insekter</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=pesticider+landbrug+bier+miljo+forklaret" target="_blank">Pesticider i landbruget forklaret</a> - Gennemgang af pesticidernes kemi, bioakkumulering og effekter paa bestoevere og foedekaeder</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=pesticider+landbrug+miljo" target="_blank">DR DRTV: Pesticider og miljo</a> - Find DR-udsendelser om pesticider i dansk landbrug og pavirkning af natur og sundhed</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Pesticidmolekylers opløselighed: fedt- vs. vandopløselige</li><li>Halveringstid og nedbrydning i miljøet</li><li>Bioakkumulering op igennem fødekæden</li><li>Kemistruktur: organofosfater og pyretroider</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Landbrugspraksis i EU vs. lande udenfor EU</li><li>Eksport af forbudte pesticider fra EU til tredjelande</li><li>Biologisk bekæmpelse som alternativ</li><li>Pesticidbrug og grundvandsforurening</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Insekters nervesystem og pesticiders virkningssted</li><li>Fødekæder og bioakkumulering (biomagnifikation)</li><li>Bestøvere (bier) og neonikotinoidernes effekt</li><li>Hormonforstyrrende stoffer og reproduktion</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15"><p>Mål 15: Livet på land</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="fermentering" class="subtopic">
+                <h3>Fermentering og mikroorganismer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Gæring og CO₂-produktion:</strong> Mål CO₂-produktionen fra gær ved forskellig sukkerkoncentration og temperatur med ballonmetoden.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge, hvordan gærens CO₂-produktion afhænger af sukkerkoncentration og temperatur.</p>
+                                    <p><strong>Materialer:</strong> Tørgær, sukker, vand (varmt, stuetemperatur og koldt), flasker, balloner, stoppur, lineal.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Lav sukkeropløsninger: 0%, 5%, 10% og 20% sukker i 200 ml lunkent vand.</li>
+                                        <li>Tilsæt 1 tsk gær til hver flaske og træk en ballon over halsen.</li>
+                                        <li>Mål ballonens omfang (med snor) hvert 10. minut i 40 min.</li>
+                                        <li>Gentag forsøget med 10% sukker ved koldt, stuetemperatur og varmt vand (max 40°C).</li>
+                                        <li>Sammenlign resultaterne.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Grafer: tid (x) vs. ballonomfang (y) for hvert forsøg. Sammenlign kurver.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er reaktionsligningen for gæring? Hvad er anaerob respiration vs. forbrænding?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Yoghurtfremstilling:</strong> Fremstil yoghurt og mål pH-faldet under fermenteringen som mål for mælkesyrebakteriernes aktivitet.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå mælkesyrebakteriernes fermentering og hvad der giver yoghurt dens syrlige smag og faste konsistens.</p>
+                                    <p><strong>Materialer:</strong> Sødmælk, naturel yoghurt (starterkultur), termometer, pH-papir, varmt vandbad (ca. 42°C), glas med låg.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Varm 500 ml mælk op til 85°C og afkøl til 42°C.</li>
+                                        <li>Mål pH (~ 6,5). Tilsæt 2 spsk naturel yoghurt og rør rundt.</li>
+                                        <li>Hæld i glas, sæt låg på og placer i vandbad ved 42°C.</li>
+                                        <li>Mål pH hvert 30. minut i 3-4 timer.</li>
+                                        <li>Observer, hvornår mælken stivner (pH under ~4,6).</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Graf over tid (x) vs. pH (y). Marker det tidspunkt yoghurten stivner.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er mælkesyre, og hvad gør den ved kaseinproteinerne? Hvad er probiotika?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/reactions-and-rates" target="_blank">PhET: Reaktioner og hastigheder</a> - Undersog, hvordan temperatur og koncentration pavirker reaktionshastigheder - relevant for gaeringens forloeb</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=gaering+fermentering+yoghurt+gaer+forklaret" target="_blank">Gaering og fermentering forklaret</a> - Animeret gennemgang af maelkesyrebakteriernes metabolisme og gaeringens biokemi</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=fermentering+mad+yoghurt+gaering" target="_blank">DR DRTV: Fermentering og gaering</a> - Find DR-udsendelser om fermenteringens biologi, traditioner og anvendelse i foedevareproduktion</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Anaerob respiration: C₆H₁₂O₆ → 2 C₂H₅OH + 2 CO₂</li><li>Mælkesyregæring: glukose → mælkesyre</li><li>pH-fald og proteindenaturering</li><li>Temperaturens betydning for enzymaktivitet</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Fermenteringstraditioner globalt: kimchi, miso, sauerkraut, injera</li><li>Fermentering som konserveringsmetode i varme klimaer</li><li>Ølbrygning og vinfremstilling: globale erhverv</li><li>Fermenteret mad og lokale sundhedseffekter</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Gærsvamp (Saccharomyces cerevisiae) og livscyklus</li><li>Mælkesyrebakterier: Lactobacillus og Streptococcus</li><li>Anaerob vs. aerob respiration</li><li>Tarmfloraen og probiotika</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="sukker" class="subtopic">
+                <h3>Sukker og sundhed</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Sukkerindhold i drikkevarer:</strong> Vej og sammenlign sukkerindholdet i sodavand, juice, energidrikke og mælk.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At gøre sukkerindholdet i dagligdagsdrikke konkret og sammenligne med sundhedsanbefalinger.</p>
+                                    <p><strong>Materialer:</strong> Udvalgte drikkevarer (sodavand, juice, energidrik, mælk, vand), vægt, sukkerskål, små glas, udskrift af WHO's sukkeranbefalinger.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Aflæs sukkerindholdet pr. 100 ml fra næringsdeklarationen på hvert produkt.</li>
+                                        <li>Beregn sukkerindholdet i en standardportion (fx 330 ml dåse eller 250 ml glas).</li>
+                                        <li>Vej den beregnede sukkermængde op på en vægt og stil i et lille glas ved siden af drikken.</li>
+                                        <li>Opstil alle produkter med tilhørende sukkerglas og fotografér.</li>
+                                        <li>Sammenlign med WHO's anbefaling: max 25 g fri sukker pr. dag for voksne.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Søjlediagram over sukkerindhold (g) pr. portion. Markér WHO's daglige anbefaling.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er "frit sukker"? Hvad er forskellen på sukker i frugt og sukker i sodavand?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Karies-model med ægskal:</strong> Udsæt ægskal (model for tandemalje) for syre fra sukkerholdig væske og observer opløsningen.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, hvordan sukker via bakterier danner syre, der opløser calcium i tandemaljens krystalstruktur.</p>
+                                    <p><strong>Materialer:</strong> Hele æg (skallen som emalje-model), eddike, cola, appelsinjuice, vand, gennemsigtige glas, lup.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Placer ét æg i hvert glas med de 4 væsker.</li>
+                                        <li>Observer dagligt i 5-7 dage: notér bobler, farveændring og skallens tilstand.</li>
+                                        <li>Tag ægget op efter 3 dage og mærk forsigtigt på skallen (er den blødere?).</li>
+                                        <li>Sammenlign skallernes tilstand efter 7 dage.</li>
+                                        <li>Mål pH i væskerne før og efter.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Bedøm skallens opløsning 0-3 for hvert glas. Beskriv sammenhæng med pH.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er CaCO₃ og CaPO₄ i tænder? Hvad gør fluor ved tandemaljens krystalstruktur?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/sugar-and-salt-solutions" target="_blank">PhET: Sukker- og saltoplosninger</a> - Undersog sukkermolekylers oplosning og egenskaber - baggrundsviden for sukkers rolle i krop og mad</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=sukker+sundhed+diabetes+karies+forklaret" target="_blank">Sukker og sundhed forklaret</a> - Gennemgang af, hvordan sukker pavirker blodsukker, insulin, karies og risiko for diabetes</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=sukker+sundhed+diabetes+unge" target="_blank">DR DRTV: Sukker og sundhed</a> - Find DR-udsendelser om sukkerforbrugets konsekvenser for folkesundheden og unges helbred</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Saccharose, glukose og fruktose: molekylstruktur</li><li>Syredannelse fra sukker: glukose → mælkesyre</li><li>CaCO₃-opløsning af syre</li><li>Osmose: sukker og celledehydrering</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Sukkerforbrug og fedmeforekomst globalt</li><li>Sukkerproduktion: sukkerrør (Brasilien) og sukkerroer (EU)</li><li>Sukkerskat som politisk virkemiddel</li><li>Karies som global folkesundhedsproblem</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Blodsukkerregulering: insulin og glukagon</li><li>Type 2-diabetes: insulinresistens</li><li>Mundhulebakterier og karies-processen</li><li>Lever og fedtopbygning ved sukkerindtag</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-3.png" alt="Verdensmål 3"><p>Mål 3: Sundhed og trivsel</p></div>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- TEMA 7: Råstoffers kredsløb -->
+        <section id="raastoffer" class="theme-section">
+            <div class="theme-header"><h2>7. Råstoffers kredsløb</h2></div>
+
+            <article id="lithium" class="subtopic">
+                <h3>Lithium og batteriteknologi</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Batterikapacitetstest:</strong> Sammenlign kapacitet og udladningstid for alkaliske AA-batterier og lithiumbatterier under ensartet belastning.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At sammenligne energiindholdet og udladningsegenskaberne hos to batterityper.</p>
+                                    <p><strong>Materialer:</strong> Alkaliske AA-batterier (2 stk.), lithium AA-batterier (2 stk.), en lommelygte eller en lille motor som belastning, multimeter, stoppur.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Mål startspændingen i hvert batteri med multimeter.</li>
+                                        <li>Tilslut batteriet til lommelygten og start stopuret.</li>
+                                        <li>Mål spændingen hvert 5. minut og noter tidspunkt for, hvornår lyset svækkes tydeligt.</li>
+                                        <li>Gentag med det andet batteritype under identiske forhold.</li>
+                                        <li>Sammenlign total driftstid og spændingskurver.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tidsgraf over spænding (V) for begge batterityper. Markér udladningstidspunkt.</p>
+                                    <p><strong>Diskussion:</strong> Hvorfor er lithiumbatterier lettere og har højere energitæthed? Hvad er et genopladeligt lithium-ion-batteri?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Lithiums geografi:</strong> Kortlæg verdens lithiumreserver og aktuelle mineproduktion og diskutér geopolitiske konsekvenser.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at adgangen til lithium er geografisk skævt fordelt og har store geopolitiske konsekvenser for den grønne omstilling.</p>
+                                    <p><strong>Materialer:</strong> Computer, verdenskort, data fra US Geological Survey (USGS Minerals Yearbook) om lithiumreserver pr. land.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Hent data om lithiumreserver og produktion pr. land (USGS eller Wikipedia).</li>
+                                        <li>Tegn et verdenskort og markér reserverne med proportionale cirkler.</li>
+                                        <li>Identificér "lithium-trekanten": Bolivia, Argentina og Chile.</li>
+                                        <li>Find hvilke lande der producerer de fleste elbiler og sammenlign med reservernes placering.</li>
+                                        <li>Diskutér: Hvad sker der, hvis ét land monopoliserer adgangen?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Kort med reservecirkler. Søjlediagram over de 5 største producenter.</p>
+                                    <p><strong>Diskussion:</strong> Er lithium bæredygtigt? Hvad er vandforbruget ved lithiumudvinding i Atacama-ørkenen?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/circuit-construction-kit-dc" target="_blank">PhET: Kredsloebskonstruktion (jaevnstroem)</a> - Byg og test elektriske kredsloeb - forsta de grundlaeggende principper bag batteriers opbygning og funktion</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=lithium+batteri+elbil+udvinding+miljo" target="_blank">Lithiumbatterier og miljopavirkning</a> - Dokumentarisk gennemgang af lithiummining i Sydamerika og batteriteknologiens miljokonsekvenser</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=elbiler+batteri+raastoffer" target="_blank">DR DRTV: Elbiler og raastoffer</a> - Find DR-udsendelser om elbilers batterier, lithiumudvinding og den groenne omstillings raastofbehov</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektrokemi: oxidation og reduktion i batterier</li><li>Ionbevægelse og elektrolyt</li><li>Spænding, kapacitet og energitæthed</li><li>Lithiums placering i periodesystemet</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Lithium-trekanten: Bolivia, Argentina, Chile</li><li>Geopolitik og adgang til kritiske råstoffer</li><li>Vandressourcer i Atacama-ørkenen</li><li>Batterifabrikker i Kina, USA og Europa</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Minedriftens påvirkning på lokale økosystemer</li><li>Saltsøernes biodiversitet (flamingoliv)</li><li>Lithium i grundvand og planters optag</li><li>Batterigift ved ukorrekt bortskaffelse</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7"><p>Mål 7: Bæredygtig energi</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="sjaeldne-jordarter" class="subtopic">
+                <h3>Sjældne jordarter og elektronik</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Magnet-ophav:</strong> Undersøg, hvad der er i en neodym-magnet, og test dens styrke sammenlignet med en alm. ferritmagnet.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at sjældne jordarter (neodym) er centrale i moderne teknologi, herunder vindmøller og elbilmotorer.</p>
+                                    <p><strong>Materialer:</strong> Neodym-magnet (fra gammel harddisk eller købt), ferritmagnet, papirklips, linealmål, blyant.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Tæl, hvor mange papirklips neodym-magneten kan løfte i en kæde.</li>
+                                        <li>Gentag med ferritmagnet og sammenlign.</li>
+                                        <li>Mål afstanden, hvorfra magneten stadig kan trække et enkelt klips.</li>
+                                        <li>Undersøg hvilke materialer der blokerer magnetfeltet (aluminium, papir, stål).</li>
+                                        <li>Slå op: Hvilke sjældne jordarter er i neodym-magneter? (Neodym, dysprosium, bor)</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over magnettype, løftede klips og rækkevidde. Sammenlign.</p>
+                                    <p><strong>Diskussion:</strong> Hvor bruges neodym-magneter i samfundet? Hvad sker der, hvis Kina begrænser eksporten?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Elektronikaffald og genanvendelse:</strong> Kortlæg, hvilke materialer der er i en gammel mobiltelefon, og undersøg, hvad der genanvendes i Danmark.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at en mobiltelefon indeholder op til 60 grundstoffer, og at genanvendelse er afgørende for at sikre fremtidig adgang til sjældne metaller.</p>
+                                    <p><strong>Materialer:</strong> Computer, evt. et gammelt printedkort til visuel inspektion, data fra Miljøstyrelsen om e-affald.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Find en oversigt over grundstoffer i en smartphone (søg "elements in a smartphone").</li>
+                                        <li>Identificér hvilke grundstoffer der er sjældne jordarter og klassificerede som kritiske råstoffer af EU.</li>
+                                        <li>Slå op: Hvad genanvendes af e-affald i Danmark vs. globalt (%).</li>
+                                        <li>Undersøg, hvad der sker med e-affald, der sendes til Vestafrika (Agbogbloshie i Ghana).</li>
+                                        <li>Beregn, hvor mange ton sjældne jordarter der potentielt kan genvindas fra Danmarks e-affald pr. år.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Oversigt over grundstoffer i smartphone + kritikalitet. Tabel over genanvendelses­procenter.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er "urban mining"? Hvorfor er genanvendelse af sjældne jordarter teknisk svært?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/faradays-law" target="_blank">PhET: Faradays lov</a> - Visualiser, hvordan magnetfelter inducerer elektricitet - princippet bag neodym-magneter i vindmoeller og elbilmotorer</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=sjaeldne+jordarter+kina+elektronik+miljo" target="_blank">Sjaeldne jordarter og global forsyningskaede</a> - Dokumentar om Kinas dominans i produktionen af sjaeldne jordarter og konsekvenser for gron teknologi</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=sjaeldne+metaller+elektronik+raastoffer" target="_blank">DR DRTV: Sjaeldne metaller og elektronik</a> - Find DR-udsendelser om sjaeldne jordarters rolle i moderne teknologi og geopolitiske konsekvenser</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Magnetisme og ferromagnetiske materialer</li><li>Lanthanidernes elektronkonfiguration</li><li>Halvledere: silicium og germanium</li><li>Elektrisk ledningsevne og modstand</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Kinas dominans: 60% af verdens sjældne jordarter</li><li>Myndighedsregulering og eksportrestriktioner</li><li>E-affaldets rejse fra Europa til Afrika</li><li>EU's liste over kritiske råstoffer</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Gruvemiljøets påvirkning på biodiversitet</li><li>Tungmetallers ophobing i fødekæder</li><li>E-affaldets giftstoffer: bly, kadmium, kviksølv</li><li>Sundhedseffekter på arbejdere i e-affaldsanlæg</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-15.png" alt="Verdensmål 15"><p>Mål 15: Livet på land</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="sand-beton" class="subtopic">
+                <h3>Sand og beton som ressource</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Betonblandingsforsøg:</strong> Bland cement, sand og vand i varierende forhold og test den hærdede betons trykstyrke.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, hvordan blandingsforhold påvirker betonens styrke og hvad cement er kemisk.</p>
+                                    <p><strong>Materialer:</strong> Portlandcement (fra byggemarked), sand, vand, silikoneform eller muffinform, vægt, lommeregner. Sikkerhed: brug handsker og undgå at indånde cementstøv.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Lav tre blandinger med cement:sand-forhold 1:1, 1:3 og 1:6 (hold vand konstant).</li>
+                                        <li>Hæld i forme og lad hærde i 7 dage (eller mindst 3 dage).</li>
+                                        <li>Test styrken ved at placere en klods og trin/trykke gradvist – eller brug en fjeder-badevægt til at måle brudkraft.</li>
+                                        <li>Sammenlign de tre blandinger.</li>
+                                        <li>Observer overfladen: er blandingen homogen? Er der revner?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over blandingsforhold og observeret styrke. Rangér fra stærkest til svagst.</p>
+                                    <p><strong>Diskussion:</strong> Hvad sker der kemisk, når cement hærder? Hvorfor tilsættes armering af stål?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>CO₂ fra cementproduktion:</strong> Beregn den CO₂-mængde der frigives ved fremstilling af cement og sammenlign med andre industrier.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at cementproduktion er ansvarlig for ca. 8% af verdens CO₂-udledning, og at forstå den kemiske baggrund.</p>
+                                    <p><strong>Materialer:</strong> Lommeregner, data om global cementproduktion (ca. 4 mia. ton/år), reaktionsligning for kalcination.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Lær reaktionsligningen: CaCO₃ → CaO + CO₂ (kalcination ved 900°C).</li>
+                                        <li>Beregn: 1 ton kalksten (CaCO₃) frigiver ca. 0,44 ton CO₂. Hvor meget CO₂ pr. ton cement?</li>
+                                        <li>Find den globale cementproduktion og beregn total CO₂-udledning fra cement.</li>
+                                        <li>Sammenlign med Danmarks samlede CO₂-udledning (~40 Mt/år).</li>
+                                        <li>Undersøg: Hvad er "grøn cement" og CO₂-fangst i cementindustrien?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Beregning af CO₂ pr. ton og globalt. Søjlediagram over store CO₂-udledende industrier.</p>
+                                    <p><strong>Diskussion:</strong> Kan beton erstattes? Hvad er geopolymer-beton?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/states-of-matter" target="_blank">PhET: Stofmangders tilstande</a> - Visualiser partiklers opforsel i faste stoffer - baggrundsviden for betons kornstruktur og styrkeopbygning</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=sand+beton+cement+ressource+miljo" target="_blank">Sand og beton som global ressource</a> - Forklaring af den globale sandmangel, konsekvenser for kyster og alternativerne til byggesand</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=sand+ressource+kystlinje" target="_blank">DR DRTV: Sand og byggeri</a> - Find DR-udsendelser om sand som global ressource, kystnedbrydning og betonens miljoaftryk</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Cementens kemi: kalcination af CaCO₃</li><li>Betonhærdning: hydratationsreaktioner</li><li>Trykstyrke vs. trækstyrke – behov for armering</li><li>Sandkornenes kornstørrelsefordeling</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Global sandbrist og illegal sandmining</li><li>Singapores landvinding og konsekvenser</li><li>Kystlinjers erosion ved sandfratagelse</li><li>Cement- og betonproduktion i Kina og Indien</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Havbundens og flodbundens biodiversitet under pres</li><li>Flodmundingernes funktion som nursery-habitater</li><li>Betoners indvirkning på urban biodiversitet</li><li>CO₂-udledning og klimaets effekt på biodiversitet</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-11.png" alt="Verdensmål 11"><p>Mål 11: Bæredygtige byer</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14"><p>Mål 14: Livet i havet</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13"><p>Mål 13: Klimaindsats</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="kobber" class="subtopic">
+                <h3>Kobber i elektricitet og teknologi</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Elektrisk modstand i kobbertråde:</strong> Mål, hvordan modstanden i kobbertråd afhænger af trådens længde og tværsnit.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At bekræfte formlen R = ρ·L/A og forstå, hvorfor tykkere og kortere ledninger har mindre modstand.</p>
+                                    <p><strong>Materialer:</strong> Kobbertråd i to tykkelser (fx 0,5 mm og 1,0 mm diameter), multimeter (modstandsmåler), krokodillenæb, lineal.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Klip 5 stykker kobbertråd af samme tykkelse i længder: 10, 20, 40, 80 og 160 cm.</li>
+                                        <li>Mål modstanden (Ω) i hvert stykke med multimeter.</li>
+                                        <li>Tegn en graf: længde (x) vs. modstand (y). Er den lineær?</li>
+                                        <li>Gentag med den anden trådtykkelse (40 cm) og sammenlign modstanden.</li>
+                                        <li>Beregn den specifikke modstand ρ for kobber fra dine målinger.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Lineær graf for R vs. L. Beregn ρ og sammenlign med tabelværdien (1,68 × 10⁻⁸ Ωm).</p>
+                                    <p><strong>Diskussion:</strong> Hvorfor bruges kobber og ikke jern i elledninger? Hvad er fordelen ved aluminium i højspændingskabler?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Elektrolyse af kobber:</strong> Udfæld kobber fra kobber(II)sulfatopløsning og observer masseforskydningen ved elektrolyse.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå kobberraffinering ved elektrolyse og koble det til industriel kobberrensning.</p>
+                                    <p><strong>Materialer:</strong> Kobber(II)sulfat-opløsning (20 g/l), to kobberstykker (elektroder), 9V batteri + ledninger, krokodillenæb, vægt, papir.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Vej begge kobberelektroder og noter massen.</li>
+                                        <li>Sæt elektroderne i opløsningen, tilslut batteriet: pluspol til anode, minuspol til katode.</li>
+                                        <li>Lad elektrolysen køre i 10-15 min og observer farveændringen ved katoden.</li>
+                                        <li>Tag elektroderne op, lad tørre og vej igen.</li>
+                                        <li>Beregn masseforskydning: hvor meget kobber er gået fra anode til katode?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Masseforskel for anode og katode. Skriv halvreaktionerne for anode og katode.</p>
+                                    <p><strong>Diskussion:</strong> Hvad bruges elektrolytisk kobberrensning til industrielt? Hvad er kobberets renhedsgrad i elektrisk ledning?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/circuit-construction-kit-dc" target="_blank">PhET: Kredsloebskonstruktion (jaevnstroem)</a> - Maal elektrisk modstand i virtuelt kredsloeb - forsta, hvorfor kobber er ideelt til elledninger</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=kobber+elektrolyse+mineudvinding+teknologi" target="_blank">Kobber og elektrolyse forklaret</a> - Gennemgang af kobbers elektriske egenskaber, raffinering via elektrolyse og global mineudvinding</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=kobber+minedrift+raastoffer" target="_blank">DR DRTV: Kobber og minedrift</a> - Find DR-udsendelser om kobberudvinding, global eftersporgsel og miljopavirkning fra miner</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Elektrisk ledningsevne og specifik modstand</li><li>Elektrolyse: oxidation ved anode, reduktion ved katode</li><li>Kobberions (Cu²⁺) og farvede opløsninger</li><li>Formlen R = ρ · L / A</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Chile (Atacama) og Congo: verdens største kobberproducenter</li><li>Kobberpriser og global efterspørgsel fra elbiler</li><li>Vandmangel i mineområder</li><li>Kobberets geopolitiske betydning</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Kobber som essentielt sporelelement</li><li>Kobberforurening i akvatiske miljøer</li><li>Toksicitet ved høje koncentrationer (planter og dyr)</li><li>Mineaffaldets (tailings) påvirkning af vandmiljøet</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7"><p>Mål 7: Bæredygtig energi</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="olie-naturgas" class="subtopic">
+                <h3>Olie og naturgas som råstoffer</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Sammenlign olieprodukter:</strong> Undersøg og sammenlign egenskaberne hos forskellige produkter fra råolie – benzin, petroleum, motorolie og paraffinvoks – og kobl dem til fraktioneret destillation.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at råolie kan adskilles i fraktioner med forskellige egenskaber ved at ændre temperaturen, og at disse fraktioner har meget forskellige anvendelser.</p>
+                                    <p><strong>Materialer:</strong> Rensesprit (isopropanol 70% fra apoteket), motorolie (gammel), paraffinlys, vegetabilsk olie (kontrol), små glas eller petriskåle, papirstrimler, linjal, pipetter.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Hæld en lille smule af hvert stof i hvert sit glas og observer farve og klarhed.</li>
+                                        <li>Viskositetstest: dyp en papirstrimmel i hvert stof og mål, hvor langt det stiger op ad papiret på 30 sekunder.</li>
+                                        <li>Fordampningstest: læg en dråbe af hvert stof på et stykke alufolie og observer, hvad der fordamper hurtigst ved stuetemperatur.</li>
+                                        <li>Opvarm paraffinlyset med en teskefuld varmt vand i et glas og observer ved hvilken temperatur det smelter (ca. 55°C).</li>
+                                        <li>Aflæs: Hvilke af disse stoffer har lavt kogepunkt (benzin), og hvilke har højt kogepunkt (diesel, smøreolier, voks)?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over de fire stoffer med kolonner: farve, viskositet (lav/middel/høj), fordampning (hurtig/langsom), og typisk kogepunktinterval. Ranger fra lavt til højt kogepunkt.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er fraktioneret destillation, og hvad er kogepunkterne for benzin, petroleum og diesel? Hvilken fraktion er den letteste at fremstille plastik fra?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Plastik-kortlægning:</strong> Kortlæg plasttyper i klasseværelset vha. plastmærker og beregn, hvor stor en del der stammer fra olie.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå, at plastik er fremstillet af olie, og at se omfanget af plastikmaterialer i hverdagen.</p>
+                                    <p><strong>Materialer:</strong> Klasseværelse, skema med plastmærker (1=PET, 2=HDPE, 3=PVC, 4=LDPE, 5=PP, 6=PS, 7=andet).</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Gå systematisk rundt i klassen og find alle plastgenstande.</li>
+                                        <li>Aflæs plastmærket (trekant med tal) og noter i skema.</li>
+                                        <li>Tæl op: Hvor mange af de 6 typer? Hvad er vanligst?</li>
+                                        <li>Slå op: Hvilken monomer bruges til hver plasttype? (PET = terephthalsyre + ethanediol)</li>
+                                        <li>Beregn andelen der kan genanvendes (PET og HDPE) vs. ikke-genanvendelig plastik.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Cirkeldiagram over plasttyper. Beregning af genanvendelig andel i %.</p>
+                                    <p><strong>Diskussion:</strong> Hvad sker der, når plastik brændes? Hvad er bioplast, og er det bedre?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/greenhouse-effect" target="_blank">PhET: Drivhuseffekten</a> - Visualiser, hvordan CO2 fra afbraending af fossile braendstoffer oger temperaturen - konsekvens af olie og gas</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=olie+raffineri+destillation+plastik+forklaret" target="_blank">Olieraffinering og destillation forklaret</a> - Animeret gennemgang af fraktioneret destillation og de vigtigste produkter fra raaolie</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=olie+naturgas+nordsoen+energi" target="_blank">DR DRTV: Olie og naturgas</a> - Find DR-udsendelser om olie- og gasudvinding i Nordsoeen og fossile braendstoffers fremtid</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Kulbrinter: alkaner, alkener og aromatiske forbindelser</li><li>Fraktioneret destillation og kogepunkter</li><li>Forbrænding: CₓHᵧ + O₂ → CO₂ + H₂O</li><li>Polymerisering: monomerer til polymerer</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Nordsøen og Mellemøsten som producenter</li><li>OPEC og geopolitisk kontrol over oliepriser</li><li>Energisikkerhed og afhængighed af fossile brændstoffer</li><li>Oliespild og havmiljøskader</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Havforsuring fra CO₂: pH-fald i oceaner</li><li>Mikroplast i fødekæder</li><li>Oliespildes effekt på fugle og havpattedyr</li><li>Fossile brændstoffer og klimaforandringer</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-7.png" alt="Verdensmål 7"><p>Mål 7: Bæredygtig energi</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13"><p>Mål 13: Klimaindsats</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="jern-staal" class="subtopic">
+                <h3>Jern, stål og genanvendelse</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Rustdannelse under kontrollerede betingelser:</strong> Undersøg, hvad der fremmer rust, ved at placere jern i salt-, surt og neutralt vand.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At undersøge, hvad der fremmer korrosion af jern og forstå rustens kemiske natur.</p>
+                                    <p><strong>Materialer:</strong> Jernnagler (galvaniserede og ugalvaniserede), bægerglas, destilleret vand, saltvand (3%), eddike (surt), olie, stoppur, kamera.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Opstil 5 bægerglas: 1) destilleret vand, 2) saltvand, 3) eddike, 4) olie, 5) tør luft.</li>
+                                        <li>Placer én ugalvaniseret jernnagle i hvert glas.</li>
+                                        <li>Fotografér dagligt i 7 dage.</li>
+                                        <li>Placer en galvaniseret nagle i saltvand til sammenligning.</li>
+                                        <li>Rangér fra hurtigst til langsomst rustende.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel med rustgrad (0-3) for hvert glas pr. dag. Graf over tid vs. rustgrad.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er reaktionsligningen for rustdannelse? Hvad er katodisk beskyttelse (fx zinkofferanodet)?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Energiberegning: nyt stål vs. genanvendt:</strong> Beregn og sammenlign energiforbruget ved fremstilling af stål fra jernmalm vs. fra skrotmetal.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At kvantificere energigevinsten ved genanvendelse af stål og koble det til CO₂-reduktion.</p>
+                                    <p><strong>Materialer:</strong> Lommeregner, data om energiforbrug: nyt stål fra malm ca. 20 GJ/ton, genanvendt stål ca. 6 GJ/ton.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Beregn energibesparelse pr. ton stål ved genanvendelse (20 − 6 = 14 GJ/ton).</li>
+                                        <li>Omregn til kWh: 1 GJ = 277,8 kWh. Hvad svarer 14 GJ til i en gennemsnitshusholdnings elforbrug?</li>
+                                        <li>Find den globale stålproduktion (~1,9 mia. ton/år) og den genanvendte andel (~30%).</li>
+                                        <li>Beregn CO₂-besparelsen ved at øge genanvendelsesandelen til 50%.</li>
+                                        <li>Sammenlign med Danmarks samlede CO₂-udledning.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Beregninger opstillet trin for trin. Søjlediagram over energiforbrug pr. ton.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er højtovnsprocessen? Hvad er grønt stål (brint-reduktion)?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/faradays-law" target="_blank">PhET: Faradays lov</a> - Visualiser jernets magnetiske egenskaber og elektromagnetisk induktion - grundlag for staals mange anvendelser</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=jern+staal+hoejtovn+genanvendelse+produktion" target="_blank">Staalproduktion og genanvendelse forklaret</a> - Animeret gennemgang af jernmalm til staal og den store energibesparelse ved genanvendelse af skrot</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=staal+jern+genanvendelse+produktion" target="_blank">DR DRTV: Staal og genanvendelse</a> - Find DR-udsendelser om staalproduktion, genanvendelse og industriens miljoaftryk</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Oxidation og korrosion: Fe → Fe²⁺ + 2e⁻</li><li>Jernets krystalstruktur og legeringer (stål = Fe + C)</li><li>Smeltetemperatur og energibehov</li><li>Katodisk beskyttelse og galvanisering</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Kina producerer ~55% af verdens stål</li><li>Global skrothandel og handelsveje</li><li>Stålværker og lokalsamfund (fx Frederiksværk)</li><li>Jernmalmudvinding i Brasilien og Australien</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Jern som essentielt mineral (hæmoglobin)</li><li>Jernmangel og anæmi globalt</li><li>Rustens effekt på vandmiljø (pH-ændring)</li><li>Stålproduktionens luftforurening og sundhed</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-9.png" alt="Verdensmål 9"><p>Mål 9: Innovation og infrastruktur</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-12.png" alt="Verdensmål 12"><p>Mål 12: Ansvarligt forbrug</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="kalk-kredsloeb" class="subtopic">
+                <h3>Kalkkredsløbet</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Kalk og syre:</strong> Observer CO₂-frigivelsen, når kalksten (CaCO₃) reagerer med eddike, og kobl det til kalkkredsløbet og havforsuring.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At observere og kvantificere reaktionen mellem CaCO₃ og syre som model for havforsuring og vejrsmuldring af kalksten.</p>
+                                    <p><strong>Materialer:</strong> Kalksten (flint eller kridtstykker), eddike (5% eddikesyre), bægerglas, vægt, ballon over glasset til CO₂-opsamling, pH-papir.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Vej 5 g kalksten og noter massen.</li>
+                                        <li>Hæld 50 ml eddike i bægerglasset og mål pH (ca. 3).</li>
+                                        <li>Tilsæt kalkstenen og observer bobledannelsen (CO₂).</li>
+                                        <li>Gentag med marmor og kridt – sammenlign reaktionshastighed.</li>
+                                        <li>Mål pH i opløsningen efter reaktionen og sammenlign med start.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Skriv reaktionsligningen: CaCO₃ + 2 CH₃COOH → Ca²⁺ + 2 CH₃COO⁻ + H₂O + CO₂. Beskriv pH-ændringen.</p>
+                                    <p><strong>Diskussion:</strong> Hvad sker der med koraller, når havvand forsures? Hvad er pH-faldet i havene siden 1850?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>Havforsuringsmodel:</strong> Tilsæt CO₂ til saltvandsopløsning med pH-indikator og observer pH-faldet som model for havforsuring.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At demonstrere, at CO₂ opløst i vand danner kulsyre og sænker pH, præcis som det sker i havene.</p>
+                                    <p><strong>Materialer:</strong> Saltvandsopløsning (3,5% NaCl), rødkålsindikator eller bromthymolblåt, sugerør, bægerglas.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Bland 200 ml saltvandsopløsning med pH-indikator (blå-lilla farve).</li>
+                                        <li>Pust langsomt igennem sugerøret i 1-2 min og observer farveændringen.</li>
+                                        <li>Mål pH med pH-papir undervejs.</li>
+                                        <li>Stop og observer, om pH stiger igen, når CO₂ afgasses.</li>
+                                        <li>Beregn: Havets pH er faldet fra 8,2 til 8,1 siden 1850 – hvad svarer det til i [H⁺]-stigning?</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Notér pH over tid (0, 30 sek, 1 min, 2 min). Beregn [H⁺]-ændringen fra pH 8,2 til 8,1.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er karbonatsystemet i havet? Hvilke organismer er mest sårbare over for havforsuring?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/greenhouse-effect" target="_blank">PhET: Drivhuseffekten</a> - Visualiser CO2 i atmosfaeren og havets optagelse - direkte kobling til havforsuring og kalkkredslobet</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=kalkkredslobet+havforsuring+koraller+forklaret" target="_blank">Kalkkredslobet og havforsuring forklaret</a> - Animeret gennemgang af CaCO3s kredsloeb og CO2-pavirkning af havets pH og koraldannelse</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=koraller+havforsuring+kalk+geologi" target="_blank">DR DRTV: Havforsuring og koraller</a> - Find DR-udsendelser om havets forsuring, koraldod og kalkkredslobets betydning for klima</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>CaCO₃-reaktioner med syre</li><li>CO₂ og karbonatsystemet: CO₂ + H₂O ⇌ H₂CO₃ ⇌ HCO₃⁻ + H⁺</li><li>pH-skalaen og [H⁺]-koncentration</li><li>Kalcination: CaCO₃ → CaO + CO₂ (ved 900°C)</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Møns Klint og Danmarks kalkgeologi</li><li>Kalkformationer: Dolomitterne, Great Barrier Reef</li><li>Kalkudvinding som råstof til cement</li><li>Havisens og havsurningens geografi</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Korallernes kalkskelet og zooxanthellae</li><li>Koralblekning og havforsuring</li><li>Snegle, muslinger og skaldyrs CaCO₃-skaller</li><li>Havforsuring og fødekæder i havet</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-13.png" alt="Verdensmål 13"><p>Mål 13: Klimaindsats</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14"><p>Mål 14: Livet i havet</p></div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="fosfor" class="subtopic">
+                <h3>Fosfor og gødning</h3>
+                <div class="investigations">
+                    <h4>Undersøgelser elever kan lave:</h4>
+                    <ul>
+                        <li><strong>Algevækst og næringsstoffer:</strong> Undersøg effekten af fosfor- og kvælstoftilsætning på algevækst i vandprøver.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå eutrofiering: hvad sker der, når overskydende fosfor og kvælstof fra landbrug løber ud i søer og fjorde?</p>
+                                    <p><strong>Materialer:</strong> Vandprøver fra en å eller sø (eller postevand), flydende gødning (NPK), gennemsigtige plastflasker, sollys eller stærk lampe, 2-3 uger.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Opstil 4 flasker med samme vandprøve.</li>
+                                        <li>Flaske 1: kontrol (ingen tilsætning). Flaske 2: fosfor (1 ml flydende gødning). Flaske 3: kvælstof (1 ml gødning kvælstofrig). Flaske 4: fuld NPK-gødning.</li>
+                                        <li>Stil flaskerne i vindueskarmen i 2-3 uger.</li>
+                                        <li>Observer ugentligt: farve, uklarhed, lugt.</li>
+                                        <li>Mål pH og noter eventuel iltmangel (lugt af svovlbrinte).</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel med ugentlige observationer: farve, klarhed, pH. Fotodokumentation.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er eutrofiering og iltsvind? Hvad er den begrænsende næringsfaktor i danske fjorde?</p>
+                                </div>
+                            </details>
+                        </li>
+                        <li><strong>NPK-gødningsanalyse:</strong> Aflæs og sammenlign sammensætningen af forskellige gødningsprodukter og forstå, hvad N, P og K bruges til i planter.
+                            <details class="forsog-detaljer">
+                                <summary>Se forsøgsbeskrivelse</summary>
+                                <div class="forsog-beskrivelse">
+                                    <p><strong>Formål:</strong> At forstå de tre hovednæringsstoffers funktion og sammensætningen i kommercielle gødninger.</p>
+                                    <p><strong>Materialer:</strong> 5-6 forskellige gødningsposer fra et byggemarked (eller billeder heraf), lommeregner, papir.</p>
+                                    <p><strong>Fremgangsmåde:</strong></p>
+                                    <ol>
+                                        <li>Aflæs NPK-angivelsen på hvert produkt (fx 12-5-18).</li>
+                                        <li>Lav en tabel og sammenlign: Hvilke produkter er kvælstofrige (plæne)? Hvilke er fosforrige (blomster)?</li>
+                                        <li>Slå op: Hvad gør N (kvælstof), P (fosfor) og K (kalium) for planter?</li>
+                                        <li>Beregn: I en 10 kg pose med 12% N – hvor mange gram N er der?</li>
+                                        <li>Find verdens samlede fosforproduktion og beregn, hvor mange år reserverne rækker ved nuværende forbrug.</li>
+                                    </ol>
+                                    <p><strong>Databehandling:</strong> Tabel over NPK-indhold i de 5-6 produkter. Beregning af fosforindhold og reservers levetid.</p>
+                                    <p><strong>Diskussion:</strong> Hvad er "peak phosphorus"? Kan fosfor genanvendes fra spildevand?</p>
+                                </div>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+                <div class="resources">
+                    <h4>Digitale ressourcer:</h4>
+                    <ul>
+                        <li><span class="resource-tag tag-sim">SIMULERING</span><a href="https://phet.colorado.edu/da/simulations/greenhouse-effect" target="_blank">PhET: Drivhuseffekten</a> - Visualiser stofkredsloeb og miljoets baereevne - baggrundsviden for forstaaelse af fosforkredslobet og eutrofiering</li>
+                        <li><span class="resource-tag tag-video">VIDEO</span><a href="https://www.youtube.com/results?search_query=fosfor+goedning+eutrofiering+alger+miljo" target="_blank">Fosfor, goedning og eutrofiering forklaret</a> - Gennemgang af fosforkredslobet, landbrugets udledning og konsekvenserne for danske fjorde</li>
+                        <li><span class="resource-tag tag-video">DR</span><a href="https://www.dr.dk/drtv/soeg?q=fosfor+landbrug+vandmiljo+alger" target="_blank">DR DRTV: Fosfor og vandmiljo</a> - Find DR-udsendelser om fosforudledning fra landbrug, eutrofiering og iltsvind i danske fjorde</li>
+                    </ul>
+                </div>
+                <div class="focus-areas">
+                    <div class="focus-column fysik"><h4>Fysik-kemi</h4><ul><li>Fosforforeninger: fosfat (PO₄³⁻) og superfosfat</li><li>Opløselighed og ioners transport i jord og vand</li><li>Haber-Bosch-processen for kvælstofgødning</li><li>Kemisk analyse af næringsstoffer i vand</li></ul></div>
+                    <div class="focus-column geografi"><h4>Geografi</h4><ul><li>Marokko og Vestsahara: 70% af verdens fosforreserver</li><li>Global fødevaresikkerhed og gødningsafhængighed</li><li>Eutrofiering i danske fjorde (Mariager Fjord)</li><li>"Peak phosphorus" og fremtidigt ressourcepres</li></ul></div>
+                    <div class="focus-column biologi"><h4>Biologi</h4><ul><li>Fosfor i DNA, RNA og ATP</li><li>Planternes optag af fosfat via rødder og mykorrhiza</li><li>Eutrofiering: algeblomst → iltsvind → fiskedød</li><li>Fosforkredsløbet i naturen</li></ul></div>
+                </div>
+                <div class="sdg-section">
+                    <h4>FN's Verdensmål</h4>
+                    <div class="sdg-goals">
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-2.png" alt="Verdensmål 2"><p>Mål 2: Stop sult</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-6.png" alt="Verdensmål 6"><p>Mål 6: Rent vand og sanitet</p></div>
+                        <div class="sdg-goal"><img src="https://sdgs.un.org/sites/default/files/goals/goal-14.png" alt="Verdensmål 14"><p>Mål 14: Livet i havet</p></div>
+                    </div>
+                </div>
+            </article>
+
         </section>
 
         <!-- MODELLER -->
