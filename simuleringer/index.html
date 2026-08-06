@@ -5,69 +5,251 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simuleringer</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-    h1 {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 30px 20px 60px;
       color: #333;
-      border-bottom: 2px solid #0366d6;
-      padding-bottom: 10px;
     }
-    h2 {
-      color: #444;
-      margin-top: 30px;
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
     }
-    ul {
-      list-style: none;
-      padding: 0;
+    header {
+      text-align: center;
+      color: white;
+      margin-bottom: 35px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    li {
-      margin: 8px 0;
+    header h1 {
+      font-size: 2.4em;
+      margin: 0 0 8px;
     }
-    a {
-      color: #0366d6;
+    header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1.05em;
+    }
+    h2.section-title {
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      font-size: 1.5em;
+      margin: 45px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid rgba(255,255,255,0.5);
+    }
+    h2.section-title:first-of-type {
+      margin-top: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+    }
+    .thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9.5;
+      object-fit: cover;
+      background: #eef1f8;
+      border-bottom: 4px solid #667eea;
+    }
+    .thumb.gif {
+      object-fit: contain;
+      background: #0d0d12;
+    }
+    .card-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-body h3 {
+      margin: 0 0 8px;
+      color: #4a3a8a;
+      font-size: 1.2em;
+    }
+    .card-body p {
+      margin: 0 0 16px;
+      font-size: 0.94em;
+      color: #555;
+      flex: 1;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.72em;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+    .badge.sim { background: #e3f2fd; color: #1565c0; }
+    .badge.video { background: #ffebee; color: #c62828; }
+    .badge.extra { background: #fff9e6; color: #b8860b; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
       text-decoration: none;
-      font-size: 16px;
+      font-weight: bold;
+      padding: 10px 18px;
+      border-radius: 25px;
+      text-align: center;
+      font-size: 0.92em;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: opacity 0.2s ease;
     }
-    a:hover {
-      text-decoration: underline;
+    .btn:hover { opacity: 0.88; }
+    .grid.compact {
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     }
-    .file-icon {
-      margin-right: 8px;
-    }
+    .grid.compact .card-body { padding: 14px 16px 16px; }
+    .grid.compact .card-body h3 { font-size: 1.05em; }
+    .grid.compact .card-body p { font-size: 0.88em; }
   </style>
 </head>
 <body>
-  <h1>Simuleringer</h1>
+  <div class="wrap">
+    <header>
+      <h1>🔬 Simuleringer</h1>
+      <p>Interaktive simuleringer og forklaringer til naturfagsundervisningen</p>
+    </header>
 
-  <h2>HTML-filer</h2>
-  <ul>
-    <li><a href="straaling.html" class="file-icon">📄 straaling.html</a></li>
-    <li><a href="vandets_kredsloeb.html" class="file-icon">📄 vandets_kredsloeb.html</a></li>
-    <li><a href="lithium_atom_3d_2d.html" class="file-icon">📄 lithium_atom_3d_2d.html</a></li>
-    <li><a href="straaling_wordpress.html" class="file-icon">📄 straaling_wordpress.html</a></li>
-  </ul>
+    <h2 class="section-title">Simuleringer</h2>
+    <div class="grid">
 
-  <h2>Animationer</h2>
-  <ul>
-    <li><a href="lithium_2d.gif" class="file-icon">🖼️ lithium_2d.gif</a></li>
-    <li><a href="lithium_3d.gif" class="file-icon">🖼️ lithium_3d.gif</a></li>
-  </ul>
+      <div class="card">
+        <img class="thumb" src="thumbs/straaling.jpg" alt="Skærmbillede af stråling-simuleringen">
+        <div class="card-body">
+          <span class="badge sim">Simulering</span>
+          <h3>☢ Radioaktiv Stråling</h3>
+          <p>Vælg mellem alfa-, beta- og gammastråling, sæt materialer som papir, aluminium eller bly foran kilden, og se med en Geiger-tæller hvor godt strålingen trænger igennem.</p>
+          <a class="btn" href="straaling.html">Åbn simulering →</a>
+        </div>
+      </div>
 
-  <h2>Præsentationer</h2>
-  <ul>
-    <li><a href="lithium_atom.pptx" class="file-icon">📊 lithium_atom.pptx</a></li>
-  </ul>
+      <div class="card">
+        <img class="thumb" src="thumbs/vandets-kredsloeb.jpg" alt="Skærmbillede af vandets kredsløb-simuleringen">
+        <div class="card-body">
+          <span class="badge sim">Simulering</span>
+          <h3>💧 Vandets kredsløb</h3>
+          <p>Justér nedbør, fordampning og overfladeafstrømning med skydere, og se hvordan vandbalancen — nedbør, fordampning, afstrømning og nedsivning til grundvandet — ændrer sig i realtid.</p>
+          <a class="btn" href="vandets_kredsloeb.html">Åbn simulering →</a>
+        </div>
+      </div>
 
-  <h2>Videofiler</h2>
-  <ul>
-    <li><a href="Geiger.mp4" class="file-icon">🎥 Geiger.mp4</a></li>
-    <li><a href="vandets%20kredsloeb.mp4" class="file-icon">🎥 vandets kredsloeb.mp4</a></li>
-    <li><a href="atommodel.mp4" class="file-icon">🎥 atommodel.mp4</a></li>
-  </ul>
+      <div class="card">
+        <img class="thumb" src="thumbs/lithium-atom.jpg" alt="Skærmbillede af lithium atommodel-simuleringen">
+        <div class="card-body">
+          <span class="badge sim">Simulering</span>
+          <h3>⚛ Lithium – 3D og 2D atommodel</h3>
+          <p>Se lithiumatomet (Z=3) side om side som en roterbar 3D-model og som Bohrs klassiske 2D-skalmodel, med protoner, neutroner og elektroner tydeligt markeret.</p>
+          <a class="btn" href="lithium_atom_3d_2d.html">Åbn simulering →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img class="thumb" src="thumbs/atommodeller.jpg" alt="Skærmbillede af Tre Atommodeller-simuleringen">
+        <div class="card-body">
+          <span class="badge sim">Simulering</span>
+          <h3>Tre Atommodeller</h3>
+          <p>Rejsen fra Thomsons rosinbolle-model (1904) over Rutherfords kerneatom (1911) til Bohrs skalmodel (1913) — vist med et kulstofatom, og med mulighed for at sammenligne alle tre modeller side om side.</p>
+          <a class="btn" href="atommodeller-9klasse.html">Åbn simulering →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">Skærmoptagelser</h2>
+    <div class="grid">
+
+      <div class="card">
+        <img class="thumb" src="thumbs/video-straaling.jpg" alt="Skærmbillede fra optagelsen af stråling-simuleringen">
+        <div class="card-body">
+          <span class="badge video">Video</span>
+          <h3>🎥 Sådan blev strålingssimuleringen bygget</h3>
+          <p>Skærmoptagelse der viser, hvordan Geiger-simuleringen blev udviklet trin for trin med hjælp fra en AI-chat.</p>
+          <a class="btn" href="Geiger.mp4">Se video →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img class="thumb" src="thumbs/video-vandets.jpg" alt="Skærmbillede fra optagelsen af vandets kredsløb-simuleringen">
+        <div class="card-body">
+          <span class="badge video">Video</span>
+          <h3>🎥 Sådan blev vandets kredsløb bygget</h3>
+          <p>Skærmoptagelse der viser tilblivelsen af vandkredsløbs-simuleringen, fra idé til færdig interaktiv model.</p>
+          <a class="btn" href="vandets%20kredsloeb.mp4">Se video →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img class="thumb" src="thumbs/lithium-atom.jpg" alt="Skærmbillede af lithium atommodellen">
+        <div class="card-body">
+          <span class="badge video">Video</span>
+          <h3>🎥 Sådan blev atommodellen bygget</h3>
+          <p>Skærmoptagelse der viser udviklingen af den 3D/2D-animerede lithiummodel.</p>
+          <a class="btn" href="atommodel.mp4">Se video →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">Andre ressourcer</h2>
+    <div class="grid compact">
+
+      <div class="card">
+        <img class="thumb gif" src="lithium_2d.gif" alt="Animeret gif af Bohrs 2D-model for lithium">
+        <div class="card-body">
+          <span class="badge extra">Animation</span>
+          <h3>Lithium – 2D (gif)</h3>
+          <p>Animeret gif af Bohrs skalmodel for lithiumatomet.</p>
+          <a class="btn" href="lithium_2d.gif">Åbn gif →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img class="thumb gif" src="lithium_3d.gif" alt="Animeret gif af den roterende 3D-model for lithium">
+        <div class="card-body">
+          <span class="badge extra">Animation</span>
+          <h3>Lithium – 3D (gif)</h3>
+          <p>Animeret gif af den roterende 3D-model for lithiumatomet.</p>
+          <a class="btn" href="lithium_3d.gif">Åbn gif →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb gif" style="display:flex;align-items:center;justify-content:center;font-size:3em;background:#fff3cc;">📊</div>
+        <div class="card-body">
+          <span class="badge extra">Præsentation</span>
+          <h3>Lithiumatom (PowerPoint)</h3>
+          <p>PowerPoint-præsentation om lithiumatomets opbygning, velegnet til tavleundervisning.</p>
+          <a class="btn" href="lithium_atom.pptx">Download →</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 </body>
 </html>
