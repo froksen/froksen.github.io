@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tre Atommodeller — til 9. klasse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Spectral:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:        #efe5d0;
+    --ink:          #241f1b;
+    --ink-soft:     #5a5045;
+    --brass:        #a3782d;
+    --brass-light:  #c9a24b;
+    --nucleus:      #7c2e1c;
+    --electron:     #3c4a63;
+    --plum:         #6e2a3d;
+    --line:         rgba(36,31,27,0.22);
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(255,255,255,0.35), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Spectral', serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 2.5rem) 3.5rem;
+  }
+
+  /* ---------- Page header ---------- */
+
+  header.page-head{ text-align:center; margin-bottom: clamp(1.4rem, 3.5vw, 2.2rem); }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 0.9rem;
+  }
+  .eyebrow::before, .eyebrow::after{ content:"—"; margin: 0 0.6em; color: var(--brass-light); }
+
+  h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size: clamp(2.2rem, 5.4vw, 3.6rem);
+    line-height: 1.02;
+    margin: 0 0 0.4rem;
+  }
+
+  h2.subtitle{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1rem, 2.1vw, 1.3rem);
+    color: var(--ink-soft);
+    margin: 0 0 0.6rem;
+  }
+
+  .timeline{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    opacity: 0.85;
+  }
+
+  /* ---------- Tabs ---------- */
+
+  .tabs{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap: 0.4rem 0.2rem;
+    margin: clamp(1.6rem, 4vw, 2.4rem) 0;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0;
+  }
+
+  .tab{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--ink-soft);
+    padding: 0.7em 1em;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .tab:hover{ color: var(--ink); }
+  .tab.active{ color: var(--ink); border-bottom-color: var(--brass); }
+  .tab:focus-visible{ outline: 2px solid var(--brass); outline-offset: 2px; }
+  .tab--compare{ color: var(--nucleus); }
+  .tab--compare.active{ border-bottom-color: var(--nucleus); }
+
+  /* ---------- Models container ---------- */
+
+  #models{ display:block; }
+
+  #models[data-mode="compare"]{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.2rem);
+    align-items:start;
+  }
+
+  @media (max-width: 760px){
+    #models[data-mode="compare"]{ grid-template-columns: 1fr; }
+  }
+
+  /* hide non-active models in single-view modes */
+  #models[data-mode="thomson"] .model:not([data-model="thomson"]),
+  #models[data-mode="rutherford"] .model:not([data-model="rutherford"]),
+  #models[data-mode="bohr"] .model:not([data-model="bohr"]){
+    display:none;
+  }
+
+  .model{ text-align:center; }
+
+  /* section head (single view only) */
+  .section-head{ margin-bottom: 0.4rem; }
+  .section-head .eyebrow{ font-size:0.66rem; margin-bottom:0.6rem; }
+  .model-title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    margin: 0 0 1.2rem;
+  }
+  .model-title-en{
+    font-style: italic;
+    font-weight:500;
+    color: var(--ink-soft);
+    font-size: 0.62em;
+  }
+
+  /* mini header (compare view only) */
+  .mini-header{ display:none; margin-bottom: 0.7rem; }
+  .mini-year{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    color: var(--brass);
+    margin-bottom: 0.25rem;
+  }
+  .mini-name{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size: 1.25rem;
+  }
+
+  #models[data-mode="compare"] .section-head{ display:none; }
+  #models[data-mode="compare"] .mini-header{ display:block; cursor:pointer; }
+
+  /* ---------- Stage ---------- */
+
+  .stage-wrap{ display:flex; justify-content:center; margin: 0 0 1rem; }
+
+  .stage{
+    position: relative;
+    width: min(100%, 560px);
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+  }
+
+  #models[data-mode="compare"] .stage{ width:100%; }
+
+  canvas{ position:absolute; inset:0; width:100%; height:100%; }
+
+  svg.overlay{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+
+  #models[data-mode="compare"] svg.overlay,
+  #models[data-mode="compare"] .label{ display:none; }
+
+  .leader{ stroke: var(--ink-soft); stroke-width: 0.32; fill:none; stroke-dasharray: 1.15 1.15; }
+  .leader-dot{ fill: var(--ink-soft); }
+
+  .label{
+    position:absolute;
+    font-family:'JetBrains Mono', monospace;
+    font-size: clamp(0.58rem, 1.4vw, 0.68rem);
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    line-height:1.35;
+    max-width: 10em;
+    pointer-events:none;
+  }
+  .label small{
+    display:block;
+    color: var(--ink-soft);
+    font-family:'Spectral', serif;
+    font-style: italic;
+    font-size: 0.92em;
+    letter-spacing: 0;
+  }
+
+  /* ---------- Controls ---------- */
+
+  .controls{ display:flex; justify-content:center; align-items:center; gap: 0.9rem; margin: 0.9rem 0 0; }
+  #models[data-mode="compare"] .model .controls{ display:none; }
+
+  button.toggle{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.45em 1.1em;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  button.toggle:hover{ color: var(--ink); border-color: var(--brass); }
+  button.toggle:focus-visible{ outline: 2px solid var(--brass); outline-offset: 2px; }
+
+  .compare-controls{ display:none; justify-content:center; margin: 0.5rem 0 2.5rem; }
+  #models[data-mode="compare"] ~ .compare-controls{ display:flex; }
+
+  /* ---------- Captions ---------- */
+
+  .full-caption{ max-width: 34em; margin: 1.4rem auto 0; text-align:center; }
+  #models[data-mode="compare"] .full-caption{ display:none; }
+
+  .fig-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    color: var(--brass);
+    text-transform:uppercase;
+    display:block;
+    margin-bottom: 0.6rem;
+  }
+
+  .full-caption p{ font-size: 0.98rem; line-height: 1.65; color: var(--ink); margin: 0 0 0.7rem; }
+  .full-caption p.note{ font-style: italic; color: var(--ink-soft); font-size: 0.88rem; }
+
+  .mini-caption{
+    display:none;
+    max-width: 22em;
+    margin: 0 auto;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  #models[data-mode="compare"] .mini-caption{ display:block; }
+
+  hr.divider{ width: 46px; border: none; border-top: 1px solid var(--brass); margin: 2.5rem auto 1.75rem; }
+
+  footer.page-foot{
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.75;
+  }
+
+  @media (prefers-reduced-motion: reduce){ button.toggle{ display:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="page-head">
+    <p class="eyebrow">Fysik/kemi · 9. klasse · Atomets opbygning</p>
+    <h1>Tre Atommodeller</h1>
+    <h2 class="subtitle">Thomson → Rutherford → Bohr — tre forskellige bud på, hvordan et atom ser ud</h2>
+    <p class="timeline">Vist med kulstofatomet (C) — 6 protoner, 6 neutroner, 6 elektroner</p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Vælg atommodel">
+    <button class="tab active" data-view="thomson" role="tab" aria-selected="true">1904 · Thomson</button>
+    <button class="tab" data-view="rutherford" role="tab" aria-selected="false">1911 · Rutherford</button>
+    <button class="tab" data-view="bohr" role="tab" aria-selected="false">1913 · Bohr</button>
+    <button class="tab tab--compare" data-view="compare" role="tab" aria-selected="false">Sammenlign alle</button>
+  </nav>
+
+  <div id="models" data-mode="thomson">
+
+    <!-- ================= THOMSON ================= -->
+    <section class="model" data-model="thomson">
+      <div class="section-head">
+        <p class="eyebrow">J.J. Thomson · 1904</p>
+        <h2 class="model-title">Rosinbollemodellen <span class="model-title-en">— sådan troede man, atomet så ud</span></h2>
+      </div>
+      <div class="mini-header">
+        <span class="mini-year">1904</span>
+        <span class="mini-name">Thomson — Rosinbollemodellen</span>
+      </div>
+
+      <div class="stage-wrap">
+        <div class="stage" id="stage-thomson">
+          <canvas id="atom-thomson"></canvas>
+          <svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line id="lineElectron-thomson" class="leader" x1="14" y1="14" x2="50" y2="50"/>
+            <circle id="dotElectron-thomson" class="leader-dot" r="0.6" cx="50" cy="50"/>
+            <line class="leader" x1="86" y1="86" x2="68" y2="66"/>
+            <line class="leader" x1="50" y1="50" x2="80" y2="50"/>
+          </svg>
+          <div class="label" style="top:6%; left:3%; text-align:left;">
+            Elektron<br><small>kulstof har 6 stk. — negativt ladet</small>
+          </div>
+          <div class="label" style="bottom:8%; right:2%; text-align:right;">
+            Positiv ladning<br><small>“dejen” — spredt jævnt ud</small>
+          </div>
+          <div class="label" style="top:46%; left:50%; transform:translateX(6px); text-align:left;">
+            Atomets størrelse<br><small>ca. 10⁻¹⁰ m — utrolig lille!</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="toggle" id="toggleBtn-thomson" aria-pressed="false">Sæt animation på pause</button>
+      </div>
+
+      <figcaption class="full-caption">
+        <span class="fig-num">Fig. 1</span>
+        <p>Her ser du et kulstofatom (C), sådan som J.J. Thomson forestillede sig atomer i 1904. Han troede, at atomet var som en bolle med rosiner i. Selve bollen var positivt ladet, og de 6 elektroner (rosinerne), som kulstof har, lå spredt rundt inde i den. De to slags ladning opvejede hinanden, så atomet udadtil ikke havde nogen samlet ladning.</p>
+        <p class="note">Modellen holdt kun i 7 år. I 1911 viste et forsøg, at den var forkert.</p>
+      </figcaption>
+      <p class="mini-caption">6 elektroner spredt ud i en kugle af positiv ladning — som rosiner i en bolle.</p>
+    </section>
+
+    <!-- ================= RUTHERFORD ================= -->
+    <section class="model" data-model="rutherford">
+      <div class="section-head">
+        <p class="eyebrow">Ernest Rutherford · 1911</p>
+        <h2 class="model-title">Kernemodellen <span class="model-title-en">— atomet har en kerne</span></h2>
+      </div>
+      <div class="mini-header">
+        <span class="mini-year">1911</span>
+        <span class="mini-name">Rutherford — Kernemodellen</span>
+      </div>
+
+      <div class="stage-wrap">
+        <div class="stage" id="stage-rutherford">
+          <canvas id="atom-rutherford"></canvas>
+          <svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line class="leader" x1="50" y1="18" x2="50" y2="42"/>
+            <line id="lineElectron-rutherford" class="leader" x1="86" y1="18" x2="70" y2="35"/>
+            <circle id="dotElectron-rutherford" class="leader-dot" r="0.55" cx="70" cy="35"/>
+            <line class="leader" x1="10" y1="82" x2="4" y2="50"/>
+          </svg>
+          <div class="label" style="top:6%; left:39%; text-align:left;">
+            Atomkerne<br><small>6 protoner (kulstof) — næsten al massen</small>
+          </div>
+          <div class="label" style="top:6%; right:3%; text-align:right;">
+            Elektron<br><small>6 stk., kredser i det (næsten) tomme rum</small>
+          </div>
+          <div class="label" style="bottom:8%; left:2%; text-align:left;">
+            Alfapartikler<br><small>affyret mod en tynd guldfolie</small>
+          </div>
+          <div class="label" style="bottom:8%; right:2%; text-align:right;">
+            Spredning<br><small>enkelte kastes tilbage — beviset på kernen</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="toggle" id="toggleBtn-rutherford" aria-pressed="false">Sæt animation på pause</button>
+      </div>
+
+      <figcaption class="full-caption">
+        <span class="fig-num">Fig. 2</span>
+        <p>I 1911 beskød Rutherfords hold en tynd guldfolie med alfapartikler. De fleste fløj lige igennem, som forventet — men enkelte blev afbøjet kraftigt, nogle endda tilbage mod kilden. Det kunne kun forklares, hvis atomets positive ladning og masse var samlet i en lille, tæt kerne, omgivet af elektroner i et ellers næsten tomt rum. Her ser du et kulstofatom (C): en kerne med 6 protoner, omkranset af 6 elektroner.</p>
+        <p class="note">Modellen erstattede Thomsons rosinbollemodel og banede vejen for Bohrs atommodel i 1913.</p>
+      </figcaption>
+      <p class="mini-caption">Kulstofs 6 protoner sidder i en lille, tæt kerne — de 6 elektroner kredser langt udenom.</p>
+    </section>
+
+    <!-- ================= BOHR ================= -->
+    <section class="model" data-model="bohr">
+      <div class="section-head">
+        <p class="eyebrow">Niels Bohr · 1913</p>
+        <h2 class="model-title">Skalmodellen <span class="model-title-en">— elektronerne sidder i faste skaller</span></h2>
+      </div>
+      <div class="mini-header">
+        <span class="mini-year">1913</span>
+        <span class="mini-name">Bohr — Skalmodellen</span>
+      </div>
+
+      <div class="stage-wrap">
+        <div class="stage" id="stage-bohr">
+          <canvas id="atom-bohr"></canvas>
+          <svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line class="leader" x1="53" y1="50" x2="50" y2="50"/>
+            <line id="lineElectron-bohr" class="leader" x1="90" y1="10" x2="66" y2="20"/>
+            <circle id="dotElectron-bohr" class="leader-dot" r="0.55" cx="66" cy="20"/>
+            <line class="leader" x1="10" y1="90" x2="18" y2="70"/>
+          </svg>
+          <div class="label" style="top:47%; left:53%; text-align:left;">
+            Atomkerne<br><small>6 protoner + 6 neutroner (kulstof)</small>
+          </div>
+          <div class="label" style="top:4%; right:2%; text-align:right;">
+            Elektroner<br><small>2 i skal n=1, 4 i skal n=2</small>
+          </div>
+          <div class="label" style="bottom:4%; left:2%; text-align:left;">
+            Kvantespring<br><small>en elektron kan hoppe op til n=3</small>
+          </div>
+          <div class="label" style="bottom:4%; right:2%; text-align:right;">
+            Foton<br><small>lys udsendt ved fald til lavere bane</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="toggle" id="toggleBtn-bohr" aria-pressed="false">Sæt animation på pause</button>
+      </div>
+
+      <figcaption class="full-caption">
+        <span class="fig-num">Fig. 3</span>
+        <p>Bohr foreslog i 1913, at elektronerne kun kan bevæge sig i bestemte, faste baner omkring kernen — som trin på en trappe. Her ser du et kulstofatom (C): kernen har 6 protoner og 6 neutroner, og de 6 elektroner sidder i to skaller — 2 i den inderste (n=1) og 4 i den næste (n=2). En elektron kan hoppe op til en bane længere væk, hvis den optager præcis den rigtige mængde energi. Falder den ned igen, sender den energien fra sig som lys — en foton.</p>
+        <p class="note">Modellen bruges stadig i skolen i dag, selvom forskerne senere har fundet ud af, at det i virkeligheden er endnu mere kompliceret.</p>
+      </figcaption>
+      <p class="mini-caption">Kulstofs 6 elektroner sidder i to skaller: 2 tæt på kernen, 4 længere ude.</p>
+    </section>
+
+  </div>
+
+  <div class="compare-controls">
+    <button class="toggle" id="toggleAllBtn" aria-pressed="false">Sæt alle på pause</button>
+  </div>
+
+  <hr class="divider">
+  <footer class="page-foot">Interaktiv illustration · html5 canvas</footer>
+
+</div>
+
+<script>
+window.__atomModels = {};
+</script>
+
+<!-- ================= THOMSON SCRIPT ================= -->
+<script>
+(function(){
+  const canvas = document.getElementById('atom-thomson');
+  const ctx = canvas.getContext('2d');
+  const stage = document.getElementById('stage-thomson');
+  const lineElectron = document.getElementById('lineElectron-thomson');
+  const dotElectron = document.getElementById('dotElectron-thomson');
+  const toggleBtn = document.getElementById('toggleBtn-thomson');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let running = !reduceMotion;
+  let dpr = Math.max(1, window.devicePixelRatio || 1);
+  let size = 0;
+
+  function resize(){
+    const rect = stage.getBoundingClientRect();
+    size = rect.width;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const electrons = [
+    { orbit: 0.30, speed: 0.55, phase: 0.0,  wobA: 0.05, wobF: 1.3 },
+    { orbit: 0.62, speed: -0.38, phase: 1.1, wobA: 0.04, wobF: 1.7 },
+    { orbit: 0.46, speed: 0.42, phase: 2.4,  wobA: 0.06, wobF: 0.9 },
+    { orbit: 0.80, speed: -0.30, phase: 3.3, wobA: 0.03, wobF: 1.5 },
+    { orbit: 0.20, speed: 0.70, phase: 4.0,  wobA: 0.05, wobF: 2.1 },
+    { orbit: 0.55, speed: -0.50, phase: 0.7, wobA: 0.05, wobF: 1.9 },
+  ];
+  const TRACKED = 2;
+
+  const specks = [];
+  (function seedSpecks(){
+    for (let i=0; i<26; i++){
+      const a = Math.random()*Math.PI*2;
+      const r = Math.sqrt(Math.random())*0.86;
+      specks.push({ x: Math.cos(a)*r, y: Math.sin(a)*r, phase: Math.random()*Math.PI*2, speed: 0.6 + Math.random()*0.6 });
+    }
+  })();
+
+  let t0 = performance.now();
+  let elapsed = 0;
+
+  function draw(now){
+    if (running) elapsed += (now - t0) / 1000;
+    t0 = now;
+
+    const cx = size/2, cy = size/2;
+    const R = size * 0.36;
+
+    ctx.clearRect(0,0,size,size);
+
+    const glow = ctx.createRadialGradient(cx,cy,R*0.2,cx,cy,R*1.35);
+    glow.addColorStop(0, 'rgba(244,232,186,0.55)');
+    glow.addColorStop(1, 'rgba(244,232,186,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(cx,cy,R*1.35,0,Math.PI*2);
+    ctx.fill();
+
+    const fill = ctx.createRadialGradient(cx-R*0.3, cy-R*0.3, R*0.1, cx, cy, R);
+    fill.addColorStop(0, '#faf2d4');
+    fill.addColorStop(0.7, '#f0e0ac');
+    fill.addColorStop(1, '#e0c584');
+    ctx.fillStyle = fill;
+    ctx.beginPath();
+    ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(163,120,45,0.35)';
+    ctx.lineWidth = size*0.0016;
+    for (let i=0;i<5;i++){
+      ctx.beginPath();
+      ctx.arc(cx,cy, R - i*size*0.006, Math.PI*0.55, Math.PI*1.05);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    ctx.strokeStyle = '#a3782d';
+    ctx.lineWidth = size*0.0035;
+    ctx.beginPath();
+    ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.stroke();
+
+    ctx.font = `${size*0.028}px 'JetBrains Mono', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    specks.forEach(s=>{
+      const flicker = 0.35 + 0.35*(0.5+0.5*Math.sin(elapsed*s.speed + s.phase));
+      ctx.fillStyle = `rgba(163,120,45,${flicker.toFixed(3)})`;
+      ctx.fillText('+', cx + s.x*R, cy + s.y*R);
+    });
+
+    ctx.strokeStyle = 'rgba(90,80,69,0.16)';
+    ctx.lineWidth = size*0.0018;
+    ctx.setLineDash([size*0.006, size*0.008]);
+    electrons.forEach(e=>{
+      ctx.beginPath();
+      ctx.arc(cx,cy, R*e.orbit, 0, Math.PI*2);
+      ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    let trackedPos = null;
+    electrons.forEach((e, idx)=>{
+      const ang = e.phase + elapsed*e.speed;
+      const wob = 1 + e.wobA*Math.sin(elapsed*e.wobF + e.phase);
+      const rr = R*e.orbit*wob;
+      const ex = cx + Math.cos(ang)*rr;
+      const ey = cy + Math.sin(ang)*rr;
+
+      const rad = size*0.019;
+      const grad = ctx.createRadialGradient(ex-rad*0.3, ey-rad*0.3, rad*0.1, ex, ey, rad);
+      grad.addColorStop(0, '#90405a');
+      grad.addColorStop(1, '#5c2233');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(ex, ey, rad, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(36,31,27,0.35)';
+      ctx.lineWidth = size*0.0012;
+      ctx.stroke();
+
+      if (idx === TRACKED) trackedPos = {x: ex, y: ey};
+    });
+
+    if (trackedPos){
+      const px = (trackedPos.x/size)*100;
+      const py = (trackedPos.y/size)*100;
+      lineElectron.setAttribute('x2', px.toFixed(2));
+      lineElectron.setAttribute('y2', py.toFixed(2));
+      dotElectron.setAttribute('cx', px.toFixed(2));
+      dotElectron.setAttribute('cy', py.toFixed(2));
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  function setRunning(v){
+    running = v;
+    toggleBtn.textContent = running ? 'Sæt animation på pause' : 'Genoptag animation';
+    toggleBtn.setAttribute('aria-pressed', String(!running));
+  }
+  toggleBtn.addEventListener('click', ()=> setRunning(!running));
+  if (reduceMotion) setRunning(false);
+
+  window.__atomModels.thomson = { isRunning: ()=>running, setRunning };
+})();
+</script>
+
+<!-- ================= RUTHERFORD SCRIPT ================= -->
+<script>
+(function(){
+  const canvas = document.getElementById('atom-rutherford');
+  const ctx = canvas.getContext('2d');
+  const stage = document.getElementById('stage-rutherford');
+  const lineElectron = document.getElementById('lineElectron-rutherford');
+  const dotElectron = document.getElementById('dotElectron-rutherford');
+  const toggleBtn = document.getElementById('toggleBtn-rutherford');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let running = !reduceMotion;
+  let dpr = Math.max(1, window.devicePixelRatio || 1);
+  let W = 0, H = 0;
+
+  function resize(){
+    const rect = stage.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const electrons = [
+    { orbitFx: 0.34, orbitFy: 0.62, speed: 0.32, phase: 0.4 },
+    { orbitFx: 0.46, orbitFy: 0.80, speed: -0.24, phase: 2.6 },
+    { orbitFx: 0.27, orbitFy: 0.46, speed: 0.44, phase: 4.2 },
+    { orbitFx: 0.52, orbitFy: 0.34, speed: -0.36, phase: 1.6 },
+    { orbitFx: 0.66, orbitFy: 0.56, speed: 0.27, phase: 5.4 },
+    { orbitFx: 0.38, orbitFy: 0.70, speed: -0.40, phase: 3.5 },
+  ];
+  const TRACKED = 0;
+
+  let particles = [];
+  let spawnTimer = 0;
+
+  function spawnParticle(){
+    const nearBand = (Math.random() < 0.55);
+    let y;
+    if (nearBand){ y = H/2 + (Math.random()-0.5) * H*0.22; }
+    else { y = Math.random() * H; }
+    particles.push({ x: -6, y: y, vx: W*0.30, vy: 0, trail: [] });
+  }
+
+  function stepParticles(dt){
+    const cx = W/2, cy = H/2;
+    const interactionR = Math.min(W,H) * 0.34;
+    const k = Math.min(W,H) * 4200;
+
+    for (let i = particles.length - 1; i >= 0; i--){
+      const p = particles[i];
+      const dx = p.x - cx, dy = p.y - cy;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+
+      if (dist < interactionR){
+        const safeDist = Math.max(dist, Math.min(W,H)*0.018);
+        const force = k / (safeDist*safeDist);
+        p.vx += (dx/safeDist) * force * dt;
+        p.vy += (dy/safeDist) * force * dt;
+      }
+
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+
+      p.trail.push({x:p.x, y:p.y});
+      if (p.trail.length > 26) p.trail.shift();
+
+      if (p.x > W+15 || p.x < -15 || p.y < -15 || p.y > H+15){ particles.splice(i,1); }
+    }
+  }
+
+  function drawParticles(){
+    particles.forEach(p=>{
+      if (p.trail.length < 2) return;
+      ctx.beginPath();
+      ctx.moveTo(p.trail[0].x, p.trail[0].y);
+      for (let j=1;j<p.trail.length;j++) ctx.lineTo(p.trail[j].x, p.trail[j].y);
+      const grad = ctx.createLinearGradient(p.trail[0].x, p.trail[0].y, p.x, p.y);
+      grad.addColorStop(0, 'rgba(207,138,60,0)');
+      grad.addColorStop(1, 'rgba(207,138,60,0.75)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = Math.min(W,H)*0.006;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      ctx.fillStyle = '#cf8a3c';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.min(W,H)*0.009, 0, Math.PI*2);
+      ctx.fill();
+    });
+  }
+
+  let t0 = performance.now();
+  let elapsed = 0;
+
+  function draw(now){
+    const dt = Math.min((now - t0)/1000, 0.05);
+    t0 = now;
+    if (running){
+      elapsed += dt;
+      spawnTimer += dt;
+      if (spawnTimer > 0.22 && particles.length < 11){ spawnTimer = 0; spawnParticle(); }
+      stepParticles(dt);
+    }
+
+    const cx = W/2, cy = H/2;
+    const nucR = Math.min(W,H) * 0.032;
+    const emptyR = Math.min(W,H) * 0.46;
+
+    ctx.clearRect(0,0,W,H);
+
+    ctx.strokeStyle = 'rgba(90,80,69,0.16)';
+    ctx.lineWidth = Math.min(W,H)*0.0018;
+    ctx.setLineDash([Math.min(W,H)*0.006, Math.min(W,H)*0.009]);
+    ctx.beginPath();
+    ctx.arc(cx,cy,emptyR,0,Math.PI*2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = 'rgba(60,74,99,0.18)';
+    ctx.lineWidth = Math.min(W,H)*0.0016;
+    ctx.setLineDash([Math.min(W,H)*0.005, Math.min(W,H)*0.008]);
+    electrons.forEach(e=>{
+      ctx.beginPath();
+      ctx.ellipse(cx,cy, emptyR*e.orbitFx, emptyR*e.orbitFy, 0, 0, Math.PI*2);
+      ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    drawParticles();
+
+    const glow = ctx.createRadialGradient(cx,cy,nucR*0.5,cx,cy,nucR*4.2);
+    glow.addColorStop(0, 'rgba(177,81,46,0.45)');
+    glow.addColorStop(1, 'rgba(177,81,46,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(cx,cy,nucR*4.2,0,Math.PI*2);
+    ctx.fill();
+
+    const nucGrad = ctx.createRadialGradient(cx-nucR*0.3, cy-nucR*0.3, nucR*0.1, cx, cy, nucR);
+    nucGrad.addColorStop(0, '#c96b3f');
+    nucGrad.addColorStop(1, '#6e2917');
+    ctx.fillStyle = nucGrad;
+    ctx.beginPath();
+    ctx.arc(cx,cy,nucR,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(36,31,27,0.4)';
+    ctx.lineWidth = Math.min(W,H)*0.0015;
+    ctx.stroke();
+
+    let trackedPos = null;
+    electrons.forEach((e, idx)=>{
+      const ang = e.phase + elapsed*e.speed;
+      const ex = cx + Math.cos(ang)*emptyR*e.orbitFx;
+      const ey = cy + Math.sin(ang)*emptyR*e.orbitFy;
+      const rad = Math.min(W,H)*0.014;
+
+      const grad = ctx.createRadialGradient(ex-rad*0.3, ey-rad*0.3, rad*0.1, ex, ey, rad);
+      grad.addColorStop(0, '#5a6d8e');
+      grad.addColorStop(1, '#2c3648');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(ex, ey, rad, 0, Math.PI*2);
+      ctx.fill();
+
+      if (idx === TRACKED) trackedPos = {x: ex, y: ey};
+    });
+
+    if (trackedPos){
+      const px = (trackedPos.x/W)*100;
+      const py = (trackedPos.y/H)*100;
+      lineElectron.setAttribute('x2', px.toFixed(2));
+      lineElectron.setAttribute('y2', py.toFixed(2));
+      dotElectron.setAttribute('cx', px.toFixed(2));
+      dotElectron.setAttribute('cy', py.toFixed(2));
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  for (let i=0;i<4;i++) spawnParticle();
+  requestAnimationFrame(draw);
+
+  function setRunning(v){
+    running = v;
+    toggleBtn.textContent = running ? 'Sæt animation på pause' : 'Genoptag animation';
+    toggleBtn.setAttribute('aria-pressed', String(!running));
+  }
+  toggleBtn.addEventListener('click', ()=> setRunning(!running));
+  if (reduceMotion) setRunning(false);
+
+  window.__atomModels.rutherford = { isRunning: ()=>running, setRunning };
+})();
+</script>
+
+<!-- ================= BOHR SCRIPT ================= -->
+<script>
+(function(){
+  const canvas = document.getElementById('atom-bohr');
+  const ctx = canvas.getContext('2d');
+  const stage = document.getElementById('stage-bohr');
+  const lineElectron = document.getElementById('lineElectron-bohr');
+  const dotElectron = document.getElementById('dotElectron-bohr');
+  const toggleBtn = document.getElementById('toggleBtn-bohr');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let running = !reduceMotion;
+  let dpr = Math.max(1, window.devicePixelRatio || 1);
+  let size = 0;
+
+  function resize(){
+    const rect = stage.getBoundingClientRect();
+    size = rect.width;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const orbitFrac = { 1: 0.12, 2: 0.28, 3: 0.46 };
+  const transitionColor = { 3: 'hsl(258, 62%, 62%)' };
+
+  function angularSpeed(n){ return 1.1 / Math.pow(n, 1.5); }
+
+  // Kulstof (C): 2 elektroner i skal n=1, 4 elektroner i skal n=2.
+  // 5 af dem kredser roligt på fast plads; den 6. ("demo") viser,
+  // hvordan en elektron kan springe midlertidigt ud til n=3 og tilbage.
+  const staticElectrons = [
+    { shell: 1, phase: 0 },
+    { shell: 1, phase: Math.PI },
+    { shell: 2, phase: 0 },
+    { shell: 2, phase: Math.PI*2/3 },
+    { shell: 2, phase: Math.PI*4/3 },
+  ];
+  const electron = { shell: 2, theta: Math.PI*1.05, timer: 0, dwell: 3.2, flashTimer: 0 };
+
+  let photons = [];
+  let nucleusFlash = 0;
+  let elapsed = 0;
+
+  function rand(a,b){ return a + Math.random()*(b-a); }
+
+  function triggerAbsorb(){
+    const target = 3;
+    const color = transitionColor[target];
+    const cx = size/2, cy = size/2;
+    const edgeAngle = Math.random()*Math.PI*2;
+    const startX = cx + Math.cos(edgeAngle)*size*0.62;
+    const startY = cy + Math.sin(edgeAngle)*size*0.62;
+    const targetX = cx + Math.cos(electron.theta)*size*orbitFrac[target];
+    const targetY = cy + Math.sin(electron.theta)*size*orbitFrac[target];
+    const dur = 0.45;
+    photons.push({ x: startX, y: startY, vx: (targetX-startX)/dur, vy: (targetY-startY)/dur, color, life: 0, maxLife: dur, mode:'in' });
+    electron.pendingTarget = target;
+    electron.pendingDelay = dur;
+  }
+
+  function triggerEmit(){
+    const color = transitionColor[3];
+    const cx = size/2, cy = size/2;
+    const ex = cx + Math.cos(electron.theta)*size*orbitFrac[electron.shell];
+    const ey = cy + Math.sin(electron.theta)*size*orbitFrac[electron.shell];
+    const dirx = Math.cos(electron.theta), diry = Math.sin(electron.theta);
+    const speed = size*0.55;
+    photons.push({ x: ex, y: ey, vx: dirx*speed, vy: diry*speed, color, life:0, maxLife: 0.9, mode:'out' });
+    electron.shell = 2;
+    electron.timer = 0;
+    electron.dwell = rand(2.8, 4.2);
+    nucleusFlash = 1;
+  }
+
+  let t0 = performance.now();
+
+  function update(dt){
+    elapsed += dt;
+    electron.theta += angularSpeed(electron.shell)*dt;
+
+    if (electron.pendingTarget){
+      electron.pendingDelay -= dt;
+      if (electron.pendingDelay <= 0){
+        electron.shell = electron.pendingTarget;
+        electron.pendingTarget = null;
+        electron.timer = 0;
+        electron.dwell = rand(1.3, 2.3);
+        electron.flashTimer = 0.35;
+      }
+    } else {
+      electron.timer += dt;
+      if (electron.shell === 2 && electron.timer > electron.dwell){
+        triggerAbsorb();
+        electron.timer = -9999;
+      } else if (electron.shell === 3 && electron.timer > electron.dwell){
+        triggerEmit();
+      }
+    }
+
+    if (electron.flashTimer > 0) electron.flashTimer -= dt;
+    if (nucleusFlash > 0) nucleusFlash -= dt*1.4;
+
+    for (let i = photons.length-1; i>=0; i--){
+      const p = photons[i];
+      p.x += p.vx*dt; p.y += p.vy*dt;
+      p.life += dt;
+      if (p.life > p.maxLife) photons.splice(i,1);
+    }
+  }
+
+  function drawOrbit(cx, cy, r, n){
+    ctx.strokeStyle = 'rgba(90,80,69,0.4)';
+    ctx.lineWidth = size*0.0022;
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.stroke();
+
+    ctx.fillStyle = 'rgba(90,80,69,0.65)';
+    ctx.font = `${size*0.026}px 'JetBrains Mono', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('n=' + n, cx, cy - r - size*0.028);
+  }
+
+  function drawElectronAt(ex, ey, rad){
+    const grad = ctx.createRadialGradient(ex-rad*0.3, ey-rad*0.3, rad*0.1, ex, ey, rad);
+    grad.addColorStop(0, '#5a6d8e');
+    grad.addColorStop(1, '#2c3648');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(ex, ey, rad, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  function draw(now){
+    const dt = Math.min((now - t0)/1000, 0.05);
+    t0 = now;
+    if (running) update(dt);
+
+    const cx = size/2, cy = size/2;
+
+    ctx.clearRect(0,0,size,size);
+
+    [1,2,3].forEach(n => drawOrbit(cx, cy, size*orbitFrac[n], n));
+
+    photons.forEach(p=>{
+      const t = p.life / p.maxLife;
+      const alpha = p.mode === 'out' ? (1-t) : Math.min(1, t*3);
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, alpha);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size*0.012, 0, Math.PI*2);
+      ctx.fill();
+      ctx.globalAlpha = Math.max(0, alpha*0.35);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size*0.026, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    const flash = Math.max(0, nucleusFlash);
+    const nucR = size*0.038 * (1 + flash*0.5);
+    const nucGrad = ctx.createRadialGradient(cx-nucR*0.3, cy-nucR*0.3, nucR*0.1, cx, cy, nucR);
+    nucGrad.addColorStop(0, '#c96b3f');
+    nucGrad.addColorStop(1, '#6e2917');
+    ctx.fillStyle = nucGrad;
+    ctx.beginPath();
+    ctx.arc(cx,cy,nucR,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(36,31,27,0.4)';
+    ctx.lineWidth = size*0.0015;
+    ctx.stroke();
+
+    // de 5 faste elektroner (2 i n=1, 3 i n=2)
+    const staticRad = size*0.015;
+    staticElectrons.forEach(e=>{
+      const ang = e.phase + elapsed*angularSpeed(e.shell);
+      const ex = cx + Math.cos(ang)*size*orbitFrac[e.shell];
+      const ey = cy + Math.sin(ang)*size*orbitFrac[e.shell];
+      drawElectronAt(ex, ey, staticRad);
+    });
+
+    // demo-elektronen, som springer mellem n=2 og n=3
+    const r = size*orbitFrac[electron.shell];
+    const ex = cx + Math.cos(electron.theta)*r;
+    const ey = cy + Math.sin(electron.theta)*r;
+    const flashE = Math.max(0, electron.flashTimer)/0.35;
+    const rad = size*0.016*(1+flashE*0.8);
+
+    if (flashE > 0){
+      ctx.save();
+      ctx.globalAlpha = flashE*0.5;
+      ctx.fillStyle = '#f4e8ba';
+      ctx.beginPath();
+      ctx.arc(ex,ey, rad*2.6, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    drawElectronAt(ex, ey, rad);
+
+    const px = (ex/size)*100, py = (ey/size)*100;
+    lineElectron.setAttribute('x2', px.toFixed(2));
+    lineElectron.setAttribute('y2', py.toFixed(2));
+    dotElectron.setAttribute('cx', px.toFixed(2));
+    dotElectron.setAttribute('cy', py.toFixed(2));
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  function setRunning(v){
+    running = v;
+    toggleBtn.textContent = running ? 'Sæt animation på pause' : 'Genoptag animation';
+    toggleBtn.setAttribute('aria-pressed', String(!running));
+  }
+  toggleBtn.addEventListener('click', ()=> setRunning(!running));
+  if (reduceMotion) setRunning(false);
+
+
+  window.__atomModels.bohr = { isRunning: ()=>running, setRunning };
+})();
+</script>
+
+<!-- ================= TAB CONTROLLER ================= -->
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.tab');
+  const models = document.getElementById('models');
+  const toggleAllBtn = document.getElementById('toggleAllBtn');
+
+  function setView(view){
+    models.setAttribute('data-mode', view);
+    tabs.forEach(t=>{
+      const active = t.dataset.view === view;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', String(active));
+    });
+    requestAnimationFrame(()=> window.dispatchEvent(new Event('resize')));
+  }
+
+  tabs.forEach(t=> t.addEventListener('click', ()=> setView(t.dataset.view)));
+
+  document.querySelectorAll('.mini-header').forEach(mh=>{
+    mh.addEventListener('click', ()=>{
+      const model = mh.closest('.model').dataset.model;
+      setView(model);
+    });
+  });
+
+  toggleAllBtn.addEventListener('click', ()=>{
+    const reg = window.__atomModels || {};
+    const keys = Object.keys(reg);
+    const anyRunning = keys.some(k=> reg[k].isRunning());
+    const newState = !anyRunning;
+    keys.forEach(k=> reg[k].setRunning(newState));
+    toggleAllBtn.textContent = newState ? 'Sæt alle på pause' : 'Afspil alle';
+    toggleAllBtn.setAttribute('aria-pressed', String(!newState));
+  });
+
+  setView('thomson');
+})();
+</script>
+
+</body>
+</html>
