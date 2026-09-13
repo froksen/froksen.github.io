@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infektionssimulator – Immunforsvaret i aktion</title>
+<style>
+  :root{
+    --bg: #EEF3F5;
+    --navy: #16324F;
+    --navy-light: #234a6e;
+    --panel: #FFFFFF;
+    --panel-border: #D7E1E6;
+    --text: #1C2B36;
+    --text-soft: #52626C;
+    --blue: #2F7DA6;
+    --blue-dark: #1F5C80;
+    --bacteria: #6BAA3C;
+    --bacteria-dark: #3F6B22;
+    --virus: #8E44AD;
+    --virus-dark: #5B2C6F;
+    --wbc: #EAF6FF;
+    --wbc-line: #2F7DA6;
+    --lymph: #EDE3FF;
+    --lymph-line: #7B4FCB;
+    --warn: #C0392B;
+    --warn-bg: #FBE4E4;
+    --good: #2E7D32;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.45;
+  }
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:18px 24px;
+  }
+  header h1{
+    margin:0;
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:400;
+    font-size:26px;
+    letter-spacing:0.2px;
+  }
+  header p{
+    margin:6px 0 0;
+    color:#C9D9E5;
+    font-size:14px;
+    max-width:760px;
+  }
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:20px;
+    display:grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap:20px;
+  }
+  @media (max-width: 880px){
+    .wrap{grid-template-columns: 1fr;}
+  }
+  .stage-panel{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    padding:14px;
+  }
+  .tabs{
+    display:flex;
+    gap:6px;
+    margin-bottom:12px;
+    border-bottom:1px solid var(--panel-border);
+    flex-wrap:wrap;
+  }
+  .tab{
+    background:transparent;
+    border:none;
+    border-bottom:3px solid transparent;
+    border-radius:0;
+    padding:10px 14px 12px;
+    font-size:14.5px;
+    color:var(--text-soft);
+    cursor:pointer;
+  }
+  .tab:hover{color:var(--text);}
+  .tab.active{
+    color:var(--navy);
+    font-weight:600;
+    border-bottom-color:var(--blue);
+  }
+  .canvas-frame{
+    position:relative;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid var(--panel-border);
+  }
+  canvas{
+    display:block;
+    width:100%;
+    height:auto;
+    background:#FBE4E4;
+  }
+  .mode-note{
+    margin-top:12px;
+    padding:10px 14px;
+    background:#F3F8FA;
+    border-radius:6px;
+    font-size:13.5px;
+    color:var(--text-soft);
+  }
+  .mode-note b{color:var(--text);}
+
+  .graph-frame{
+    margin-top:12px;
+    border:1px solid var(--panel-border);
+    border-radius:8px;
+    overflow:hidden;
+    background:#fff;
+  }
+  #graphCanvas{
+    display:block;
+    width:100%;
+    height:auto;
+    background:#FDFEFE;
+  }
+  .graph-legend{
+    display:flex;
+    gap:18px;
+    padding:8px 12px;
+    font-size:12.5px;
+    color:var(--text-soft);
+    border-top:1px solid var(--panel-border);
+  }
+  .graph-legend span{display:flex; align-items:center; gap:6px;}
+  .line-swatch{width:16px; height:0; border-top:3px solid; display:inline-block;}
+
+  .phase-bar{
+    margin-top:12px;
+    padding:10px 14px;
+    background:#F3F8FA;
+    border-left:4px solid var(--blue);
+    border-radius:4px;
+    font-size:14.5px;
+    min-height:20px;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .phase-bar.win{border-left-color:#3F8F3F; background:#EEF7EE;}
+  .phase-bar.warn{border-left-color:var(--warn); background:var(--warn-bg);}
+
+  .action-note{
+    margin-top:10px;
+    padding:9px 14px;
+    background:#F6F2FF;
+    border-left:4px solid var(--lymph-line);
+    border-radius:4px;
+    font-size:13.5px;
+    color:var(--text-soft);
+    display:none;
+  }
+  .action-note.show{display:block;}
+
+  .legend{
+    display:flex;
+    gap:16px;
+    margin-top:10px;
+    flex-wrap:wrap;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:12px;height:12px;border-radius:50%;display:inline-block;}
+  .dot.b{background:var(--bacteria); border:1.5px solid var(--bacteria-dark);}
+  .dot.v{background:var(--virus); border:1.5px solid var(--virus-dark);}
+  .dot.w{background:var(--wbc); border:1.5px solid var(--wbc-line);}
+  .dot.l{background:var(--lymph); border:1.5px solid var(--lymph-line);}
+
+  .side{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  .card h2{
+    font-family:Georgia,serif;
+    font-weight:400;
+    font-size:18px;
+    margin:0 0 10px;
+    color:var(--navy);
+  }
+  .stats{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .stat{
+    background:#F3F8FA;
+    border-radius:6px;
+    padding:8px 10px;
+  }
+  .stat .num{font-size:20px; font-weight:600; color:var(--navy);}
+  .stat .label{font-size:12px; color:var(--text-soft);}
+
+  .btn-row{display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;}
+  button{
+    font-family:inherit;
+    font-size:13.5px;
+    border:none;
+    border-radius:6px;
+    padding:10px 14px;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  button.primary{background:var(--blue); color:#fff;}
+  button.primary:hover{background:var(--blue-dark);}
+  button.secondary{background:#E3ECF0; color:var(--navy);}
+  button.secondary:hover{background:#d3e0e6;}
+  button.accent{background:var(--lymph-line); color:#fff;}
+  button.accent:hover{background:#623da3;}
+  button:disabled{opacity:.5; cursor:not-allowed;}
+
+  .slider-block{margin-bottom:14px;}
+  .slider-block label{
+    display:flex;
+    justify-content:space-between;
+    font-size:13.5px;
+    color:var(--text-soft);
+    margin-bottom:4px;
+  }
+  .slider-block label b{color:var(--text); font-weight:600;}
+  input[type=range]{width:100%; accent-color:var(--blue);}
+
+  .steps{margin:0; padding-left:0; list-style:none; font-size:13.5px;}
+  .steps li{
+    padding:8px 0 8px 26px;
+    position:relative;
+    border-bottom:1px solid #EEF1F2;
+    color:var(--text-soft);
+  }
+  .steps li:last-child{border-bottom:none;}
+  .steps li b{color:var(--text);}
+  .steps li .num{
+    position:absolute; left:0; top:8px;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--blue); color:#fff;
+    font-size:11px; text-align:center; line-height:18px;
+  }
+  footer{
+    text-align:center;
+    color:var(--text-soft);
+    font-size:12px;
+    padding:18px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Infektionssimulator</h1>
+  <p>Se hvordan sygdomsfremkaldende mikroorganismer trænger ind i vævet, og hvordan immunforsvaret reagerer — fra det hurtige, medfødte forsvar til antistoffer, feber, vaccination og medicin.</p>
+</header>
+
+<div class="wrap">
+
+  <!-- VENSTRE: SIMULATION -->
+  <div class="stage-panel">
+    <div class="tabs">
+      <button class="tab active" data-mode="healthy">Sundt immunforsvar</button>
+      <button class="tab" data-mode="cancer">Nedsat immunforsvar (fx kræft)</button>
+      <button class="tab" data-mode="virus">Virusinfektion</button>
+    </div>
+
+    <div class="canvas-frame">
+      <canvas id="stage" width="800" height="500"></canvas>
+    </div>
+
+    <div class="mode-note" id="modeNote"></div>
+
+    <div class="graph-frame">
+      <canvas id="graphCanvas" width="800" height="140"></canvas>
+      <div class="graph-legend">
+        <span><i class="line-swatch" style="border-color:#B23A2E"></i> Sygdomsfremkaldende mikroorganismer</span>
+        <span><i class="line-swatch" style="border-color:#2F7DA6"></i> Forsvarsceller i alt (makrofager + lymfocytter)</span>
+      </div>
+    </div>
+
+    <div id="phaseBar" class="phase-bar">Klar til forsøg.</div>
+    <div id="actionNote" class="action-note"></div>
+
+    <div class="legend" id="legendRow">
+      <span><i class="dot b" id="pathogenDot"></i> <span id="pathogenLegendLabel">Bakterie</span></span>
+      <span><i class="dot w"></i> Hvidt blodlegeme (makrofag)</span>
+      <span><i class="dot l"></i> Lymfocyt (antistof-respons)</span>
+      <span>🔴 Sårets indgangspunkt</span>
+    </div>
+  </div>
+
+  <!-- HØJRE: KONTROL + INFO -->
+  <div class="side">
+
+    <div class="card">
+      <h2>Status</h2>
+      <div class="stats">
+        <div class="stat"><div class="num" id="statBact">0</div><div class="label" id="pathogenLabel">Bakterier</div></div>
+        <div class="stat"><div class="num" id="statWbc">0</div><div class="label">Makrofager</div></div>
+        <div class="stat"><div class="num" id="statLymph">0</div><div class="label">Lymfocytter</div></div>
+        <div class="stat"><div class="num" id="statKills">0</div><div class="label">Nedkæmpet i alt</div></div>
+        <div class="stat"><div class="num" id="statTemp">36.6°C</div><div class="label">Kropstemperatur</div></div>
+        <div class="stat"><div class="num" id="statTime">0s</div><div class="label">Tid siden smitte</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="primary" id="btnStart">Start infektion</button>
+        <button class="secondary" id="btnReset">Nulstil</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Handlinger</h2>
+      <div class="btn-row">
+        <button class="accent" id="btnVaccinate">Vaccinér (før smitte)</button>
+        <button class="secondary" id="btnAntibiotics">Giv antibiotika</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Indstillinger</h2>
+      <div class="slider-block">
+        <label>Formeringshastighed <b id="growVal">middel</b></label>
+        <input type="range" id="growthRate" min="1" max="10" value="5">
+      </div>
+      <div class="slider-block">
+        <label>Immunforsvarets styrke <b id="immuneVal">middel</b></label>
+        <input type="range" id="immuneStrength" min="1" max="10" value="5">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Hvad sker der?</h2>
+      <ol class="steps" id="stepsList"></ol>
+    </div>
+
+  </div>
+</div>
+
+<footer>Forenklet biologisk model til undervisningsbrug — virkelighedens immunforsvar involverer flere celletyper og processer end vist her.</footer>
+
+<script>
+(function(){
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const graphCanvas = document.getElementById('graphCanvas');
+  const gctx = graphCanvas.getContext('2d');
+  const GW = graphCanvas.width, GH = graphCanvas.height;
+
+  const btnStart = document.getElementById('btnStart');
+  const btnReset = document.getElementById('btnReset');
+  const btnVaccinate = document.getElementById('btnVaccinate');
+  const btnAntibiotics = document.getElementById('btnAntibiotics');
+  const growthSlider = document.getElementById('growthRate');
+  const immuneSlider = document.getElementById('immuneStrength');
+  const growVal = document.getElementById('growVal');
+  const immuneVal = document.getElementById('immuneVal');
+  const phaseBar = document.getElementById('phaseBar');
+  const actionNote = document.getElementById('actionNote');
+
+  const statBact = document.getElementById('statBact');
+  const statWbc = document.getElementById('statWbc');
+  const statLymph = document.getElementById('statLymph');
+  const statKills = document.getElementById('statKills');
+  const statTemp = document.getElementById('statTemp');
+  const statTime = document.getElementById('statTime');
+  const pathogenLabel = document.getElementById('pathogenLabel');
+  const pathogenDot = document.getElementById('pathogenDot');
+  const pathogenLegendLabel = document.getElementById('pathogenLegendLabel');
+  const modeNote = document.getElementById('modeNote');
+  const stepsList = document.getElementById('stepsList');
+  const tabButtons = document.querySelectorAll('.tab');
+
+  const labels = ['meget lav','lav','lav','middel','middel','middel','høj','høj','meget høj','ekstrem'];
+  function updateSliderLabels(){
+    growVal.textContent = labels[growthSlider.value-1];
+    immuneVal.textContent = labels[immuneSlider.value-1];
+  }
+  growthSlider.addEventListener('input', updateSliderLabels);
+  immuneSlider.addEventListener('input', updateSliderLabels);
+  updateSliderLabels();
+
+  // ---------------------------------------------------------------
+  // Faneblade
+  // ---------------------------------------------------------------
+  const MODES = {
+    healthy: {
+      pathogen: 'bacteria',
+      pathogenLabel: 'Bakterier',
+      baseWbc: 5, maxWbc: 60, maxLymph: 10,
+      spawnMultiplier: 1, wbcSpeedFactor: 1,
+      adaptiveDelay: 10,
+      immuneSliderMax: 10, immuneSliderDefault: 5,
+      note: 'Dette faneblad viser et <b>normalt, sundt immunforsvar</b> mod en bakterieinfektion. Knoglemarven kan frit danne nye hvide blodlegemer, og efter et stykke tid supplerer <b>antistoffer/lymfocytter</b> forsvaret.',
+      steps: [
+        'Bakterier trænger ind gennem en åbning i huden, f.eks. et sår.',
+        'Bakterierne formerer sig ved celledeling — kroppens temperatur begynder at stige (feber), hvilket bremser dem lidt.',
+        'Makrofager (hvide blodlegemer) opdager bakterierne og æder dem via fagocytose.',
+        'Efter noget tid aktiveres det <b>adaptive immunforsvar</b>: lymfocytter danner antistoffer, der gør bakterierne lettere at finde og uskadeliggøre.',
+        'Er kroppen <b>vaccineret</b> på forhånd, er hukommelsesceller allerede klar, og antistof-svaret kommer næsten med det samme.',
+        'Immunforsvaret vinder som regel, evt. med hjælp fra antibiotika, hvis infektionen er slem.'
+      ]
+    },
+    cancer: {
+      pathogen: 'bacteria',
+      pathogenLabel: 'Bakterier',
+      baseWbc: 2, maxWbc: 14, maxLymph: 3,
+      spawnMultiplier: 3, wbcSpeedFactor: 0.7,
+      adaptiveDelay: 18,
+      immuneSliderMax: 5, immuneSliderDefault: 2,
+      note: 'Dette faneblad viser en krop med <b>nedsat immunforsvar</b>, som fx ved blodkræft (leukæmi) eller kemoterapi. Knoglemarven er svækket, så der dannes <b>færre og langsommere</b> hvide blodlegemer og lymfocytter.',
+      steps: [
+        'Bakterier trænger ind gennem en åbning i huden, f.eks. et sår.',
+        'Bakterierne formerer sig hurtigt — feberresponsen virker stadig, men kan ikke stoppe spredningen alene.',
+        'Den svækkede knoglemarv kan kun sende få, langsomme makrofager af sted.',
+        'Det adaptive immunforsvar (antistoffer/lymfocytter) aktiveres langt senere og i mindre omfang end normalt.',
+        'Vaccination hjælper stadig, fordi hukommelsesceller ikke kræver ny knoglemarvsproduktion for at "huske" fjenden.',
+        'Infektionen har lettere ved at brede sig ukontrolleret, og kroppen får ofte brug for antibiotika eller indlæggelse.'
+      ]
+    },
+    virus: {
+      pathogen: 'virus',
+      pathogenLabel: 'Virus',
+      baseWbc: 5, maxWbc: 40, maxLymph: 12,
+      spawnMultiplier: 1, wbcSpeedFactor: 1,
+      adaptiveDelay: 10,
+      immuneSliderMax: 10, immuneSliderDefault: 5,
+      note: 'Dette faneblad viser en <b>virusinfektion</b> i et sundt immunforsvar. Makrofager alene har svært ved at klare virus effektivt — det er <b>antistoffer/lymfocytter</b>, der for alvor rydder op. <b>Antibiotika virker ikke på virus.</b>',
+      steps: [
+        'Virus trænger ind gennem en åbning i huden eller slimhinden.',
+        'Virus formerer sig hurtigt (forenklet i denne model, som fri partikel) — feberen stiger og bremser dem lidt.',
+        'Makrofager kan finde og svække virus, men skal ofte ramme flere gange for at uskadeliggøre den — de er ikke lige så effektive mod virus som mod bakterier.',
+        'Det er først når lymfocytterne danner <b>specifikke antistoffer</b>, at virus for alvor bliver ryddet effektivt.',
+        'Prøv at trykke på "Giv antibiotika" — det har <b>ingen effekt</b>, fordi antibiotika kun virker på bakterier, ikke virus.',
+        'Vaccination virker rigtig godt her, fordi hukommelsescellerne genkender virussen med det samme.'
+      ]
+    }
+  };
+  let currentMode = 'healthy';
+
+  function applyModeToUI(){
+    const cfg = MODES[currentMode];
+    modeNote.innerHTML = cfg.note;
+    stepsList.innerHTML = cfg.steps.map((t,i)=>`<li><span class="num">${i+1}</span>${t}</li>`).join('');
+    immuneSlider.max = cfg.immuneSliderMax;
+    immuneSlider.value = cfg.immuneSliderDefault;
+    updateSliderLabels();
+    pathogenLabel.textContent = cfg.pathogenLabel;
+    pathogenLegendLabel.textContent = cfg.pathogen === 'virus' ? 'Virus' : 'Bakterie';
+    pathogenDot.className = 'dot ' + (cfg.pathogen === 'virus' ? 'v' : 'b');
+    tabButtons.forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.mode === currentMode);
+    });
+  }
+
+  tabButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.dataset.mode === currentMode) return;
+      currentMode = btn.dataset.mode;
+      applyModeToUI();
+      reset();
+    });
+  });
+
+  // ---------------------------------------------------------------
+  // Simuleringstilstand
+  // ---------------------------------------------------------------
+  let pathogens = [];
+  let wbcs = [];
+  let lymphs = [];
+  let entryPoint = null;
+  let running = false;
+  let infected = false;
+  let kills = 0;
+  let elapsed = 0;
+  let spawnTimer = 0;
+  let lymphSpawnTimer = 0;
+  let overwhelmed = false;
+  let won = false;
+  let BASE_WBC = 5;
+  const MAX_PATHOGENS = 160;
+
+  let vaccinated = false;
+  let adaptiveActive = false;
+  let temperature = 36.6;
+  let antibioticUses = 0;
+  let antibioticGrowthPenaltyTimer = 0;
+  let actionMessageTimer = 0;
+
+  let history = []; // {t, pathCount, defCount}
+  let historyTimer = 0;
+
+  function rand(a,b){ return a + Math.random()*(b-a); }
+  function dist(a,b){ return Math.hypot(a.x-b.x, a.y-b.y); }
+
+  function showAction(msg, seconds){
+    actionNote.textContent = msg;
+    actionNote.classList.add('show');
+    actionMessageTimer = seconds || 5;
+  }
+
+  function makePathogen(x,y,type){
+    return {
+      x, y,
+      vx: rand(-20,20), vy: rand(-20,20),
+      r: rand(4,5.5),
+      divideTimer: rand(0,1),
+      hp: type === 'virus' ? 2 : 1,
+      type
+    };
+  }
+
+  function makeWbc(x,y){
+    const speedFactor = MODES[currentMode].wbcSpeedFactor;
+    return {
+      x, y,
+      target: null,
+      speed: rand(55,75) * speedFactor,
+      r: 11,
+      state: 'patrol',
+      eatTimer: 0,
+      wobble: Math.random()*Math.PI*2
+    };
+  }
+
+  function makeLymph(x,y){
+    return {
+      x, y,
+      target: null,
+      speed: rand(95,115),
+      r: 8,
+      state: 'patrol',
+      eatTimer: 0,
+      wobble: Math.random()*Math.PI*2
+    };
+  }
+
+  function reset(){
+    const cfg = MODES[currentMode];
+    BASE_WBC = cfg.baseWbc;
+    pathogens = [];
+    wbcs = [];
+    lymphs = [];
+    entryPoint = null;
+    running = false;
+    infected = false;
+    kills = 0;
+    elapsed = 0;
+    spawnTimer = 0;
+    lymphSpawnTimer = 0;
+    overwhelmed = false;
+    won = false;
+    vaccinated = false;
+    adaptiveActive = false;
+    temperature = 36.6;
+    antibioticUses = 0;
+    antibioticGrowthPenaltyTimer = 0;
+    history = [];
+    historyTimer = 0;
+    actionNote.classList.remove('show');
+    actionMessageTimer = 0;
+    btnVaccinate.disabled = false;
+    btnVaccinate.textContent = 'Vaccinér (før smitte)';
+    for(let i=0;i<BASE_WBC;i++){
+      wbcs.push(makeWbc(rand(80,W-80), rand(80,H-80)));
+    }
+    phaseBar.className = 'phase-bar';
+    phaseBar.textContent = 'Klar til forsøg. Tryk på "Start infektion" for at lade sygdommen trænge ind gennem et sår i huden.';
+    updateStats();
+    draw();
+    drawGraph();
+  }
+
+  function startInfection(){
+    if(infected) return;
+    infected = true;
+    running = true;
+    const cfg = MODES[currentMode];
+    entryPoint = { x: rand(60,W-60), y: rand(60,H-60) };
+    for(let i=0;i<4;i++){
+      pathogens.push(makePathogen(entryPoint.x + rand(-8,8), entryPoint.y + rand(-8,8), cfg.pathogen));
+    }
+    if(vaccinated){
+      adaptiveActive = false; // will flip almost instantly in step()
+      showAction('Hukommelsescellerne genkender fjenden med det samme — antistof-svaret starter meget hurtigt.', 6);
+    }
+    phaseBar.textContent = (cfg.pathogen === 'virus' ? 'Virus er' : 'Bakterierne er') + ' trængt ind i vævet gennem såret og begynder at formere sig.';
+  }
+
+  function vaccinate(){
+    if(infected){
+      showAction('Vaccination virker bedst, før du bliver smittet. Tryk "Nulstil" og prøv igen.', 5);
+      return;
+    }
+    vaccinated = true;
+    btnVaccinate.disabled = true;
+    btnVaccinate.textContent = 'Vaccineret ✔';
+    showAction('Kroppen har nu hukommelsesceller klar. Ved en infektion vil antistofferne reagere langt hurtigere.', 6);
+  }
+
+  function giveAntibiotics(){
+    const cfg = MODES[currentMode];
+    antibioticUses++;
+    if(cfg.pathogen === 'virus'){
+      showAction('Antibiotika har ingen effekt på virus. Antibiotika virker kun på bakterier — ved virus skal immunforsvaret (eller evt. antivirale midler/vaccine) klare arbejdet.', 7);
+      return;
+    }
+    if(!infected || pathogens.length === 0){
+      showAction('Der er ingen bakterier at bekæmpe endnu.', 4);
+      return;
+    }
+    const removeCount = Math.ceil(pathogens.length * 0.4);
+    for(let i=0;i<removeCount;i++){
+      if(pathogens.length===0) break;
+      pathogens.splice(Math.floor(Math.random()*pathogens.length),1);
+    }
+    antibioticGrowthPenaltyTimer = 6;
+    let msg = 'Antibiotika bekæmper en stor del af bakterierne direkte og bremser resten midlertidigt. Immunforsvaret skal stadig klare resten selv.';
+    if(antibioticUses >= 3){
+      msg += ' Bemærk: I virkeligheden kan hyppig brug af antibiotika gøre bakterier resistente over tid.';
+    }
+    showAction(msg, 7);
+  }
+
+  btnStart.addEventListener('click', startInfection);
+  btnReset.addEventListener('click', reset);
+  btnVaccinate.addEventListener('click', vaccinate);
+  btnAntibiotics.addEventListener('click', giveAntibiotics);
+
+  function growthInterval(){
+    const v = parseInt(growthSlider.value,10);
+    let base = 8 - (v-1)*0.65; // ~8s (langsom) til ~2.1s (hurtig)
+    // feber bremser formering
+    const feverFactor = 1 + Math.max(0, temperature - 37) * 0.6;
+    base *= feverFactor;
+    if(antibioticGrowthPenaltyTimer > 0){
+      base *= 2.5;
+    }
+    return base;
+  }
+
+  function immuneSpawnInterval(){
+    const v = parseInt(immuneSlider.value,10);
+    const base = 6 - (v-1)*0.5;
+    return base * MODES[currentMode].spawnMultiplier;
+  }
+  function lymphSpawnInterval(){
+    return immuneSpawnInterval() * 1.5;
+  }
+
+  function updateStats(){
+    statBact.textContent = pathogens.length;
+    statWbc.textContent = wbcs.length;
+    statLymph.textContent = lymphs.length;
+    statKills.textContent = kills;
+    statTemp.textContent = temperature.toFixed(1) + '°C';
+    statTemp.style.color = temperature > 38.5 ? '#C0392B' : (temperature > 37.3 ? '#B9770E' : 'var(--navy)');
+    statTime.textContent = infected ? Math.floor(elapsed)+'s' : '0s';
+  }
+
+  function updatePhaseText(){
+    if(!infected) return;
+    const cfg = MODES[currentMode];
+    const pname = cfg.pathogen === 'virus' ? 'Virus' : 'Bakterierne';
+    if(won){
+      phaseBar.className = 'phase-bar win';
+      phaseBar.textContent = 'Infektionen er bekæmpet! Immunforsvaret vandt kampen.';
+      return;
+    }
+    if(overwhelmed){
+      phaseBar.className = 'phase-bar warn';
+      phaseBar.textContent = currentMode === 'cancer'
+        ? 'Det svækkede immunforsvar kan ikke følge med. Kroppen har akut brug for hjælp, f.eks. antibiotika eller indlæggelse.'
+        : pname + ' breder sig hurtigere, end immunforsvaret kan følge med.';
+      return;
+    }
+    if(adaptiveActive){
+      phaseBar.className = 'phase-bar';
+      phaseBar.textContent = 'Antistoffer/lymfocytter er nu aktive og hjælper med at rydde op i ' + pname.toLowerCase() + '.';
+    } else if(pathogens.length > 0 && wbcs.length > BASE_WBC){
+      phaseBar.className = 'phase-bar';
+      phaseBar.textContent = 'Immunforsvaret sender flere makrofager til stedet, mens antistof-responsen forberedes.';
+    } else if(pathogens.length > 0){
+      phaseBar.className = 'phase-bar';
+      phaseBar.textContent = pname + ' formerer sig i vævet, mens kropstemperaturen stiger som forsvar.';
+    }
+  }
+
+  function step(dt){
+    if(actionMessageTimer > 0){
+      actionMessageTimer -= dt;
+      if(actionMessageTimer <= 0) actionNote.classList.remove('show');
+    }
+    if(!running) return;
+    elapsed += dt;
+    if(antibioticGrowthPenaltyTimer > 0) antibioticGrowthPenaltyTimer -= dt;
+
+    const cfg = MODES[currentMode];
+
+    // Feber: temperatur stiger mod et mål afhængigt af smittetryk
+    const load = Math.min(1, pathogens.length / 50);
+    const targetTemp = 36.6 + load * 3;
+    temperature += (targetTemp - temperature) * dt * 0.4;
+
+    // Adaptivt immunforsvar aktiveres efter en forsinkelse (kortere hvis vaccineret)
+    if(!adaptiveActive){
+      const delay = vaccinated ? 1.5 : cfg.adaptiveDelay;
+      if(elapsed >= delay){
+        adaptiveActive = true;
+      }
+    }
+
+    // patogener: bevægelse + deling
+    for(const p of pathogens){
+      p.x += p.vx*dt; p.y += p.vy*dt;
+      if(p.x < 10 || p.x > W-10) p.vx *= -1;
+      if(p.y < 10 || p.y > H-10) p.vy *= -1;
+      p.x = Math.max(10, Math.min(W-10, p.x));
+      p.y = Math.max(10, Math.min(H-10, p.y));
+
+      p.divideTimer -= dt;
+      if(p.divideTimer <= 0 && pathogens.length < MAX_PATHOGENS){
+        p.divideTimer = growthInterval() + rand(-0.5,0.5);
+        pathogens.push(makePathogen(p.x + rand(-6,6), p.y + rand(-6,6), cfg.pathogen));
+      }
+    }
+
+    // makrofag-tilkald
+    if(infected && pathogens.length > 0){
+      spawnTimer -= dt;
+      if(spawnTimer <= 0 && wbcs.length < cfg.maxWbc){
+        spawnTimer = immuneSpawnInterval();
+        wbcs.push(makeWbc(...edgePoint()));
+      }
+    }
+    // lymfocyt-tilkald (adaptivt forsvar)
+    if(infected && adaptiveActive && pathogens.length > 0){
+      lymphSpawnTimer -= dt;
+      if(lymphSpawnTimer <= 0 && lymphs.length < cfg.maxLymph){
+        lymphSpawnTimer = lymphSpawnInterval();
+        lymphs.push(makeLymph(...edgePoint()));
+      }
+    }
+
+    updateDefender(wbcs, dt, false);
+    updateDefender(lymphs, dt, true);
+
+    // sejr/nederlag
+    if(infected){
+      if(pathogens.length === 0 && !won){
+        won = true;
+        running = false;
+      }
+      if(pathogens.length >= MAX_PATHOGENS){
+        overwhelmed = true;
+      }
+      if(pathogens.length < MAX_PATHOGENS * 0.7){
+        overwhelmed = false;
+      }
+    }
+
+    // graf-historik
+    historyTimer -= dt;
+    if(historyTimer <= 0 && infected){
+      historyTimer = 0.4;
+      history.push({ t: elapsed, path: pathogens.length, def: wbcs.length + lymphs.length });
+      if(history.length > 150) history.shift();
+    }
+
+    updatePhaseText();
+    updateStats();
+  }
+
+  function edgePoint(){
+    const edge = Math.floor(rand(0,4));
+    if(edge===0) return [rand(0,W), 0];
+    if(edge===1) return [rand(0,W), H];
+    if(edge===2) return [0, rand(0,H)];
+    return [W, rand(0,H)];
+  }
+
+  function updateDefender(list, dt, isLymph){
+    for(const w of list){
+      w.wobble += dt*4;
+      if(w.state === 'eating'){
+        w.eatTimer -= dt;
+        if(w.eatTimer <= 0){ w.state = 'patrol'; w.target = null; }
+        continue;
+      }
+      if(!w.target || !pathogens.includes(w.target)){
+        let nearest = null, nd = Infinity;
+        for(const p of pathogens){
+          const d = dist(w,p);
+          if(d < nd){ nd = d; nearest = p; }
+        }
+        w.target = nearest;
+        w.state = nearest ? 'hunting' : 'patrol';
+      }
+      if(w.state === 'hunting' && w.target){
+        const d = dist(w, w.target);
+        if(d < w.r + w.target.r + 2){
+          if(isLymph){
+            // antistoffer: altid effektive med det samme
+            pathogens.splice(pathogens.indexOf(w.target), 1);
+            kills++;
+          } else {
+            w.target.hp -= 1;
+            if(w.target.hp <= 0){
+              pathogens.splice(pathogens.indexOf(w.target), 1);
+              kills++;
+            } else {
+              w.target.vx = rand(-30,30); w.target.vy = rand(-30,30);
+            }
+          }
+          w.state = 'eating';
+          w.eatTimer = 0.35;
+        } else {
+          const ang = Math.atan2(w.target.y - w.y, w.target.x - w.x);
+          w.x += Math.cos(ang) * w.speed * dt;
+          w.y += Math.sin(ang) * w.speed * dt;
+        }
+      } else {
+        w.x += Math.cos(w.wobble*0.3) * 12 * dt;
+        w.y += Math.sin(w.wobble*0.37) * 12 * dt;
+        w.x = Math.max(15, Math.min(W-15, w.x));
+        w.y = Math.max(15, Math.min(H-15, w.y));
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // Tegning: hovedcanvas
+  // ---------------------------------------------------------------
+  function draw(){
+    const cfg = MODES[currentMode];
+    const load = Math.min(1, pathogens.length / 60);
+    const r1 = Math.round(251 - load*10);
+    const g1 = Math.round(228 - load*90);
+    const b1 = Math.round(228 - load*90);
+    ctx.fillStyle = `rgb(${r1},${g1},${b1})`;
+    ctx.fillRect(0,0,W,H);
+
+    ctx.fillStyle = 'rgba(0,0,0,0.03)';
+    for(let i=0;i<40;i++){
+      const x = (i*97)%W, y=(i*53)%H;
+      ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fill();
+    }
+
+    if(entryPoint){
+      ctx.strokeStyle = '#B23A2E';
+      ctx.lineWidth = 2.5;
+      const s = 7;
+      ctx.beginPath();
+      ctx.moveTo(entryPoint.x-s, entryPoint.y-s);
+      ctx.lineTo(entryPoint.x+s, entryPoint.y+s);
+      ctx.moveTo(entryPoint.x+s, entryPoint.y-s);
+      ctx.lineTo(entryPoint.x-s, entryPoint.y+s);
+      ctx.stroke();
+    }
+
+    for(const p of pathogens){
+      if(p.type === 'virus'){
+        ctx.fillStyle = '#8E44AD';
+        ctx.strokeStyle = '#5B2C6F';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fill(); ctx.stroke();
+        // spikes
+        ctx.strokeStyle = '#5B2C6F';
+        for(let i=0;i<8;i++){
+          const a = (i/8)*Math.PI*2;
+          ctx.beginPath();
+          ctx.moveTo(p.x+Math.cos(a)*p.r, p.y+Math.sin(a)*p.r);
+          ctx.lineTo(p.x+Math.cos(a)*(p.r+3), p.y+Math.sin(a)*(p.r+3));
+          ctx.stroke();
+        }
+      } else {
+        ctx.beginPath();
+        ctx.fillStyle = '#6BAA3C';
+        ctx.strokeStyle = '#3F6B22';
+        ctx.lineWidth = 1.2;
+        ctx.ellipse(p.x, p.y, p.r*1.4, p.r*0.8, Math.atan2(p.vy,p.vx), 0, Math.PI*2);
+        ctx.fill(); ctx.stroke();
+      }
+    }
+
+    function drawBlob(w, fillColor, lineColor){
+      ctx.beginPath();
+      ctx.fillStyle = w.state==='eating' ? shade(fillColor) : fillColor;
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = 1.6;
+      const pts = 8;
+      for(let i=0;i<=pts;i++){
+        const a = (i/pts)*Math.PI*2;
+        const rad = w.r + Math.sin(a*3 + w.wobble) * (w.r*0.2);
+        const px = w.x + Math.cos(a)*rad;
+        const py = w.y + Math.sin(a)*rad;
+        if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+      }
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
+    function shade(c){ return c === '#EAF6FF' ? '#D7F0FF' : '#DCC9FF'; }
+
+    for(const w of wbcs) drawBlob(w, '#EAF6FF', '#2F7DA6');
+    for(const l of lymphs) drawBlob(l, '#EDE3FF', '#7B4FCB');
+
+    if(won){
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillRect(0,H/2-30,W,60);
+      ctx.fillStyle = '#2E7D32';
+      ctx.font = '600 22px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Infektionen er bekæmpet!', W/2, H/2+8);
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // Tegning: graf over tid
+  // ---------------------------------------------------------------
+  function drawGraph(){
+    gctx.clearRect(0,0,GW,GH);
+    gctx.fillStyle = '#FDFEFE';
+    gctx.fillRect(0,0,GW,GH);
+
+    const padding = {l:36, r:12, t:10, b:20};
+    const plotW = GW - padding.l - padding.r;
+    const plotH = GH - padding.t - padding.b;
+
+    gctx.strokeStyle = '#E4EAED';
+    gctx.lineWidth = 1;
+    for(let i=0;i<=4;i++){
+      const y = padding.t + plotH*i/4;
+      gctx.beginPath(); gctx.moveTo(padding.l,y); gctx.lineTo(GW-padding.r,y); gctx.stroke();
+    }
+
+    if(history.length < 2){
+      gctx.fillStyle = '#9AA7AD';
+      gctx.font = '13px sans-serif';
+      gctx.fillText('Grafen fyldes ud, når infektionen starter…', padding.l, GH/2);
+      return;
+    }
+
+    let maxVal = 5;
+    for(const h of history){ maxVal = Math.max(maxVal, h.path, h.def); }
+    const tMin = history[0].t, tMax = history[history.length-1].t;
+    const tSpan = Math.max(1, tMax - tMin);
+
+    function xFor(t){ return padding.l + ((t - tMin)/tSpan) * plotW; }
+    function yFor(v){ return padding.t + plotH - (v/maxVal)*plotH; }
+
+    function drawLine(key, color){
+      gctx.beginPath();
+      gctx.strokeStyle = color;
+      gctx.lineWidth = 2;
+      history.forEach((h,i)=>{
+        const x = xFor(h.t), y = yFor(h[key]);
+        if(i===0) gctx.moveTo(x,y); else gctx.lineTo(x,y);
+      });
+      gctx.stroke();
+    }
+    drawLine('path', '#B23A2E');
+    drawLine('def', '#2F7DA6');
+
+    // y-axis labels
+    gctx.fillStyle = '#9AA7AD';
+    gctx.font = '11px sans-serif';
+    gctx.textAlign = 'right';
+    gctx.fillText(Math.round(maxVal), padding.l-6, padding.t+10);
+    gctx.fillText('0', padding.l-6, padding.t+plotH);
+  }
+
+  let lastTime = performance.now();
+  function loop(now){
+    const dt = Math.min(0.05, (now-lastTime)/1000);
+    lastTime = now;
+    step(dt);
+    draw();
+    drawGraph();
+    requestAnimationFrame(loop);
+  }
+
+  applyModeToUI();
+  reset();
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>

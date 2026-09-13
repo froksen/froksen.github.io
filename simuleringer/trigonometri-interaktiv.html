@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trigonometri &amp; Pythagoras — Interaktiv opgaveløsning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#eef4f9;
+    --navy:#ffffff;
+    --navy-light:#d5e2ec;
+    --panel:#e5eff6;
+    --grid-line:rgba(60,110,150,0.07);
+    --cyan:#2f6690;
+    --cyan-dim:#87a8c0;
+    --amber:#e0951f;
+    --amber-dim:#c99a55;
+    --paper:#1c3b52;
+    --paper-dim:#647d90;
+    --ok:#1f8a54;
+    --err:#c8402f;
+    --ink:#1c3b52;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:'Space Grotesk', sans-serif;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/32px 32px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/32px 32px,
+      radial-gradient(circle at 20% 10%, var(--navy-light) 0%, var(--navy-deep) 55%);
+    background-color:var(--navy-deep);
+    color:var(--paper);
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:36px 16px 60px;
+  }
+
+  .sheet{ width:100%; max-width:640px; }
+
+  .letterhead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:2px solid var(--cyan-dim);
+    padding-bottom:14px;
+    margin-bottom:22px;
+  }
+  .letterhead h1{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:1.25rem;
+    letter-spacing:0.3px;
+    margin:0;
+    color:var(--paper);
+  }
+  .letterhead .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    color:var(--cyan);
+    background:rgba(47,102,144,0.07);
+    border:1px solid var(--cyan-dim);
+    padding:3px 8px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+
+  .ticks{ display:flex; gap:5px; margin-bottom:26px; }
+  .tick{ flex:1; height:6px; background:var(--navy-light); border-radius:2px; }
+  .tick.done{ background:var(--cyan); }
+  .tick.current{ background:var(--amber); }
+
+  .card{
+    background:rgba(255,255,255,0.72);
+    border:1px solid var(--navy-light);
+    border-radius:10px;
+    padding:26px 26px 24px;
+    backdrop-filter: blur(2px);
+    box-shadow:0 6px 22px rgba(30,70,110,0.08);
+  }
+
+  .task-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    color:var(--cyan);
+    letter-spacing:0.4px;
+    margin-bottom:6px;
+  }
+
+  h2.prompt{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:1.15rem;
+    line-height:1.4;
+    margin:0 0 20px;
+    color:var(--paper);
+  }
+
+  .diagram{
+    background:var(--panel);
+    border:1px solid var(--navy-light);
+    border-radius:6px;
+    padding:8px;
+    margin-bottom:22px;
+  }
+
+  .step-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--paper-dim);
+    letter-spacing:0.6px;
+    margin-bottom:10px;
+  }
+
+  .fn-choices{ display:flex; gap:10px; margin-bottom:6px; flex-wrap:wrap; }
+  .identify-choices{ flex-direction:column; }
+  .identify-btn{
+    text-align:left;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.92rem;
+    line-height:1.4;
+    font-weight:500;
+    padding:12px 14px;
+  }
+  .fn-btn{
+    flex:1 1 auto;
+    min-width:100px;
+    background:var(--navy);
+    border:1px solid var(--navy-light);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.92rem;
+    padding:14px 6px;
+    border-radius:5px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .fn-btn:hover{ border-color:var(--cyan); }
+  .fn-btn:active{ transform:translateY(1px); }
+  .fn-btn.correct{ background:rgba(31,138,84,0.14); border-color:var(--ok); color:var(--ok); }
+  .fn-btn.wrong{ background:rgba(200,64,47,0.14); border-color:var(--err); color:var(--err); }
+  .fn-btn:disabled{ cursor:default; }
+
+  .answer-row{ display:flex; gap:10px; align-items:stretch; }
+  .answer-row input{
+    flex:1;
+    background:var(--navy);
+    border:1px solid var(--navy-light);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.05rem;
+    padding:12px 14px;
+    border-radius:5px;
+    outline:none;
+  }
+  .answer-row input:focus{ border-color:var(--cyan); }
+  .answer-row .unit{
+    font-family:'JetBrains Mono', monospace;
+    align-self:center;
+    color:var(--paper-dim);
+    font-size:0.9rem;
+    min-width:28px;
+  }
+  .submit-btn{
+    background:var(--amber);
+    border:none;
+    color:#ffffff;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    padding:0 20px;
+    border-radius:5px;
+    cursor:pointer;
+  }
+  .submit-btn:hover{ filter:brightness(1.08); }
+  .submit-btn:disabled{ opacity:0.4; cursor:default; }
+
+  .feedback{ margin-top:14px; font-size:0.92rem; min-height:1.3em; }
+  .feedback.ok{ color:var(--ok); }
+  .feedback.err{ color:var(--err); }
+
+  .helpbox{
+    margin-top:16px;
+    border:1px dashed var(--amber-dim);
+    background:rgba(224,149,31,0.08);
+    border-radius:5px;
+    padding:14px 16px;
+    font-size:0.9rem;
+    line-height:1.5;
+    color:var(--paper);
+    display:none;
+  }
+  .helpbox.show{ display:block; }
+  .helpbox strong{ color:var(--amber); }
+
+  .help-trigger{
+    margin-top:16px;
+    background:none;
+    border:1px solid var(--amber-dim);
+    color:var(--amber);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    padding:7px 12px;
+    border-radius:4px;
+    cursor:pointer;
+    display:none;
+  }
+  .help-trigger.show{ display:inline-block; }
+
+  .next-row{ margin-top:20px; display:none; }
+  .next-row.show{ display:block; }
+  .next-btn{
+    width:100%;
+    background:var(--cyan);
+    border:none;
+    color:#ffffff;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    padding:13px;
+    border-radius:5px;
+    cursor:pointer;
+  }
+  .next-btn:hover{ filter:brightness(1.05); }
+
+  .footer-note{
+    text-align:center;
+    font-size:0.72rem;
+    color:var(--paper-dim);
+    margin-top:18px;
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  .done-screen{ text-align:center; padding:30px 6px 8px; }
+  .done-screen .stamp{
+    display:inline-block;
+    border:3px solid var(--ok);
+    color:var(--ok);
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:1.1rem;
+    padding:10px 22px;
+    border-radius:6px;
+    transform:rotate(-4deg);
+    margin-bottom:22px;
+    letter-spacing:1px;
+  }
+  .done-screen p{ color:var(--paper-dim); line-height:1.6; }
+  .done-actions{ display:flex; gap:10px; margin-top:22px; }
+  .done-actions button{ flex:1; }
+  .ghost-btn{
+    background:none;
+    border:1px solid var(--navy-light);
+    color:var(--paper);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    padding:13px;
+    border-radius:5px;
+    cursor:pointer;
+  }
+  .ghost-btn:hover{ border-color:var(--cyan); }
+
+  /* start screen */
+  .intro{ margin:0 0 22px; color:var(--paper-dim); line-height:1.6; font-size:0.95rem; }
+  .pkg-list{ display:flex; flex-direction:column; gap:12px; }
+  .pkg-card{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:var(--navy);
+    border:1px solid var(--navy-light);
+    border-radius:8px;
+    padding:16px 18px;
+    cursor:pointer;
+    text-decoration:none;
+    color:inherit;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .pkg-card:hover{ border-color:var(--cyan); box-shadow:0 4px 14px rgba(30,70,110,0.10); }
+  .pkg-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    color:var(--cyan);
+    letter-spacing:0.5px;
+    margin-bottom:4px;
+  }
+  .pkg-title{ font-weight:700; font-size:1.02rem; color:var(--paper); margin-bottom:4px; }
+  .pkg-desc{ font-size:0.86rem; color:var(--paper-dim); line-height:1.4; }
+
+  /* help animation */
+  @keyframes helpPulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:0.28; }
+  }
+  .help-pulse{ animation:helpPulse 1.7s ease-in-out infinite; }
+
+  @keyframes sqCycle{
+    0%{ transform:scale(0); opacity:0; }
+    18%{ transform:scale(1); opacity:0.85; }
+    72%{ transform:scale(1); opacity:0.85; }
+    90%{ transform:scale(0); opacity:0; }
+    100%{ transform:scale(0); opacity:0; }
+  }
+  .sq{
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:sqCycle 4.6s ease-in-out infinite;
+  }
+  .sq-c{ animation-delay:1.15s; }
+
+  @keyframes labelCycle{
+    0%,55%{ opacity:0; }
+    72%,88%{ opacity:1; }
+    100%{ opacity:0; }
+  }
+  .pyth-label{ opacity:0; animation:labelCycle 4.6s ease-in-out infinite; }
+
+  .help-diagram{
+    background:var(--panel);
+    border:1px solid var(--navy-light);
+    border-radius:6px;
+    padding:6px;
+    margin-bottom:12px;
+  }
+
+  .formula-box{
+    background:var(--panel);
+    border:1px solid var(--cyan-dim);
+    border-radius:6px;
+    padding:10px 14px;
+    margin-bottom:14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:1rem;
+    color:var(--cyan);
+    font-weight:600;
+    text-align:center;
+  }
+
+  svg text{ font-family:'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="letterhead">
+    <h1>Trigonometri &amp; Pythagoras</h1>
+    <span class="tag" id="taskTag">VÆLG PAKKE</span>
+  </div>
+
+  <div class="ticks" id="ticks"></div>
+
+  <div class="card" id="card"></div>
+
+  <div class="footer-note">Retvinklede trekanter · sinus, cosinus, tangens og Pythagoras</div>
+</div>
+
+<script>
+/* ============================================================
+   PAKKER
+   ============================================================ */
+const PACKAGES = {
+  sin:     { title:'Sinus',                       types:['sin'],                 desc:'12 opgaver, hvor du skal bruge sinus til at finde en side.' },
+  cos:     { title:'Cosinus',                     types:['cos'],                 desc:'12 opgaver, hvor du skal bruge cosinus til at finde en side.' },
+  tan:     { title:'Tangens',                     types:['tan'],                 desc:'12 opgaver, hvor du skal bruge tangens til at finde en side.' },
+  pyth:    { title:'Pythagoras',                  types:['pyth'],                desc:'12 opgaver, hvor du skal bruge Pythagoras' + "'" + ' sætning til at finde en side.' },
+  mix3:    { title:'Sinus, cosinus eller tangens', types:['sin','cos','tan'],     desc:'12 blandede opgaver, hvor du selv skal afgøre om det er sinus, cosinus eller tangens.' },
+  mix4:    { title:'Alle fire metoder',            types:['sin','cos','tan','pyth'], desc:'12 blandede opgaver, hvor du selv skal afgøre om det er Pythagoras, sinus, cosinus eller tangens.' },
+};
+const PACKAGE_ORDER = ['sin','cos','tan','pyth','mix3','mix4'];
+
+const daNames = { hyp:'hypotenusen', opposite:'den modstående katete', adjacent:'den hosliggende katete' };
+const fnDaName = { sin:'sinus', cos:'cosinus', tan:'tangens', pyth:'Pythagoras' };
+
+/* ============================================================
+   OPGAVEGENERERING
+   ============================================================ */
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+function generateTrigQuestion(fn){
+  const angle = randInt(20,70);
+  const rad = angle*Math.PI/180;
+  const variant = Math.random() < 0.5 ? 'mult' : 'div';
+  let givenRole, targetRole, givenVal, targetVal;
+
+  if(fn === 'sin'){
+    if(variant === 'mult'){ givenRole='hyp'; targetRole='opposite'; givenVal=randInt(8,30); targetVal=givenVal*Math.sin(rad); }
+    else { givenRole='opposite'; targetRole='hyp'; givenVal=randInt(5,20); targetVal=givenVal/Math.sin(rad); }
+  } else if(fn === 'cos'){
+    if(variant === 'mult'){ givenRole='hyp'; targetRole='adjacent'; givenVal=randInt(8,30); targetVal=givenVal*Math.cos(rad); }
+    else { givenRole='adjacent'; targetRole='hyp'; givenVal=randInt(5,20); targetVal=givenVal/Math.cos(rad); }
+  } else {
+    if(variant === 'mult'){ givenRole='adjacent'; targetRole='opposite'; givenVal=randInt(5,20); targetVal=givenVal*Math.tan(rad); }
+    else { givenRole='opposite'; targetRole='adjacent'; givenVal=randInt(5,20); targetVal=givenVal/Math.tan(rad); }
+  }
+
+  return {
+    kind:'trig', fn, variant, angle, givenRole, givenVal, targetRole, targetVal,
+    correctFn: fn,
+    prompt: `Beregn ${daNames[targetRole]}, når vinklen er ${angle}° og ${daNames[givenRole]} er ${givenVal} cm.`
+  };
+}
+
+function generatePythQuestion(){
+  const subtype = randInt(0,2);
+  let given, targetRole, targetVal, prompt;
+
+  if(subtype === 0){
+    const a = randInt(5,22), b = randInt(5,22);
+    targetVal = Math.sqrt(a*a + b*b);
+    given = { opposite:a, adjacent:b };
+    targetRole = 'hyp';
+    prompt = `Beregn hypotenusen i den retvinklede trekant, når kateterne er ${a} cm og ${b} cm.`;
+  } else if(subtype === 1){
+    const hyp = randInt(15,35);
+    const adjacent = randInt(5, hyp-3);
+    targetVal = Math.sqrt(hyp*hyp - adjacent*adjacent);
+    given = { hyp, adjacent };
+    targetRole = 'opposite';
+    prompt = `Beregn den manglende katete, når hypotenusen er ${hyp} cm og den ene katete er ${adjacent} cm.`;
+  } else {
+    const hyp = randInt(15,35);
+    const opposite = randInt(5, hyp-3);
+    targetVal = Math.sqrt(hyp*hyp - opposite*opposite);
+    given = { hyp, opposite };
+    targetRole = 'adjacent';
+    prompt = `Beregn den manglende katete, når hypotenusen er ${hyp} cm og den ene katete er ${opposite} cm.`;
+  }
+
+  return { kind:'pyth', subtype, given, targetRole, targetVal, correctFn:'pyth', prompt };
+}
+
+function generateQuestionOfType(type){
+  return type === 'pyth' ? generatePythQuestion() : generateTrigQuestion(type);
+}
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function buildQuestionSet(pkgKey){
+  const types = PACKAGES[pkgKey].types;
+  const qs = [];
+  for(let i=0;i<12;i++){
+    qs.push(generateQuestionOfType(types[i % types.length]));
+  }
+  shuffle(qs);
+
+  // in mixed packages, at least 1/4 of the questions must first have the student
+  // identify which sides/angle are known and which is to be found, before choosing a method
+  if(types.length > 1){
+    const identifyCount = Math.ceil(qs.length / 4);
+    const idx = shuffle([...qs.keys()]).slice(0, identifyCount);
+    idx.forEach(i => { qs[i].needsIdentify = true; });
+  }
+
+  return qs;
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let currentPkgKey = null;
+let questions = [];
+let qIndex = 0;
+let wrongCount = 0;
+let helpShown = false;
+
+const card = document.getElementById('card');
+const ticksEl = document.getElementById('ticks');
+const taskTag = document.getElementById('taskTag');
+
+/* ============================================================
+   SVG DIAGRAM
+   ============================================================ */
+function sideRoleData(q, role){
+  // returns {state:'given'|'target'|'plain', value:number|null}
+  if(q.kind === 'trig'){
+    if(role === q.targetRole) return { state:'target', value:null };
+    if(role === q.givenRole)  return { state:'given', value:q.givenVal };
+    return { state:'plain', value:null };
+  } else {
+    if(role === q.targetRole) return { state:'target', value:null };
+    if(q.given[role] !== undefined) return { state:'given', value:q.given[role] };
+    return { state:'plain', value:null };
+  }
+}
+
+function triangleSVG(q){
+  const A = {x:55, y:230};
+  const R = {x:315, y:230};
+  const T = {x:315, y:55};
+
+  function labelFor(state, value, x, y, anchor){
+    let text, color;
+    if(state === 'given'){ text = value + ' cm'; color = 'var(--cyan)'; }
+    else if(state === 'target'){ text = '?'; color = 'var(--amber)'; }
+    else { return ''; }
+    return `<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="15" fill="${color}" font-weight="600">${text}</text>`;
+  }
+
+  const hypData = sideRoleData(q,'hyp');
+  const oppData = sideRoleData(q,'opposite');
+  const adjData = sideRoleData(q,'adjacent');
+
+  function strokeFor(state){
+    if(state === 'target') return { color:'var(--amber)', dash:'6,4' };
+    if(state === 'given')  return { color:'var(--cyan)', dash:'0' };
+    return { color:'var(--cyan-dim)', dash:'0' };
+  }
+  const hypStroke = strokeFor(hypData.state);
+  const oppStroke = strokeFor(oppData.state);
+  const adjStroke = strokeFor(adjData.state);
+
+  const oppLabel = labelFor(oppData.state, oppData.value, 335, 145, 'start');
+  const adjLabel = labelFor(adjData.state, adjData.value, 185, 258, 'middle');
+
+  let hypLabel = '';
+  if(hypData.state === 'given' || hypData.state === 'target'){
+    const midx = (A.x+T.x)/2 - 18, midy = (A.y+T.y)/2;
+    const angleDeg = Math.round(Math.atan2(A.y-T.y, T.x-A.x)*180/Math.PI);
+    const text = hypData.state === 'given' ? (hypData.value+' cm') : '?';
+    const color = hypData.state === 'given' ? 'var(--cyan)' : 'var(--amber)';
+    hypLabel = `<text x="${midx}" y="${midy}" text-anchor="middle" font-size="15" fill="${color}" font-weight="600" transform="rotate(-${angleDeg} ${midx} ${midy})">${text}</text>`;
+  }
+
+  let angleArc = '';
+  if(q.kind === 'trig'){
+    angleArc = `
+      <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
+      <text x="${A.x+34}" y="${A.y-8}" font-size="14" fill="var(--amber)" font-weight="600">${q.angle}°</text>`;
+  }
+
+  return `
+  <svg viewBox="0 0 400 300" width="100%" height="260">
+    <line x1="${A.x}" y1="${A.y}" x2="${T.x}" y2="${T.y}" stroke="${hypStroke.color}" stroke-width="2.5" stroke-dasharray="${hypStroke.dash}"/>
+    <line x1="${A.x}" y1="${A.y}" x2="${R.x}" y2="${R.y}" stroke="${adjStroke.color}" stroke-width="2.5" stroke-dasharray="${adjStroke.dash}"/>
+    <line x1="${R.x}" y1="${R.y}" x2="${T.x}" y2="${T.y}" stroke="${oppStroke.color}" stroke-width="2.5" stroke-dasharray="${oppStroke.dash}"/>
+
+    <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
+
+    ${angleArc}
+
+    ${hypLabel}
+    ${oppLabel}
+    ${adjLabel}
+
+    <circle cx="${A.x}" cy="${A.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${R.x}" cy="${R.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${T.x}" cy="${T.y}" r="3" fill="var(--paper)"/>
+  </svg>`;
+}
+
+/* ============================================================
+   START SCREEN
+   ============================================================ */
+function renderStart(){
+  taskTag.textContent = 'VÆLG PAKKE';
+  ticksEl.innerHTML = '';
+
+  let html = `<div class="task-label">TRIGONOMETRI &amp; PYTHAGORAS</div>`;
+  html += `<h2 class="prompt">Vælg en opgavepakke</h2>`;
+  html += `<p class="intro">Hver pakke indeholder 12 opgaver med retvinklede trekanter. Alle oplysninger i opgaverne er hele tal, men svarene kræver ofte en lommeregner.</p>`;
+  html += `<div class="pkg-list">`;
+  PACKAGE_ORDER.forEach((key,i)=>{
+    const p = PACKAGES[key];
+    html += `<a class="pkg-card" href="#${key}">
+      <div class="pkg-tag">PAKKE ${i+1}</div>
+      <div class="pkg-title">${p.title}</div>
+      <div class="pkg-desc">${p.desc}</div>
+    </a>`;
+  });
+  html += `</div>`;
+  card.innerHTML = html;
+}
+
+/* renders the start screen and clears any package state (called via hash routing) */
+function goHome(){
+  currentPkgKey = null;
+  renderStart();
+}
+
+/* activates a package and renders its first question (called via hash routing or retry) */
+function activatePackage(pkgKey){
+  currentPkgKey = pkgKey;
+  questions = buildQuestionSet(pkgKey);
+  qIndex = 0;
+  renderQuestion();
+}
+
+/* ============================================================
+   URL HASH ROUTING — lets a package be linked to directly,
+   e.g. mysite.github.io/opgave.html#sin, bypassing the start screen.
+   ============================================================ */
+function syncFromHash(){
+  const key = decodeURIComponent(location.hash.replace(/^#/, ''));
+  if(key && PACKAGES[key]){
+    activatePackage(key);
+  } else {
+    goHome();
+  }
+}
+
+/* ============================================================
+   PROGRESS TICKS
+   ============================================================ */
+function renderTicks(){
+  ticksEl.innerHTML = '';
+  questions.forEach((q,i)=>{
+    const t = document.createElement('div');
+    t.className = 'tick';
+    if(i < qIndex) t.classList.add('done');
+    else if(i === qIndex) t.classList.add('current');
+    ticksEl.appendChild(t);
+  });
+}
+
+/* ============================================================
+   RENDER QUESTION
+   ============================================================ */
+function renderQuestion(){
+  const q = questions[qIndex];
+  taskTag.textContent = PACKAGES[currentPkgKey].title.toUpperCase();
+  renderTicks();
+  wrongCount = 0;
+  helpShown = false;
+  buildCard(q);
+}
+
+function fnButtonsForPackage(){
+  const includesPyth = PACKAGES[currentPkgKey].types.includes('pyth');
+  const base = [
+    {fn:'sin', label:'Sinus'},
+    {fn:'cos', label:'Cosinus'},
+    {fn:'tan', label:'Tangens'},
+  ];
+  if(includesPyth) base.push({fn:'pyth', label:'Pythagoras'});
+  return shuffle(base.slice());
+}
+
+/* build the multiple-choice options for "what do you know / what must you find" */
+function buildIdentifyOptions(q){
+  const roles = ['hyp','opposite','adjacent'];
+
+  if(q.kind === 'trig'){
+    const phrase = (given,target) => `Jeg kender vinklen og ${daNames[given]}. Jeg skal finde ${daNames[target]}.`;
+    const perms = [];
+    roles.forEach(g => roles.forEach(t => { if(g !== t) perms.push({given:g, target:t}); }));
+    const correct = { given:q.givenRole, target:q.targetRole };
+    const wrong = shuffle(perms.filter(p => !(p.given === correct.given && p.target === correct.target))).slice(0,2);
+    const options = [correct, ...wrong].map(p => ({
+      text: phrase(p.given, p.target),
+      correct: p.given === correct.given && p.target === correct.target
+    }));
+    return shuffle(options);
+  }
+
+  const phrase = (target) => {
+    const given = roles.filter(r => r !== target);
+    return `Jeg kender ${daNames[given[0]]} og ${daNames[given[1]]}. Jeg skal finde ${daNames[target]}.`;
+  };
+  const options = roles.map(target => ({ text: phrase(target), correct: target === q.targetRole }));
+  return shuffle(options);
+}
+
+function methodStepHTML(stepNum){
+  let html = `<div class="step-label">TRIN ${stepNum} — VÆLG METODE</div>`;
+  html += `<div class="fn-choices" id="fnChoices">`;
+  fnButtonsForPackage().forEach(b=>{
+    html += `<button class="fn-btn" data-fn="${b.fn}">${b.label}</button>`;
+  });
+  html += `</div>`;
+  html += `<div class="feedback" id="fnFeedback"></div>`;
+  html += `<div id="step2Wrap"></div>`;
+  return html;
+}
+
+function attachMethodStepHandlers(q){
+  document.querySelectorAll('#fnChoices .fn-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> handleFnChoice(btn, q));
+  });
+}
+
+function buildCard(q){
+  const isSingleMethod = PACKAGES[currentPkgKey].types.length === 1;
+
+  let html = `<div class="task-label">SPØRGSMÅL ${qIndex+1} AF ${questions.length}</div>`;
+  html += `<h2 class="prompt">${q.prompt}</h2>`;
+  html += `<div class="diagram">${triangleSVG(q)}</div>`;
+
+  if(isSingleMethod){
+    html += `<div class="formula-box">${formulaFor(q)}</div>`;
+    html += `<div id="step2Wrap">${stepTwoMarkup()}</div>`;
+  } else if(q.needsIdentify){
+    html += `<div class="step-label">TRIN 1 — HVAD KENDER DU, OG HVAD SKAL DU FINDE?</div>`;
+    html += `<div class="fn-choices identify-choices" id="identifyChoices">`;
+    buildIdentifyOptions(q).forEach((opt,i)=>{
+      html += `<button class="fn-btn identify-btn" data-correct="${opt.correct}">${opt.text}</button>`;
+    });
+    html += `</div>`;
+    html += `<div class="feedback" id="identifyFeedback"></div>`;
+    html += `<div id="methodWrap"></div>`;
+  } else {
+    html += methodStepHTML(1);
+  }
+
+  html += `<button class="help-trigger" id="helpTrigger">Få hjælp</button>`;
+  html += `<div class="helpbox" id="helpBox"></div>`;
+  html += `<div class="next-row" id="nextRow"><button class="next-btn" id="nextBtn">Næste spørgsmål →</button></div>`;
+
+  card.innerHTML = html;
+
+  if(isSingleMethod){
+    attachStepTwoHandlers(q);
+  } else if(q.needsIdentify){
+    document.querySelectorAll('#identifyChoices .fn-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=> handleIdentifyChoice(btn, q));
+    });
+  } else {
+    attachMethodStepHandlers(q);
+  }
+  document.getElementById('helpTrigger').addEventListener('click', ()=> toggleHelp(q));
+  document.getElementById('nextBtn').addEventListener('click', goNext);
+}
+
+function handleIdentifyChoice(btn, q){
+  if(btn.disabled) return;
+  const allBtns = document.querySelectorAll('#identifyChoices .fn-btn');
+  const fb = document.getElementById('identifyFeedback');
+
+  if(btn.dataset.correct === 'true'){
+    allBtns.forEach(b => b.disabled = true);
+    btn.classList.add('correct');
+    fb.textContent = 'Rigtigt — nu ved du, hvad der er kendt, og hvad du skal finde.';
+    fb.className = 'feedback ok';
+    document.getElementById('methodWrap').innerHTML = methodStepHTML(2);
+    attachMethodStepHandlers(q);
+  } else {
+    btn.classList.add('wrong');
+    wrongCount++;
+    fb.textContent = 'Ikke helt — kig igen på hvilke tal du får oplyst, og hvad opgaven spørger efter.';
+    fb.className = 'feedback err';
+    setTimeout(()=> btn.classList.remove('wrong'), 600);
+    maybeShowHelp();
+  }
+}
+
+function stepTwoMarkup(){
+  return `
+    <div class="answer-row">
+      <input type="text" inputmode="decimal" id="answerInput" placeholder="Dit svar">
+      <span class="unit">cm</span>
+      <button class="submit-btn" id="submitBtn">Tjek</button>
+    </div>
+    <div class="feedback" id="ansFeedback"></div>
+  `;
+}
+
+function attachStepTwoHandlers(q){
+  const input = document.getElementById('answerInput');
+  const btn = document.getElementById('submitBtn');
+  btn.addEventListener('click', ()=> checkAnswer(q));
+  input.addEventListener('keydown', e=>{ if(e.key === 'Enter') checkAnswer(q); });
+  input.focus();
+}
+
+/* ---------- step 1 ---------- */
+function handleFnChoice(btn, q){
+  if(btn.disabled) return;
+  const allBtns = document.querySelectorAll('#fnChoices .fn-btn');
+  const fb = document.getElementById('fnFeedback');
+
+  if(btn.dataset.fn === q.correctFn){
+    allBtns.forEach(b=> b.disabled = true);
+    btn.classList.add('correct');
+    fb.textContent = fnCorrectMessage(q);
+    fb.className = 'feedback ok';
+    const answerStepNum = q.needsIdentify ? 3 : 2;
+    document.getElementById('step2Wrap').innerHTML =
+      `<div class="step-label" style="margin-top:16px;">TRIN ${answerStepNum} — BEREGN SVARET</div>` +
+      `<div class="formula-box">${formulaFor(q)}</div>` +
+      stepTwoMarkup();
+    attachStepTwoHandlers(q);
+  } else {
+    btn.classList.add('wrong');
+    wrongCount++;
+    fb.textContent = 'Det er ikke den rigtige metode her. Prøv igen.';
+    fb.className = 'feedback err';
+    setTimeout(()=> btn.classList.remove('wrong'), 600);
+    maybeShowHelp();
+  }
+}
+
+function fnCorrectMessage(q){
+  if(q.kind === 'pyth'){
+    return 'Rigtigt — når du kender to sider i en retvinklet trekant, bruger du Pythagoras' + "'" + ' sætning.';
+  }
+  const roleName = q.targetRole === 'hyp' ? 'hypotenusen' : (q.targetRole === 'opposite' ? 'den modstående katete' : 'den hosliggende katete');
+  return `Rigtigt — her bruger du ${fnDaName[q.fn]} til at finde ${roleName}.`;
+}
+
+function formulaFor(q){
+  if(q.kind === 'pyth') return 'a² + b² = c²';
+  return { sin:'sin(v) = modstående / hypotenuse', cos:'cos(v) = hosliggende / hypotenuse', tan:'tan(v) = modstående / hosliggende' }[q.fn];
+}
+
+/* ---------- step 2 ---------- */
+function checkAnswer(q){
+  const input = document.getElementById('answerInput');
+  const fb = document.getElementById('ansFeedback');
+  const raw = input.value.trim().replace(',', '.');
+  const val = parseFloat(raw);
+
+  if(isNaN(val)){
+    fb.textContent = 'Skriv et tal.';
+    fb.className = 'feedback err';
+    return;
+  }
+
+  const correct = Math.abs(val - q.targetVal) < 0.15;
+
+  if(correct){
+    fb.textContent = `Korrekt — svaret er ca. ${q.targetVal.toFixed(1)} cm.`;
+    fb.className = 'feedback ok';
+    input.disabled = true;
+    document.getElementById('submitBtn').disabled = true;
+
+    // reveal the answer on the diagram
+    const solvedQ = Object.assign({}, q);
+    if(solvedQ.kind === 'trig'){ solvedQ.givenValDisplay = solvedQ.givenVal; }
+    const diagram = card.querySelector('.diagram');
+    if(diagram) diagram.innerHTML = triangleSolvedSVG(q);
+
+    document.getElementById('nextRow').classList.add('show');
+    document.getElementById('helpTrigger').classList.remove('show');
+  } else {
+    wrongCount++;
+    fb.textContent = 'Ikke helt rigtigt. Tjek din beregning og prøv igen.';
+    fb.className = 'feedback err';
+    maybeShowHelp();
+  }
+}
+
+function triangleSolvedSVG(q){
+  // temporarily mark target as solved (shown in green) for the diagram
+  const clone = Object.assign({}, q);
+  const origTargetRole = clone.targetRole;
+  const solvedValue = clone.targetVal;
+
+  const A = {x:55, y:230}, R = {x:315, y:230}, T = {x:315, y:55};
+  function roleData(role){
+    if(role === origTargetRole) return { state:'solved', value: solvedValue.toFixed(1) };
+    const d = sideRoleData(q, role);
+    return d.state === 'given' ? { state:'given', value:d.value } : { state:'plain', value:null };
+  }
+  function colorFor(state){ return state==='solved' ? 'var(--ok)' : (state==='given' ? 'var(--cyan)' : 'var(--cyan-dim)'); }
+
+  const hyp = roleData('hyp'), opp = roleData('opposite'), adj = roleData('adjacent');
+
+  const oppLabel = opp.state!=='plain' ? `<text x="335" y="145" text-anchor="start" font-size="15" fill="${colorFor(opp.state)}" font-weight="600">${opp.value} cm</text>` : '';
+  const adjLabel = adj.state!=='plain' ? `<text x="185" y="258" text-anchor="middle" font-size="15" fill="${colorFor(adj.state)}" font-weight="600">${adj.value} cm</text>` : '';
+  let hypLabel = '';
+  if(hyp.state!=='plain'){
+    const midx=(A.x+T.x)/2-18, midy=(A.y+T.y)/2;
+    const angleDeg = Math.round(Math.atan2(A.y-T.y,T.x-A.x)*180/Math.PI);
+    hypLabel = `<text x="${midx}" y="${midy}" text-anchor="middle" font-size="15" fill="${colorFor(hyp.state)}" font-weight="600" transform="rotate(-${angleDeg} ${midx} ${midy})">${hyp.value} cm</text>`;
+  }
+
+  let angleArc = '';
+  if(q.kind === 'trig'){
+    angleArc = `
+      <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
+      <text x="${A.x+34}" y="${A.y-8}" font-size="14" fill="var(--amber)" font-weight="600">${q.angle}°</text>`;
+  }
+
+  return `
+  <svg viewBox="0 0 400 300" width="100%" height="260">
+    <line x1="${A.x}" y1="${A.y}" x2="${T.x}" y2="${T.y}" stroke="${colorFor(hyp.state)}" stroke-width="2.5"/>
+    <line x1="${A.x}" y1="${A.y}" x2="${R.x}" y2="${R.y}" stroke="${colorFor(adj.state)}" stroke-width="2.5"/>
+    <line x1="${R.x}" y1="${R.y}" x2="${T.x}" y2="${T.y}" stroke="${colorFor(opp.state)}" stroke-width="2.5"/>
+    <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
+    ${angleArc}
+    ${hypLabel}${oppLabel}${adjLabel}
+    <circle cx="${A.x}" cy="${A.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${R.x}" cy="${R.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${T.x}" cy="${T.y}" r="3" fill="var(--paper)"/>
+  </svg>`;
+}
+
+/* ---------- help ---------- */
+function maybeShowHelp(){
+  if(wrongCount >= 3){
+    document.getElementById('helpTrigger').classList.add('show');
+  }
+}
+
+function toggleHelp(q){
+  const box = document.getElementById('helpBox');
+  helpShown = !helpShown;
+  box.classList.toggle('show', helpShown);
+  if(helpShown) box.innerHTML = `<div class="help-diagram">${helpDiagram(q)}</div>` + helpText(q);
+}
+
+/* generic outward square for the Pythagoras animation (works for any two points + an opposite vertex) */
+function outwardSquare(P1, P2, oppVertex){
+  const dx = P2.x-P1.x, dy = P2.y-P1.y, len = Math.hypot(dx,dy);
+  let nx = -dy/len, ny = dx/len;
+  const mx = (P1.x+P2.x)/2, my = (P1.y+P2.y)/2;
+  const toOpp = { x: oppVertex.x-mx, y: oppVertex.y-my };
+  if(nx*toOpp.x + ny*toOpp.y > 0){ nx = -nx; ny = -ny; }
+  const P3 = { x:P2.x+nx*len, y:P2.y+ny*len };
+  const P4 = { x:P1.x+nx*len, y:P1.y+ny*len };
+  return [P1,P2,P3,P4].map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+}
+
+function helpDiagram(q){
+  const A = {x:60, y:200}, R = {x:250, y:200}, T = {x:250, y:70};
+
+  if(q.kind === 'pyth'){
+    const sqB = outwardSquare(A,R,T);   // on the horizontal leg
+    const sqA = outwardSquare(R,T,A);   // on the vertical leg
+    const sqC = outwardSquare(A,T,R);   // on the hypotenuse
+    return `
+    <svg viewBox="0 0 400 300" width="100%" height="220">
+      <polygon points="${sqB}" class="sq sq-b" fill="var(--amber)" fill-opacity="0.22" stroke="var(--amber)" stroke-width="1.5"/>
+      <polygon points="${sqA}" class="sq sq-a" fill="var(--amber)" fill-opacity="0.22" stroke="var(--amber)" stroke-width="1.5"/>
+      <polygon points="${sqC}" class="sq sq-c" fill="var(--ok)" fill-opacity="0.22" stroke="var(--ok)" stroke-width="1.5"/>
+      <line x1="${A.x}" y1="${A.y}" x2="${T.x}" y2="${T.y}" stroke="var(--cyan)" stroke-width="2.5"/>
+      <line x1="${A.x}" y1="${A.y}" x2="${R.x}" y2="${R.y}" stroke="var(--cyan)" stroke-width="2.5"/>
+      <line x1="${R.x}" y1="${R.y}" x2="${T.x}" y2="${T.y}" stroke="var(--cyan)" stroke-width="2.5"/>
+      <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
+      <text x="150" y="196" text-anchor="middle" font-size="14" fill="var(--paper)" font-weight="600">b</text>
+      <text x="270" y="140" text-anchor="start" font-size="14" fill="var(--paper)" font-weight="600">a</text>
+      <text x="140" y="130" text-anchor="middle" font-size="14" fill="var(--paper)" font-weight="600">c</text>
+      <text x="200" y="255" text-anchor="middle" font-size="16" fill="var(--ok)" font-weight="700" class="pyth-label">a² + b² = c²</text>
+    </svg>`;
+  }
+
+  const pulse = { sin:['hyp','opposite'], cos:['hyp','adjacent'], tan:['adjacent','opposite'] }[q.fn];
+  const isOn = role => pulse.includes(role);
+  const col = role => isOn(role) ? 'var(--amber)' : 'var(--cyan-dim)';
+  const cls = role => isOn(role) ? 'help-pulse' : '';
+
+  return `
+  <svg viewBox="0 0 400 300" width="100%" height="220">
+    <line x1="${A.x}" y1="${A.y}" x2="${T.x}" y2="${T.y}" class="${cls('hyp')}" stroke="${col('hyp')}" stroke-width="2.5"/>
+    <line x1="${A.x}" y1="${A.y}" x2="${R.x}" y2="${R.y}" class="${cls('adjacent')}" stroke="${col('adjacent')}" stroke-width="2.5"/>
+    <line x1="${R.x}" y1="${R.y}" x2="${T.x}" y2="${T.y}" class="${cls('opposite')}" stroke="${col('opposite')}" stroke-width="2.5"/>
+    <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
+    <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" class="help-pulse" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
+    <text x="${A.x+34}" y="${A.y-8}" class="help-pulse" font-size="14" fill="var(--amber)" font-weight="600">v</text>
+    <text x="${(A.x+T.x)/2-20}" y="${(A.y+T.y)/2-8}" text-anchor="middle" font-size="13" fill="${col('hyp')}" font-weight="600">hypotenuse</text>
+    <text x="${(A.x+R.x)/2}" y="${A.y+22}" text-anchor="middle" font-size="13" fill="${col('adjacent')}" font-weight="600">hosliggende</text>
+    <text x="${R.x+10}" y="${(R.y+T.y)/2}" text-anchor="start" font-size="13" fill="${col('opposite')}" font-weight="600">modstående</text>
+    <circle cx="${A.x}" cy="${A.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${R.x}" cy="${R.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${T.x}" cy="${T.y}" r="3" fill="var(--paper)"/>
+  </svg>`;
+}
+
+function helpText(q){
+  if(q.kind === 'pyth'){
+    return `<strong>Hjælp:</strong> Pythagoras' sætning bruges, når du kender to sider i en retvinklet trekant og skal finde den tredje.<br>
+    Formel: <strong>a² + b² = c²</strong> (c er hypotenusen, a og b er kateterne)<br><br>
+    Sådan gør du:<br>
+    1. Afgør om du mangler hypotenusen eller en katete.<br>
+    2. Sæt de kendte tal ind i formlen, og gang hvert tal med sig selv (kvadrer).<br>
+    3. Mangler du hypotenusen: læg de to kvadrattal sammen. Mangler du en katete: træk det mindste kvadrattal fra det største.<br>
+    4. Tag kvadratroden af resultatet på din lommeregner for at finde den manglende side.`;
+  }
+
+  const info = {
+    sin: { formel:'sin(v) = modstående / hypotenuse', sider:'hypotenusen og den modstående katete' },
+    cos: { formel:'cos(v) = hosliggende / hypotenuse', sider:'hypotenusen og den hosliggende katete' },
+    tan: { formel:'tan(v) = modstående / hosliggende', sider:'den modstående og den hosliggende katete' },
+  }[q.fn];
+
+  return `<strong>Hjælp:</strong> ${fnDaName[q.fn].charAt(0).toUpperCase()+fnDaName[q.fn].slice(1)} bruges, når opgaven handler om ${info.sider}.<br>
+  Formel: <strong>${info.formel}</strong><br><br>
+  Sådan gør du:<br>
+  1. Skriv formlen op, og sæt de tal ind, du kender fra opgaven.<br>
+  2. Isolér den side eller vinkel, du mangler (flyt led over på den anden side af lighedstegnet).<br>
+  3. Husk at lommeregneren skal stå på grader (DEG), når du bruger sin, cos eller tan.<br>
+  4. Beregn resultatet, og afrund om nødvendigt.`;
+}
+
+/* ---------- navigation ---------- */
+function goNext(){
+  qIndex++;
+  if(qIndex >= questions.length){
+    renderDone();
+  } else {
+    renderQuestion();
+  }
+}
+
+function renderDone(){
+  taskTag.textContent = 'FÆRDIG';
+  renderTicks();
+  const pkgTitle = PACKAGES[currentPkgKey].title;
+  card.innerHTML = `
+    <div class="done-screen">
+      <div class="stamp">BESTÅET ✓</div>
+      <h2 class="prompt" style="text-align:center;">Du har løst pakken "${pkgTitle}".</h2>
+      <p>Alle 12 opgaver er besvaret korrekt.</p>
+      <div class="done-actions">
+        <button class="ghost-btn" id="retryBtn">Prøv pakken igen</button>
+        <button class="next-btn" id="newPkgBtn">Vælg ny pakke</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('retryBtn').addEventListener('click', ()=> activatePackage(currentPkgKey));
+  document.getElementById('newPkgBtn').addEventListener('click', ()=> { location.hash = ''; });
+}
+
+/* ---------- start ---------- */
+window.addEventListener('hashchange', syncFromHash);
+syncFromHash();
+</script>
+</body>
+</html>

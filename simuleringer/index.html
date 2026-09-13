@@ -22,7 +22,7 @@
     header {
       text-align: center;
       color: white;
-      margin-bottom: 35px;
+      margin-bottom: 25px;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     header h1 {
@@ -34,16 +34,52 @@
       opacity: 0.9;
       font-size: 1.05em;
     }
-    h2.section-title {
+    .fagnav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .fagnav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: background 0.2s ease;
+    }
+    .fagnav a:hover {
+      background: rgba(255,255,255,0.32);
+    }
+    h2.fag-title {
       color: white;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-      font-size: 1.5em;
-      margin: 45px 0 20px;
+      font-size: 1.7em;
+      margin: 50px 0 20px;
       padding-bottom: 8px;
       border-bottom: 3px solid rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      scroll-margin-top: 20px;
     }
-    h2.section-title:first-of-type {
+    h2.fag-title:first-of-type {
       margin-top: 0;
+    }
+    h3.section-title {
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      font-size: 1.15em;
+      margin: 26px 0 16px;
+      opacity: 0.9;
+      font-weight: 600;
     }
     .grid {
       display: grid;
@@ -132,10 +168,35 @@
   <div class="wrap">
     <header>
       <h1>🔬 Simuleringer</h1>
-      <p>Interaktive simuleringer og forklaringer til naturfagsundervisningen</p>
+      <p>Interaktive simuleringer, animationer og øvelser til naturfagsundervisningen</p>
     </header>
 
-    <h2 class="section-title">Simuleringer</h2>
+    <nav class="fagnav">
+      <a href="#matematik">🔢 Matematik</a>
+      <a href="#fysik-kemi">⚛ Fysik/Kemi</a>
+      <a href="#biologi">🧬 Biologi</a>
+      <a href="#geografi">🌍 Geografi</a>
+    </nav>
+
+    <!-- ========== MATEMATIK ========== -->
+    <h2 class="fag-title" id="matematik">🔢 Matematik</h2>
+    <div class="grid">
+
+      <div class="card">
+        <img class="thumb" src="thumbs/trigonometri.jpg" alt="Skærmbillede af trigonometri-øvelsen">
+        <div class="card-body">
+          <span class="badge sim">Øvelse</span>
+          <h3>📐 Trigonometri &amp; Pythagoras</h3>
+          <p>Træn sinus, cosinus, tangens og Pythagoras' sætning på retvinklede trekanter. Vælg opgavepakke (fx kun sinus, kun Pythagoras eller blandede opgaver), regn 12 opgaver med hele tal og få direkte feedback på dine svar.</p>
+          <a class="btn" href="trigonometri-interaktiv.html">Åbn øvelse →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========== FYSIK/KEMI ========== -->
+    <h2 class="fag-title" id="fysik-kemi">⚛ Fysik/Kemi</h2>
+    <h3 class="section-title">Simuleringer</h3>
     <div class="grid">
 
       <div class="card">
@@ -145,16 +206,6 @@
           <h3>☢ Radioaktiv Stråling</h3>
           <p>Vælg mellem alfa-, beta- og gammastråling, sæt materialer som papir, aluminium eller bly foran kilden, og se med en Geiger-tæller hvor godt strålingen trænger igennem.</p>
           <a class="btn" href="straaling.html">Åbn simulering →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <img class="thumb" src="thumbs/vandets-kredsloeb.jpg" alt="Skærmbillede af vandets kredsløb-simuleringen">
-        <div class="card-body">
-          <span class="badge sim">Simulering</span>
-          <h3>💧 Vandets kredsløb</h3>
-          <p>Justér nedbør, fordampning og overfladeafstrømning med skydere, og se hvordan vandbalancen — nedbør, fordampning, afstrømning og nedsivning til grundvandet — ændrer sig i realtid.</p>
-          <a class="btn" href="vandets_kredsloeb.html">Åbn simulering →</a>
         </div>
       </div>
 
@@ -180,7 +231,7 @@
 
     </div>
 
-    <h2 class="section-title">Skærmoptagelser</h2>
+    <h3 class="section-title">Skærmoptagelser</h3>
     <div class="grid">
 
       <div class="card">
@@ -190,16 +241,6 @@
           <h3>🎥 Sådan blev strålingssimuleringen bygget</h3>
           <p>Skærmoptagelse der viser, hvordan Geiger-simuleringen blev udviklet trin for trin med hjælp fra en AI-chat.</p>
           <a class="btn" href="Geiger.mp4">Se video →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <img class="thumb" src="thumbs/video-vandets.jpg" alt="Skærmbillede fra optagelsen af vandets kredsløb-simuleringen">
-        <div class="card-body">
-          <span class="badge video">Video</span>
-          <h3>🎥 Sådan blev vandets kredsløb bygget</h3>
-          <p>Skærmoptagelse der viser tilblivelsen af vandkredsløbs-simuleringen, fra idé til færdig interaktiv model.</p>
-          <a class="btn" href="vandets%20kredsloeb.mp4">Se video →</a>
         </div>
       </div>
 
@@ -215,7 +256,7 @@
 
     </div>
 
-    <h2 class="section-title">Andre ressourcer</h2>
+    <h3 class="section-title">Andre ressourcer</h3>
     <div class="grid compact">
 
       <div class="card">
@@ -245,6 +286,53 @@
           <h3>Lithiumatom (PowerPoint)</h3>
           <p>PowerPoint-præsentation om lithiumatomets opbygning, velegnet til tavleundervisning.</p>
           <a class="btn" href="lithium_atom.pptx">Download →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========== BIOLOGI ========== -->
+    <h2 class="fag-title" id="biologi">🧬 Biologi</h2>
+    <div class="grid">
+
+      <div class="card">
+        <img class="thumb" src="thumbs/infektionssimulator.jpg" alt="Skærmbillede af infektionssimulatoren">
+        <div class="card-body">
+          <span class="badge sim">Simulering</span>
+          <h3>🦠 Infektionssimulator</h3>
+          <p>Se hvordan sygdomsfremkaldende mikroorganismer trænger ind i vævet, og hvordan immunforsvaret reagerer — fra det hurtige, medfødte forsvar til antistoffer, feber, vaccination og medicin. Vælg mellem sundt immunforsvar, nedsat immunforsvar (fx ved kræft) og virusinfektion.</p>
+          <a class="btn" href="infektionssimulator.html">Åbn simulering →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========== GEOGRAFI ========== -->
+    <h2 class="fag-title" id="geografi">🌍 Geografi</h2>
+    <div class="grid">
+
+      <div class="card">
+        <img class="thumb" src="thumbs/vandets-kredsloeb.jpg" alt="Skærmbillede af vandets kredsløb-simuleringen">
+        <div class="card-body">
+          <span class="badge sim">Simulering</span>
+          <h3>💧 Vandets kredsløb</h3>
+          <p>Justér nedbør, fordampning og overfladeafstrømning med skydere, og se hvordan vandbalancen — nedbør, fordampning, afstrømning og nedsivning til grundvandet — ændrer sig i realtid.</p>
+          <a class="btn" href="vandets_kredsloeb.html">Åbn simulering →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 class="section-title">Skærmoptagelser</h3>
+    <div class="grid">
+
+      <div class="card">
+        <img class="thumb" src="thumbs/video-vandets.jpg" alt="Skærmbillede fra optagelsen af vandets kredsløb-simuleringen">
+        <div class="card-body">
+          <span class="badge video">Video</span>
+          <h3>🎥 Sådan blev vandets kredsløb bygget</h3>
+          <p>Skærmoptagelse der viser tilblivelsen af vandkredsløbs-simuleringen, fra idé til færdig interaktiv model.</p>
+          <a class="btn" href="vandets%20kredsloeb.mp4">Se video →</a>
         </div>
       </div>
 
