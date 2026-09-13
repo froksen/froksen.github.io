@@ -198,8 +198,23 @@
   .helpbox.show{ display:block; }
   .helpbox strong{ color:var(--amber); }
 
-  .help-trigger{
+  .attempt-info{
     margin-top:16px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    color:var(--paper-dim);
+    letter-spacing:0.2px;
+  }
+  .attempt-info.ready{ color:var(--amber); }
+
+  .secondary-actions{
+    margin-top:8px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .help-trigger{
     background:none;
     border:1px solid var(--amber-dim);
     color:var(--amber);
@@ -208,9 +223,20 @@
     padding:7px 12px;
     border-radius:4px;
     cursor:pointer;
+  }
+
+  .skip-trigger{
+    background:none;
+    border:1px solid var(--err);
+    color:var(--err);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    padding:7px 12px;
+    border-radius:4px;
+    cursor:pointer;
     display:none;
   }
-  .help-trigger.show{ display:inline-block; }
+  .skip-trigger.show{ display:inline-block; }
 
   .next-row{ margin-top:20px; display:none; }
   .next-row.show{ display:block; }
@@ -250,6 +276,7 @@
     margin-bottom:22px;
     letter-spacing:1px;
   }
+  .done-screen .stamp.partial{ border-color:var(--amber); color:var(--amber); }
   .done-screen p{ color:var(--paper-dim); line-height:1.6; }
   .done-actions{ display:flex; gap:10px; margin-top:22px; }
   .done-actions button{ flex:1; }
@@ -265,6 +292,31 @@
     cursor:pointer;
   }
   .ghost-btn:hover{ border-color:var(--cyan); }
+
+  .stats-summary{
+    text-align:left;
+    background:var(--panel);
+    border:1px solid var(--navy-light);
+    border-radius:8px;
+    padding:14px 16px;
+    margin-top:20px;
+    font-size:0.9rem;
+    color:var(--paper);
+  }
+  .stats-summary .summary-line{ margin-bottom:10px; font-weight:600; }
+  .stats-list{ list-style:none; margin:0; padding:0; }
+  .stats-list li{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:6px 0;
+    border-top:1px solid var(--navy-light);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+  }
+  .stats-list li:first-child{ border-top:none; }
+  .stats-list .stat-status{ color:var(--ok); }
+  .stats-list li.skipped .stat-status{ color:var(--err); }
 
   /* start screen */
   .intro{ margin:0 0 22px; color:var(--paper-dim); line-height:1.6; font-size:0.95rem; }
@@ -402,7 +454,7 @@ function generateTrigQuestion(fn){
   return {
     kind:'trig', fn, variant, angle, givenRole, givenVal, targetRole, targetVal,
     correctFn: fn,
-    prompt: `Beregn ${daNames[targetRole]}, når vinklen er ${angle}° og ${daNames[givenRole]} er ${givenVal} cm.`
+    prompt: `Beregn ${daNames[targetRole]}, når vinkel A er ${angle}° og ${daNames[givenRole]} er ${givenVal} cm.`
   };
 }
 
@@ -456,10 +508,12 @@ function buildQuestionSet(pkgKey){
   shuffle(qs);
 
   // in mixed packages, at least 1/4 of the questions must first have the student
-  // identify which sides/angle are known and which is to be found, before choosing a method
+  // identify which sides/angle are known and which is to be found, before choosing a method —
+  // and the very first question of the set is always one of these, so every attempt starts with it
   if(types.length > 1){
     const identifyCount = Math.ceil(qs.length / 4);
-    const idx = shuffle([...qs.keys()]).slice(0, identifyCount);
+    const rest = shuffle(qs.map((_,i)=>i).filter(i => i !== 0)).slice(0, identifyCount - 1);
+    const idx = [0, ...rest];
     idx.forEach(i => { qs[i].needsIdentify = true; });
   }
 
@@ -474,6 +528,7 @@ let questions = [];
 let qIndex = 0;
 let wrongCount = 0;
 let helpShown = false;
+let results = []; // per-question stats: { attempts, skipped }
 
 const card = document.getElementById('card');
 const ticksEl = document.getElementById('ticks');
@@ -493,6 +548,16 @@ function sideRoleData(q, role){
     if(q.given[role] !== undefined) return { state:'given', value:q.given[role] };
     return { state:'plain', value:null };
   }
+}
+
+/* vertex name labels — A (given angle / bottom-left), B (top), C (right angle / bottom-right) */
+function vertexLabels(A, R, T, offset){
+  offset = offset || 16;
+  return `
+    <text x="${A.x-offset}" y="${A.y+offset}" text-anchor="middle" font-size="${offset<14?12:14}" fill="var(--paper-dim)" font-weight="700">A</text>
+    <text x="${R.x+offset-2}" y="${R.y+offset+2}" text-anchor="middle" font-size="${offset<14?12:14}" fill="var(--paper-dim)" font-weight="700">C</text>
+    <text x="${T.x+offset-6}" y="${T.y-offset+8}" text-anchor="middle" font-size="${offset<14?12:14}" fill="var(--paper-dim)" font-weight="700">B</text>
+  `;
 }
 
 function triangleSVG(q){
@@ -553,6 +618,7 @@ function triangleSVG(q){
     ${hypLabel}
     ${oppLabel}
     ${adjLabel}
+    ${vertexLabels(A,R,T)}
 
     <circle cx="${A.x}" cy="${A.y}" r="3" fill="var(--paper)"/>
     <circle cx="${R.x}" cy="${R.y}" r="3" fill="var(--paper)"/>
@@ -594,6 +660,7 @@ function activatePackage(pkgKey){
   currentPkgKey = pkgKey;
   questions = buildQuestionSet(pkgKey);
   qIndex = 0;
+  results = [];
   renderQuestion();
 }
 
@@ -652,7 +719,7 @@ function buildIdentifyOptions(q){
   const roles = ['hyp','opposite','adjacent'];
 
   if(q.kind === 'trig'){
-    const phrase = (given,target) => `Jeg kender vinklen og ${daNames[given]}. Jeg skal finde ${daNames[target]}.`;
+    const phrase = (given,target) => `Jeg kender vinkel A og ${daNames[given]}. Jeg skal finde ${daNames[target]}.`;
     const perms = [];
     roles.forEach(g => roles.forEach(t => { if(g !== t) perms.push({given:g, target:t}); }));
     const correct = { given:q.givenRole, target:q.targetRole };
@@ -713,7 +780,11 @@ function buildCard(q){
     html += methodStepHTML(1);
   }
 
+  html += `<div class="attempt-info" id="attemptInfo"></div>`;
+  html += `<div class="secondary-actions">`;
   html += `<button class="help-trigger" id="helpTrigger">Få hjælp</button>`;
+  html += `<button class="skip-trigger" id="skipTrigger">Spring opgaven over</button>`;
+  html += `</div>`;
   html += `<div class="helpbox" id="helpBox"></div>`;
   html += `<div class="next-row" id="nextRow"><button class="next-btn" id="nextBtn">Næste spørgsmål →</button></div>`;
 
@@ -729,7 +800,9 @@ function buildCard(q){
     attachMethodStepHandlers(q);
   }
   document.getElementById('helpTrigger').addEventListener('click', ()=> toggleHelp(q));
+  document.getElementById('skipTrigger').addEventListener('click', ()=> handleSkip(q));
   document.getElementById('nextBtn').addEventListener('click', goNext);
+  updateAttemptUI();
 }
 
 function handleIdentifyChoice(btn, q){
@@ -750,7 +823,7 @@ function handleIdentifyChoice(btn, q){
     fb.textContent = 'Ikke helt — kig igen på hvilke tal du får oplyst, og hvad opgaven spørger efter.';
     fb.className = 'feedback err';
     setTimeout(()=> btn.classList.remove('wrong'), 600);
-    maybeShowHelp();
+    updateAttemptUI();
   }
 }
 
@@ -796,7 +869,7 @@ function handleFnChoice(btn, q){
     fb.textContent = 'Det er ikke den rigtige metode her. Prøv igen.';
     fb.className = 'feedback err';
     setTimeout(()=> btn.classList.remove('wrong'), 600);
-    maybeShowHelp();
+    updateAttemptUI();
   }
 }
 
@@ -810,7 +883,7 @@ function fnCorrectMessage(q){
 
 function formulaFor(q){
   if(q.kind === 'pyth') return 'a² + b² = c²';
-  return { sin:'sin(v) = modstående / hypotenuse', cos:'cos(v) = hosliggende / hypotenuse', tan:'tan(v) = modstående / hosliggende' }[q.fn];
+  return { sin:'sin(A) = modstående / hypotenuse', cos:'cos(A) = hosliggende / hypotenuse', tan:'tan(A) = modstående / hosliggende' }[q.fn];
 }
 
 /* ---------- step 2 ---------- */
@@ -840,13 +913,14 @@ function checkAnswer(q){
     const diagram = card.querySelector('.diagram');
     if(diagram) diagram.innerHTML = triangleSolvedSVG(q);
 
+    results[qIndex] = { attempts: wrongCount + 1, skipped:false };
     document.getElementById('nextRow').classList.add('show');
-    document.getElementById('helpTrigger').classList.remove('show');
+    document.getElementById('skipTrigger').classList.remove('show');
   } else {
     wrongCount++;
     fb.textContent = 'Ikke helt rigtigt. Tjek din beregning og prøv igen.';
     fb.className = 'feedback err';
-    maybeShowHelp();
+    updateAttemptUI();
   }
 }
 
@@ -890,17 +964,37 @@ function triangleSolvedSVG(q){
     <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
     ${angleArc}
     ${hypLabel}${oppLabel}${adjLabel}
+    ${vertexLabels(A,R,T)}
     <circle cx="${A.x}" cy="${A.y}" r="3" fill="var(--paper)"/>
     <circle cx="${R.x}" cy="${R.y}" r="3" fill="var(--paper)"/>
     <circle cx="${T.x}" cy="${T.y}" r="3" fill="var(--paper)"/>
   </svg>`;
 }
 
-/* ---------- help ---------- */
-function maybeShowHelp(){
-  if(wrongCount >= 3){
-    document.getElementById('helpTrigger').classList.add('show');
+/* ---------- attempts, help & skip ---------- */
+const SKIP_THRESHOLD = 3;
+
+function updateAttemptUI(){
+  const info = document.getElementById('attemptInfo');
+  const skipBtn = document.getElementById('skipTrigger');
+  if(!info || !skipBtn) return;
+
+  if(wrongCount >= SKIP_THRESHOLD){
+    info.textContent = `Du har brugt ${wrongCount} forsøg — du kan nu springe opgaven over, hvis du vil.`;
+    info.classList.add('ready');
+    skipBtn.classList.add('show');
+  } else {
+    const remaining = SKIP_THRESHOLD - wrongCount;
+    info.textContent = `Forsøg brugt: ${wrongCount} af ${SKIP_THRESHOLD}. ${remaining} forsøg mere, så kan du springe opgaven over.`;
+    info.classList.remove('ready');
+    skipBtn.classList.remove('show');
   }
+}
+
+function handleSkip(q){
+  if(wrongCount < SKIP_THRESHOLD) return;
+  results[qIndex] = { attempts: wrongCount, skipped:true };
+  goNext();
 }
 
 function toggleHelp(q){
@@ -941,6 +1035,7 @@ function helpDiagram(q){
       <text x="150" y="196" text-anchor="middle" font-size="14" fill="var(--paper)" font-weight="600">b</text>
       <text x="270" y="140" text-anchor="start" font-size="14" fill="var(--paper)" font-weight="600">a</text>
       <text x="140" y="130" text-anchor="middle" font-size="14" fill="var(--paper)" font-weight="600">c</text>
+      ${vertexLabels(A,R,T,13)}
       <text x="200" y="255" text-anchor="middle" font-size="16" fill="var(--ok)" font-weight="700" class="pyth-label">a² + b² = c²</text>
     </svg>`;
   }
@@ -957,10 +1052,11 @@ function helpDiagram(q){
     <line x1="${R.x}" y1="${R.y}" x2="${T.x}" y2="${T.y}" class="${cls('opposite')}" stroke="${col('opposite')}" stroke-width="2.5"/>
     <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
     <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" class="help-pulse" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
-    <text x="${A.x+34}" y="${A.y-8}" class="help-pulse" font-size="14" fill="var(--amber)" font-weight="600">v</text>
+    <text x="${A.x+34}" y="${A.y-8}" class="help-pulse" font-size="14" fill="var(--amber)" font-weight="600">A</text>
     <text x="${(A.x+T.x)/2-20}" y="${(A.y+T.y)/2-8}" text-anchor="middle" font-size="13" fill="${col('hyp')}" font-weight="600">hypotenuse</text>
     <text x="${(A.x+R.x)/2}" y="${A.y+22}" text-anchor="middle" font-size="13" fill="${col('adjacent')}" font-weight="600">hosliggende</text>
     <text x="${R.x+10}" y="${(R.y+T.y)/2}" text-anchor="start" font-size="13" fill="${col('opposite')}" font-weight="600">modstående</text>
+    ${vertexLabels(A,R,T,13)}
     <circle cx="${A.x}" cy="${A.y}" r="3" fill="var(--paper)"/>
     <circle cx="${R.x}" cy="${R.y}" r="3" fill="var(--paper)"/>
     <circle cx="${T.x}" cy="${T.y}" r="3" fill="var(--paper)"/>
@@ -979,9 +1075,9 @@ function helpText(q){
   }
 
   const info = {
-    sin: { formel:'sin(v) = modstående / hypotenuse', sider:'hypotenusen og den modstående katete' },
-    cos: { formel:'cos(v) = hosliggende / hypotenuse', sider:'hypotenusen og den hosliggende katete' },
-    tan: { formel:'tan(v) = modstående / hosliggende', sider:'den modstående og den hosliggende katete' },
+    sin: { formel:'sin(A) = modstående / hypotenuse', sider:'hypotenusen og den modstående katete' },
+    cos: { formel:'cos(A) = hosliggende / hypotenuse', sider:'hypotenusen og den hosliggende katete' },
+    tan: { formel:'tan(A) = modstående / hosliggende', sider:'den modstående og den hosliggende katete' },
   }[q.fn];
 
   return `<strong>Hjælp:</strong> ${fnDaName[q.fn].charAt(0).toUpperCase()+fnDaName[q.fn].slice(1)} bruges, når opgaven handler om ${info.sider}.<br>
@@ -1007,11 +1103,30 @@ function renderDone(){
   taskTag.textContent = 'FÆRDIG';
   renderTicks();
   const pkgTitle = PACKAGES[currentPkgKey].title;
+
+  const totalAttempts = results.reduce((sum,r) => sum + (r ? r.attempts : 0), 0);
+  const skippedCount = results.filter(r => r && r.skipped).length;
+
+  const summaryLine = skippedCount === 0
+    ? `Alle ${questions.length} opgaver blev besvaret korrekt uden at springe nogen over. I alt ${totalAttempts} forsøg brugt.`
+    : `${questions.length - skippedCount} af ${questions.length} opgaver blev besvaret korrekt, ${skippedCount} blev sprunget over. I alt ${totalAttempts} forsøg brugt.`;
+
+  const rows = results.map((r,i)=>{
+    if(!r) return '';
+    const status = r.skipped
+      ? `<span class="stat-status">Sprunget over</span>`
+      : `<span class="stat-status">Løst</span>`;
+    return `<li class="${r.skipped ? 'skipped' : ''}"><span>Opgave ${i+1}</span><span>${r.attempts} forsøg · ${status}</span></li>`;
+  }).join('');
+
   card.innerHTML = `
     <div class="done-screen">
-      <div class="stamp">BESTÅET ✓</div>
-      <h2 class="prompt" style="text-align:center;">Du har løst pakken "${pkgTitle}".</h2>
-      <p>Alle 12 opgaver er besvaret korrekt.</p>
+      <div class="stamp${skippedCount > 0 ? ' partial' : ''}">${skippedCount > 0 ? 'GENNEMFØRT' : 'BESTÅET ✓'}</div>
+      <h2 class="prompt" style="text-align:center;">Du har gennemført pakken "${pkgTitle}".</h2>
+      <div class="stats-summary">
+        <div class="summary-line">${summaryLine}</div>
+        <ul class="stats-list">${rows}</ul>
+      </div>
       <div class="done-actions">
         <button class="ghost-btn" id="retryBtn">Prøv pakken igen</button>
         <button class="next-btn" id="newPkgBtn">Vælg ny pakke</button>
