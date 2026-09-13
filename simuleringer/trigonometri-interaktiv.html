@@ -435,26 +435,59 @@ const fnDaName = { sin:'sinus', cos:'cosinus', tan:'tangens', pyth:'Pythagoras' 
 function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
 
 function generateTrigQuestion(fn){
-  const angle = randInt(20,70);
-  const rad = angle*Math.PI/180;
-  const variant = Math.random() < 0.5 ? 'mult' : 'div';
-  let givenRole, targetRole, givenVal, targetVal;
+  const mode = Math.random() < 0.5 ? 'side' : 'angle';
 
-  if(fn === 'sin'){
-    if(variant === 'mult'){ givenRole='hyp'; targetRole='opposite'; givenVal=randInt(8,30); targetVal=givenVal*Math.sin(rad); }
-    else { givenRole='opposite'; targetRole='hyp'; givenVal=randInt(5,20); targetVal=givenVal/Math.sin(rad); }
-  } else if(fn === 'cos'){
-    if(variant === 'mult'){ givenRole='hyp'; targetRole='adjacent'; givenVal=randInt(8,30); targetVal=givenVal*Math.cos(rad); }
-    else { givenRole='adjacent'; targetRole='hyp'; givenVal=randInt(5,20); targetVal=givenVal/Math.cos(rad); }
-  } else {
-    if(variant === 'mult'){ givenRole='adjacent'; targetRole='opposite'; givenVal=randInt(5,20); targetVal=givenVal*Math.tan(rad); }
-    else { givenRole='opposite'; targetRole='adjacent'; givenVal=randInt(5,20); targetVal=givenVal/Math.tan(rad); }
+  if(mode === 'side'){
+    const angle = randInt(20,70);
+    const rad = angle*Math.PI/180;
+    const variant = Math.random() < 0.5 ? 'mult' : 'div';
+    let givenRole, targetRole, givenVal, targetVal;
+
+    if(fn === 'sin'){
+      if(variant === 'mult'){ givenRole='hyp'; targetRole='opposite'; givenVal=randInt(8,30); targetVal=givenVal*Math.sin(rad); }
+      else { givenRole='opposite'; targetRole='hyp'; givenVal=randInt(5,20); targetVal=givenVal/Math.sin(rad); }
+    } else if(fn === 'cos'){
+      if(variant === 'mult'){ givenRole='hyp'; targetRole='adjacent'; givenVal=randInt(8,30); targetVal=givenVal*Math.cos(rad); }
+      else { givenRole='adjacent'; targetRole='hyp'; givenVal=randInt(5,20); targetVal=givenVal/Math.cos(rad); }
+    } else {
+      if(variant === 'mult'){ givenRole='adjacent'; targetRole='opposite'; givenVal=randInt(5,20); targetVal=givenVal*Math.tan(rad); }
+      else { givenRole='opposite'; targetRole='adjacent'; givenVal=randInt(5,20); targetVal=givenVal/Math.tan(rad); }
+    }
+
+    return {
+      kind:'trig', fn, mode, variant, angle, givenRole, givenVal, targetRole, targetVal,
+      given: { [givenRole]: givenVal },
+      targetUnit: 'cm',
+      correctFn: fn,
+      prompt: `Beregn ${daNames[targetRole]}, når vinkel A er ${angle}° og ${daNames[givenRole]} er ${givenVal} cm.`
+    };
   }
 
+  // mode === 'angle': two sides are given (integers), angle A is the unknown
+  let role1, val1, role2, val2, targetVal;
+  if(fn === 'sin'){
+    role1 = 'opposite'; role2 = 'hyp';
+    val2 = randInt(12,30); val1 = randInt(5, val2-4);
+    targetVal = Math.asin(val1/val2) * 180/Math.PI;
+  } else if(fn === 'cos'){
+    role1 = 'adjacent'; role2 = 'hyp';
+    val2 = randInt(12,30); val1 = randInt(5, val2-4);
+    targetVal = Math.acos(val1/val2) * 180/Math.PI;
+  } else {
+    role1 = 'opposite'; role2 = 'adjacent';
+    val1 = randInt(5,20); val2 = randInt(5,20);
+    targetVal = Math.atan(val1/val2) * 180/Math.PI;
+  }
+
+  const given = { [role1]: val1, [role2]: val2 };
+  const orderedRoles = ['opposite','adjacent','hyp'].filter(r => given[r] !== undefined);
+  const phrase = orderedRoles.map(r => `${daNames[r]} er ${given[r]} cm`).join(' og ');
+
   return {
-    kind:'trig', fn, variant, angle, givenRole, givenVal, targetRole, targetVal,
+    kind:'trig', fn, mode, given, targetRole:'angleA', targetVal,
+    targetUnit: '°',
     correctFn: fn,
-    prompt: `Beregn ${daNames[targetRole]}, når vinkel A er ${angle}° og ${daNames[givenRole]} er ${givenVal} cm.`
+    prompt: `Beregn vinkel A, når ${phrase}.`
   };
 }
 
@@ -539,15 +572,16 @@ const taskTag = document.getElementById('taskTag');
    ============================================================ */
 function sideRoleData(q, role){
   // returns {state:'given'|'target'|'plain', value:number|null}
-  if(q.kind === 'trig'){
-    if(role === q.targetRole) return { state:'target', value:null };
-    if(role === q.givenRole)  return { state:'given', value:q.givenVal };
-    return { state:'plain', value:null };
-  } else {
-    if(role === q.targetRole) return { state:'target', value:null };
-    if(q.given[role] !== undefined) return { state:'given', value:q.given[role] };
-    return { state:'plain', value:null };
-  }
+  if(role === q.targetRole) return { state:'target', value:null };
+  if(q.given && q.given[role] !== undefined) return { state:'given', value:q.given[role] };
+  return { state:'plain', value:null };
+}
+
+/* angle A's display state: 'none' (pythagoras, no angle shown), 'given' (known angle), or 'target' (angle is the unknown) */
+function angleState(q){
+  if(q.kind !== 'trig') return { state:'none' };
+  if(q.targetRole === 'angleA') return { state:'target', value:null };
+  return { state:'given', value:q.angle };
 }
 
 /* vertex name labels — A (given angle / bottom-left), B (top), C (right angle / bottom-right) */
@@ -599,10 +633,15 @@ function triangleSVG(q){
   }
 
   let angleArc = '';
-  if(q.kind === 'trig'){
+  const angState = angleState(q);
+  if(angState.state !== 'none'){
+    const isTarget = angState.state === 'target';
+    const arcColor = isTarget ? 'var(--amber)' : 'var(--cyan)';
+    const arcDash = isTarget ? '4,3' : '0';
+    const arcText = isTarget ? '?' : `${angState.value}°`;
     angleArc = `
-      <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
-      <text x="${A.x+34}" y="${A.y-8}" font-size="14" fill="var(--amber)" font-weight="600">${q.angle}°</text>`;
+      <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" fill="none" stroke="${arcColor}" stroke-width="1.5" stroke-dasharray="${arcDash}"/>
+      <text x="${A.x+34}" y="${A.y-8}" font-size="14" fill="${arcColor}" font-weight="600">${arcText}</text>`;
   }
 
   return `
@@ -716,26 +755,36 @@ function fnButtonsForPackage(){
 
 /* build the multiple-choice options for "what do you know / what must you find" */
 function buildIdentifyOptions(q){
-  const roles = ['hyp','opposite','adjacent'];
+  let parts, correctKey;
 
-  if(q.kind === 'trig'){
-    const phrase = (given,target) => `Jeg kender vinkel A og ${daNames[given]}. Jeg skal finde ${daNames[target]}.`;
-    const perms = [];
-    roles.forEach(g => roles.forEach(t => { if(g !== t) perms.push({given:g, target:t}); }));
-    const correct = { given:q.givenRole, target:q.targetRole };
-    const wrong = shuffle(perms.filter(p => !(p.given === correct.given && p.target === correct.target))).slice(0,2);
-    const options = [correct, ...wrong].map(p => ({
-      text: phrase(p.given, p.target),
-      correct: p.given === correct.given && p.target === correct.target
-    }));
-    return shuffle(options);
+  if(q.kind === 'pyth'){
+    const roles = ['hyp','opposite','adjacent'];
+    parts = roles.map(r => ({ key:r, label:daNames[r] }));
+    correctKey = q.targetRole;
+  } else if(q.mode === 'angle'){
+    const sideRoles = Object.keys(q.given);
+    parts = [
+      { key:sideRoles[0], label:daNames[sideRoles[0]] },
+      { key:sideRoles[1], label:daNames[sideRoles[1]] },
+      { key:'angleA', label:'vinkel A' },
+    ];
+    correctKey = 'angleA';
+  } else {
+    parts = [
+      { key:'angleA', label:'vinkel A' },
+      { key:q.givenRole, label:daNames[q.givenRole] },
+      { key:q.targetRole, label:daNames[q.targetRole] },
+    ];
+    correctKey = q.targetRole;
   }
 
-  const phrase = (target) => {
-    const given = roles.filter(r => r !== target);
-    return `Jeg kender ${daNames[given[0]]} og ${daNames[given[1]]}. Jeg skal finde ${daNames[target]}.`;
-  };
-  const options = roles.map(target => ({ text: phrase(target), correct: target === q.targetRole }));
+  const options = parts.map(targetPart => {
+    const knowns = parts.filter(p => p.key !== targetPart.key);
+    return {
+      text: `Jeg kender ${knowns[0].label} og ${knowns[1].label}. Jeg skal finde ${targetPart.label}.`,
+      correct: targetPart.key === correctKey
+    };
+  });
   return shuffle(options);
 }
 
@@ -766,7 +815,7 @@ function buildCard(q){
 
   if(isSingleMethod){
     html += `<div class="formula-box">${formulaFor(q)}</div>`;
-    html += `<div id="step2Wrap">${stepTwoMarkup()}</div>`;
+    html += `<div id="step2Wrap">${stepTwoMarkup(q)}</div>`;
   } else if(q.needsIdentify){
     html += `<div class="step-label">TRIN 1 — HVAD KENDER DU, OG HVAD SKAL DU FINDE?</div>`;
     html += `<div class="fn-choices identify-choices" id="identifyChoices">`;
@@ -827,11 +876,11 @@ function handleIdentifyChoice(btn, q){
   }
 }
 
-function stepTwoMarkup(){
+function stepTwoMarkup(q){
   return `
     <div class="answer-row">
       <input type="text" inputmode="decimal" id="answerInput" placeholder="Dit svar">
-      <span class="unit">cm</span>
+      <span class="unit">${q.targetUnit || 'cm'}</span>
       <button class="submit-btn" id="submitBtn">Tjek</button>
     </div>
     <div class="feedback" id="ansFeedback"></div>
@@ -861,7 +910,7 @@ function handleFnChoice(btn, q){
     document.getElementById('step2Wrap').innerHTML =
       `<div class="step-label" style="margin-top:16px;">TRIN ${answerStepNum} — BEREGN SVARET</div>` +
       `<div class="formula-box">${formulaFor(q)}</div>` +
-      stepTwoMarkup();
+      stepTwoMarkup(q);
     attachStepTwoHandlers(q);
   } else {
     btn.classList.add('wrong');
@@ -876,6 +925,9 @@ function handleFnChoice(btn, q){
 function fnCorrectMessage(q){
   if(q.kind === 'pyth'){
     return 'Rigtigt — når du kender to sider i en retvinklet trekant, bruger du Pythagoras' + "'" + ' sætning.';
+  }
+  if(q.targetRole === 'angleA'){
+    return `Rigtigt — her bruger du ${fnDaName[q.fn]} (baglæns, med den omvendte funktion) til at finde vinkel A.`;
   }
   const roleName = q.targetRole === 'hyp' ? 'hypotenusen' : (q.targetRole === 'opposite' ? 'den modstående katete' : 'den hosliggende katete');
   return `Rigtigt — her bruger du ${fnDaName[q.fn]} til at finde ${roleName}.`;
@@ -899,10 +951,12 @@ function checkAnswer(q){
     return;
   }
 
-  const correct = Math.abs(val - q.targetVal) < 0.15;
+  const tolerance = q.targetUnit === '°' ? 0.5 : 0.15;
+  const correct = Math.abs(val - q.targetVal) < tolerance;
 
   if(correct){
-    fb.textContent = `Korrekt — svaret er ca. ${q.targetVal.toFixed(1)} cm.`;
+    const unitSuffix = q.targetUnit === '°' ? '°' : ' cm';
+    fb.textContent = `Korrekt — svaret er ca. ${q.targetVal.toFixed(1)}${unitSuffix}.`;
     fb.className = 'feedback ok';
     input.disabled = true;
     document.getElementById('submitBtn').disabled = true;
@@ -951,9 +1005,12 @@ function triangleSolvedSVG(q){
 
   let angleArc = '';
   if(q.kind === 'trig'){
+    const isAngleTarget = q.targetRole === 'angleA';
+    const color = isAngleTarget ? 'var(--ok)' : 'var(--cyan)';
+    const text = isAngleTarget ? `${q.targetVal.toFixed(1)}°` : `${q.angle}°`;
     angleArc = `
-      <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
-      <text x="${A.x+34}" y="${A.y-8}" font-size="14" fill="var(--amber)" font-weight="600">${q.angle}°</text>`;
+      <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" fill="none" stroke="${color}" stroke-width="1.5"/>
+      <text x="${A.x+34}" y="${A.y-8}" font-size="14" fill="${color}" font-weight="600">${text}</text>`;
   }
 
   return `
@@ -1052,7 +1109,7 @@ function helpDiagram(q){
     <line x1="${R.x}" y1="${R.y}" x2="${T.x}" y2="${T.y}" class="${cls('opposite')}" stroke="${col('opposite')}" stroke-width="2.5"/>
     <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
     <path d="M ${A.x+26} ${A.y} A 26 26 0 0 0 ${A.x+20} ${A.y-16}" class="help-pulse" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
-    <text x="${A.x+34}" y="${A.y-8}" class="help-pulse" font-size="14" fill="var(--amber)" font-weight="600">A</text>
+    <text x="${A.x+34}" y="${A.y-8}" class="help-pulse" font-size="14" fill="var(--amber)" font-weight="600">${q.targetRole === 'angleA' ? '?' : 'A'}</text>
     <text x="${(A.x+T.x)/2-20}" y="${(A.y+T.y)/2-8}" text-anchor="middle" font-size="13" fill="${col('hyp')}" font-weight="600">hypotenuse</text>
     <text x="${(A.x+R.x)/2}" y="${A.y+22}" text-anchor="middle" font-size="13" fill="${col('adjacent')}" font-weight="600">hosliggende</text>
     <text x="${R.x+10}" y="${(R.y+T.y)/2}" text-anchor="start" font-size="13" fill="${col('opposite')}" font-weight="600">modstående</text>
@@ -1079,6 +1136,16 @@ function helpText(q){
     cos: { formel:'cos(A) = hosliggende / hypotenuse', sider:'hypotenusen og den hosliggende katete' },
     tan: { formel:'tan(A) = modstående / hosliggende', sider:'den modstående og den hosliggende katete' },
   }[q.fn];
+
+  if(q.targetRole === 'angleA'){
+    return `<strong>Hjælp:</strong> ${fnDaName[q.fn].charAt(0).toUpperCase()+fnDaName[q.fn].slice(1)} bruges, når opgaven handler om ${info.sider} — men her er det vinkel A, du mangler, ikke en side.<br>
+    Formel: <strong>${info.formel}</strong><br><br>
+    Sådan gør du:<br>
+    1. Sæt de to kendte sider ind i formlen, så du får forholdet mellem dem.<br>
+    2. Da du skal finde vinklen (ikke en side), skal du bruge den omvendte funktion — ${q.fn}⁻¹, som du som regel finder ved at trykke shift (eller 2nd) + ${q.fn} på lommeregneren.<br>
+    3. Husk at lommeregneren skal stå på grader (DEG).<br>
+    4. Beregn resultatet — det er vinkel A i grader.`;
+  }
 
   return `<strong>Hjælp:</strong> ${fnDaName[q.fn].charAt(0).toUpperCase()+fnDaName[q.fn].slice(1)} bruges, når opgaven handler om ${info.sider}.<br>
   Formel: <strong>${info.formel}</strong><br><br>
