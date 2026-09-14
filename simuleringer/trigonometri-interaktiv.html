@@ -417,14 +417,15 @@
    PAKKER
    ============================================================ */
 const PACKAGES = {
-  sin:     { title:'Sinus',                       types:['sin'],                 desc:'12 opgaver, hvor du skal bruge sinus til at finde en side.' },
-  cos:     { title:'Cosinus',                     types:['cos'],                 desc:'12 opgaver, hvor du skal bruge cosinus til at finde en side.' },
-  tan:     { title:'Tangens',                     types:['tan'],                 desc:'12 opgaver, hvor du skal bruge tangens til at finde en side.' },
+  label:   { title:'Udpeg kateter og vinkler',    types:['label'],               desc:'20 opgaver uden beregning, hvor du skal udpege den modstående og hosliggende katete samt de tre vinkler i en retvinklet trekant. Nye opgaver hver gang.' },
+  sin:     { title:'Sinus',                       types:['sin'],                 desc:'12 opgaver, hvor du skal bruge sinus til at finde en side eller en vinkel.' },
+  cos:     { title:'Cosinus',                     types:['cos'],                 desc:'12 opgaver, hvor du skal bruge cosinus til at finde en side eller en vinkel.' },
+  tan:     { title:'Tangens',                     types:['tan'],                 desc:'12 opgaver, hvor du skal bruge tangens til at finde en side eller en vinkel.' },
   pyth:    { title:'Pythagoras',                  types:['pyth'],                desc:'12 opgaver, hvor du skal bruge Pythagoras' + "'" + ' sætning til at finde en side.' },
   mix3:    { title:'Sinus, cosinus eller tangens', types:['sin','cos','tan'],     desc:'12 blandede opgaver, hvor du selv skal afgøre om det er sinus, cosinus eller tangens.' },
   mix4:    { title:'Alle fire metoder',            types:['sin','cos','tan','pyth'], desc:'12 blandede opgaver, hvor du selv skal afgøre om det er Pythagoras, sinus, cosinus eller tangens.' },
 };
-const PACKAGE_ORDER = ['sin','cos','tan','pyth','mix3','mix4'];
+const PACKAGE_ORDER = ['label','sin','cos','tan','pyth','mix3','mix4'];
 
 const daNames = { hyp:'hypotenusen', opposite:'den modstående katete', adjacent:'den hosliggende katete' };
 const fnDaName = { sin:'sinus', cos:'cosinus', tan:'tangens', pyth:'Pythagoras' };
@@ -532,7 +533,65 @@ function shuffle(arr){
   return arr;
 }
 
+/* ============================================================
+   "UDPEG KATETER OG VINKLER" — pure identification drill
+   (same right triangle, shown in a randomly rotated/mirrored
+   orientation each time, so the student can't rely on screen position)
+   ============================================================ */
+const IDENTIFY_VARIANTS = [
+  { A:{x:55,y:230},  B:{x:315,y:55},  C:{x:315,y:230} },
+  { A:{x:315,y:230}, B:{x:55,y:55},   C:{x:55,y:230} },
+  { A:{x:55,y:55},   B:{x:315,y:230}, C:{x:315,y:55} },
+  { A:{x:315,y:55},  B:{x:55,y:230},  C:{x:55,y:55} },
+];
+
+/* the two acute vertices; C is always the right angle and has no single "adjacent/opposite" leg of its own */
+function oppositeLeg(vertex){ return vertex === 'A' ? 'BC' : 'AC'; }
+function adjacentLeg(vertex){ return vertex === 'A' ? 'AC' : 'BC'; }
+
+const IDENTIFY_TEMPLATES = [
+  { build: () => {
+      const v = Math.random() < 0.5 ? 'A' : 'B';
+      return { prompt:`Hvilken katete er den modstående til vinkel ${v}?`, qType:'side', correct: oppositeLeg(v) };
+    }
+  },
+  { build: () => {
+      const v = Math.random() < 0.5 ? 'A' : 'B';
+      return { prompt:`Hvilken katete er den hosliggende til vinkel ${v}?`, qType:'side', correct: adjacentLeg(v) };
+    }
+  },
+  { prompt:'Hvilken side er hypotenusen?', qType:'side', correct:'AB' },
+  { prompt:'Hvilken vinkel er den rette vinkel?', qType:'angle', correct:'C' },
+  { prompt:'Hvilken vinkel ligger overfor siden |BC|?', qType:'angle', correct:'A' },
+  { prompt:'Hvilken vinkel ligger overfor siden |AC|?', qType:'angle', correct:'B' },
+  { prompt:'Hvilken vinkel ligger overfor hypotenusen (|AB|)?', qType:'angle', correct:'C' },
+  { prompt:'Hvilken side ligger overfor vinkel A?', qType:'side', correct:'BC' },
+  { prompt:'Hvilken side ligger overfor vinkel B?', qType:'side', correct:'AC' },
+  { prompt:'Hvilken side ligger overfor vinkel C?', qType:'side', correct:'AB' },
+];
+
+function resolveTemplate(t){
+  return t.build ? t.build() : t;
+}
+
+function generateIdentifySet(){
+  const doubled = IDENTIFY_TEMPLATES.concat(IDENTIFY_TEMPLATES);
+  return shuffle(doubled.map(t => {
+    const resolved = resolveTemplate(t);
+    return {
+      kind:'label',
+      qType: resolved.qType,
+      prompt: resolved.prompt,
+      correct: resolved.correct,
+      options: shuffle(resolved.qType === 'side' ? ['AB','BC','AC'] : ['A','B','C']),
+      variant: randInt(0, IDENTIFY_VARIANTS.length-1),
+    };
+  }));
+}
+
 function buildQuestionSet(pkgKey){
+  if(pkgKey === 'label') return generateIdentifySet();
+
   const types = PACKAGES[pkgKey].types;
   const qs = [];
   for(let i=0;i<12;i++){
@@ -582,6 +641,58 @@ function angleState(q){
   if(q.kind !== 'trig') return { state:'none' };
   if(q.targetRole === 'angleA') return { state:'target', value:null };
   return { state:'given', value:q.angle };
+}
+
+/* generic vector helpers, used for the orientation-independent "label" package diagram */
+function vSub(P,Q){ return {x:P.x-Q.x, y:P.y-Q.y}; }
+function vAdd(P,Q){ return {x:P.x+Q.x, y:P.y+Q.y}; }
+function vScale(v,s){ return {x:v.x*s, y:v.y*s}; }
+function vUnit(v){ const l = Math.hypot(v.x,v.y) || 1; return {x:v.x/l, y:v.y/l}; }
+
+function rightAngleMarker(C,P1,P2,size){
+  const uA = vUnit(vSub(P1,C)), uB = vUnit(vSub(P2,C));
+  const p1 = C, p2 = vAdd(C, vScale(uA,size)), p3 = vAdd(p2, vScale(uB,size)), p4 = vAdd(C, vScale(uB,size));
+  const pts = [p1,p2,p3,p4].map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  return `<polygon points="${pts}" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>`;
+}
+
+function labelVertexPos(P, centroid, dist){
+  const d = vSub(P, centroid);
+  const u = vUnit(d);
+  return { x: P.x + u.x*dist, y: P.y + u.y*dist };
+}
+
+/* draws the plain (unlabelled sides) triangle used by the "udpeg kateter og vinkler" package.
+   revealKey, if set to a side ('AB'/'BC'/'AC') or angle ('A'/'B'/'C'), highlights it in green
+   once the student has answered correctly. */
+function labelTriangleSVG(q, revealKey){
+  const { A, B, C } = IDENTIFY_VARIANTS[q.variant];
+  const centroid = { x:(A.x+B.x+C.x)/3, y:(A.y+B.y+C.y)/3 };
+
+  function sideColor(key){ return (revealKey === key) ? 'var(--ok)' : 'var(--cyan)'; }
+  function sideWidth(key){ return (revealKey === key) ? 3.5 : 2.5; }
+  function vertexColor(key){ return (revealKey === key) ? 'var(--ok)' : 'var(--paper-dim)'; }
+
+  const posA = labelVertexPos(A, centroid, 22);
+  const posB = labelVertexPos(B, centroid, 22);
+  const posC = labelVertexPos(C, centroid, 22);
+
+  return `
+  <svg viewBox="0 0 400 300" width="100%" height="260">
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="${sideColor('AB')}" stroke-width="${sideWidth('AB')}"/>
+    <line x1="${B.x}" y1="${B.y}" x2="${C.x}" y2="${C.y}" stroke="${sideColor('BC')}" stroke-width="${sideWidth('BC')}"/>
+    <line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" stroke="${sideColor('AC')}" stroke-width="${sideWidth('AC')}"/>
+
+    ${rightAngleMarker(C, A, B, 13)}
+
+    <text x="${posA.x}" y="${posA.y}" text-anchor="middle" font-size="16" fill="${vertexColor('A')}" font-weight="700">A</text>
+    <text x="${posB.x}" y="${posB.y}" text-anchor="middle" font-size="16" fill="${vertexColor('B')}" font-weight="700">B</text>
+    <text x="${posC.x}" y="${posC.y}" text-anchor="middle" font-size="16" fill="${vertexColor('C')}" font-weight="700">C</text>
+
+    <circle cx="${A.x}" cy="${A.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${B.x}" cy="${B.y}" r="3" fill="var(--paper)"/>
+    <circle cx="${C.x}" cy="${C.y}" r="3" fill="var(--paper)"/>
+  </svg>`;
 }
 
 /* vertex name labels — A (given angle / bottom-left), B (top), C (right angle / bottom-right) */
@@ -806,7 +917,27 @@ function attachMethodStepHandlers(q){
   });
 }
 
+function commonTrailerHTML(){
+  let html = `<div class="attempt-info" id="attemptInfo"></div>`;
+  html += `<div class="secondary-actions">`;
+  html += `<button class="help-trigger" id="helpTrigger">Få hjælp</button>`;
+  html += `<button class="skip-trigger" id="skipTrigger">Spring opgaven over</button>`;
+  html += `</div>`;
+  html += `<div class="helpbox" id="helpBox"></div>`;
+  html += `<div class="next-row" id="nextRow"><button class="next-btn" id="nextBtn">Næste spørgsmål →</button></div>`;
+  return html;
+}
+
+function attachCommonTrailerHandlers(q){
+  document.getElementById('helpTrigger').addEventListener('click', ()=> toggleHelp(q));
+  document.getElementById('skipTrigger').addEventListener('click', ()=> handleSkip(q));
+  document.getElementById('nextBtn').addEventListener('click', goNext);
+  updateAttemptUI();
+}
+
 function buildCard(q){
+  if(q.kind === 'label') return buildLabelCard(q);
+
   const isSingleMethod = PACKAGES[currentPkgKey].types.length === 1;
 
   let html = `<div class="task-label">SPØRGSMÅL ${qIndex+1} AF ${questions.length}</div>`;
@@ -829,13 +960,7 @@ function buildCard(q){
     html += methodStepHTML(1);
   }
 
-  html += `<div class="attempt-info" id="attemptInfo"></div>`;
-  html += `<div class="secondary-actions">`;
-  html += `<button class="help-trigger" id="helpTrigger">Få hjælp</button>`;
-  html += `<button class="skip-trigger" id="skipTrigger">Spring opgaven over</button>`;
-  html += `</div>`;
-  html += `<div class="helpbox" id="helpBox"></div>`;
-  html += `<div class="next-row" id="nextRow"><button class="next-btn" id="nextBtn">Næste spørgsmål →</button></div>`;
+  html += commonTrailerHTML();
 
   card.innerHTML = html;
 
@@ -848,10 +973,55 @@ function buildCard(q){
   } else {
     attachMethodStepHandlers(q);
   }
-  document.getElementById('helpTrigger').addEventListener('click', ()=> toggleHelp(q));
-  document.getElementById('skipTrigger').addEventListener('click', ()=> handleSkip(q));
-  document.getElementById('nextBtn').addEventListener('click', goNext);
-  updateAttemptUI();
+  attachCommonTrailerHandlers(q);
+}
+
+function buildLabelCard(q){
+  let html = `<div class="task-label">SPØRGSMÅL ${qIndex+1} AF ${questions.length}</div>`;
+  html += `<h2 class="prompt">${q.prompt}</h2>`;
+  html += `<div class="diagram" id="labelDiagram">${labelTriangleSVG(q, null)}</div>`;
+  html += `<div class="fn-choices" id="labelChoices">`;
+  q.options.forEach(opt => {
+    const label = q.qType === 'side' ? `|${opt}|` : opt;
+    html += `<button class="fn-btn" data-value="${opt}">${label}</button>`;
+  });
+  html += `</div>`;
+  html += `<div class="feedback" id="labelFeedback"></div>`;
+  html += commonTrailerHTML();
+
+  card.innerHTML = html;
+
+  document.querySelectorAll('#labelChoices .fn-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> handleLabelChoice(btn, q));
+  });
+  attachCommonTrailerHandlers(q);
+}
+
+function handleLabelChoice(btn, q){
+  if(btn.disabled) return;
+  const allBtns = document.querySelectorAll('#labelChoices .fn-btn');
+  const fb = document.getElementById('labelFeedback');
+
+  if(btn.dataset.value === q.correct){
+    allBtns.forEach(b => b.disabled = true);
+    btn.classList.add('correct');
+    fb.textContent = 'Rigtigt!';
+    fb.className = 'feedback ok';
+
+    const diagram = document.getElementById('labelDiagram');
+    if(diagram) diagram.innerHTML = labelTriangleSVG(q, q.correct);
+
+    results[qIndex] = { attempts: wrongCount + 1, skipped:false };
+    document.getElementById('nextRow').classList.add('show');
+    document.getElementById('skipTrigger').classList.remove('show');
+  } else {
+    btn.classList.add('wrong');
+    wrongCount++;
+    fb.textContent = 'Forkert — prøv igen.';
+    fb.className = 'feedback err';
+    setTimeout(()=> btn.classList.remove('wrong'), 600);
+    updateAttemptUI();
+  }
 }
 
 function handleIdentifyChoice(btn, q){
@@ -1076,6 +1246,24 @@ function outwardSquare(P1, P2, oppVertex){
 function helpDiagram(q){
   const A = {x:60, y:200}, R = {x:250, y:200}, T = {x:250, y:70};
 
+  if(q.kind === 'label'){
+    // always show the canonical (unrotated) orientation as a fixed reference key,
+    // regardless of the actual question's random orientation
+    return `
+    <svg viewBox="0 0 400 300" width="100%" height="220">
+      <line x1="${A.x}" y1="${A.y}" x2="${T.x}" y2="${T.y}" stroke="var(--cyan)" stroke-width="2.5"/>
+      <line x1="${A.x}" y1="${A.y}" x2="${R.x}" y2="${R.y}" stroke="var(--cyan)" stroke-width="2.5"/>
+      <line x1="${R.x}" y1="${R.y}" x2="${T.x}" y2="${T.y}" stroke="var(--cyan)" stroke-width="2.5"/>
+      <rect x="${R.x-14}" y="${R.y-14}" width="14" height="14" fill="none" stroke="var(--paper-dim)" stroke-width="1.5"/>
+      <text x="${A.x-14}" y="${A.y+16}" text-anchor="middle" font-size="14" fill="var(--paper-dim)" font-weight="700">A</text>
+      <text x="${R.x+14}" y="${R.y+16}" text-anchor="middle" font-size="14" fill="var(--paper-dim)" font-weight="700">C</text>
+      <text x="${T.x+14}" y="${T.y-8}" text-anchor="middle" font-size="14" fill="var(--paper-dim)" font-weight="700">B</text>
+      <text x="${(A.x+T.x)/2-30}" y="${(A.y+T.y)/2-6}" text-anchor="middle" font-size="12" fill="var(--ok)" font-weight="600">c = hypotenusen</text>
+      <text x="${(A.x+R.x)/2}" y="${A.y+30}" text-anchor="middle" font-size="12" fill="var(--ok)" font-weight="600">b = hosliggende (til A)</text>
+      <text x="${R.x+10}" y="${(R.y+T.y)/2}" text-anchor="start" font-size="12" fill="var(--ok)" font-weight="600">a = modstående (til A)</text>
+    </svg>`;
+  }
+
   if(q.kind === 'pyth'){
     const sqB = outwardSquare(A,R,T);   // on the horizontal leg
     const sqA = outwardSquare(R,T,A);   // on the vertical leg
@@ -1121,6 +1309,14 @@ function helpDiagram(q){
 }
 
 function helpText(q){
+  if(q.kind === 'label'){
+    return `<strong>Hjælp:</strong> I en retvinklet trekant navngiver vi vinklerne A, B og C, hvor C altid er den rette vinkel.<br><br>
+    • <strong>Hypotenusen</strong> er den længste side — den ligger altid overfor den rette vinkel (C).<br>
+    • Den <strong>modstående katete</strong> til en vinkel er den side, som IKKE rører den vinkel.<br>
+    • Den <strong>hosliggende katete</strong> til en vinkel er den af de to sider, der rører vinklen, og som ikke er hypotenusen.<br><br>
+    Referencetrekanten ovenfor viser navngivningen i den "originale" stilling — men i selve opgaven kan trekanten være drejet eller spejlvendt, så du skal bruge princippet, ikke kun positionen på skærmen.`;
+  }
+
   if(q.kind === 'pyth'){
     return `<strong>Hjælp:</strong> Pythagoras' sætning bruges, når du kender to sider i en retvinklet trekant og skal finde den tredje.<br>
     Formel: <strong>a² + b² = c²</strong> (c er hypotenusen, a og b er kateterne)<br><br>
