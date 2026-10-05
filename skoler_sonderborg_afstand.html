@@ -95,8 +95,15 @@ td.pri{color:var(--accent)}
   </header>
 
   <div class="controls">
+    <fieldset class="ctl">
+      <legend>Transportform</legend>
+      <div class="seg">
+        <label><input type="radio" name="tr" id="tr-bil" value="car" checked><span>Bil<small>estimeret køretid</small></span></label>
+        <label><input type="radio" name="tr" id="tr-bus" value="bus"><span>Bus<small>modelleret via Sønderborg Busterminal</small></span></label>
+      </div>
+    </fieldset>
     <div class="ctl">
-      <label for="maxmin">Maks. køretid fra de andre skoler</label>
+      <label for="maxmin" id="maxlbl">Maks. rejsetid fra de andre skoler</label>
       <div class="range"><input type="range" id="maxmin" min="8" max="40" step="1" value="15"><output id="maxout" for="maxmin">15 min</output></div>
     </div>
     <fieldset class="ctl">
@@ -139,11 +146,12 @@ td.pri{color:var(--accent)}
     <div>
       <h3>Sådan er der regnet</h3>
       <p><b>Elever inden for tiden</b> er antal elever (inkl. skolens egne) på skoler, der ligger højst den valgte køretid væk. Det svarer til, hvor stor en del af kommunen der kan nå tilbuddet inden for jeres grænse.</p>
-      <p><b>Gns. min</b> er den gennemsnitlige køretid i bil fra de 14 andre skoler, hvor hver skole tæller med sit elevtal. En stor skole som Dybbøl-Skolen vejer derfor tungere end Lysabild Børneunivers.</p>
+      <p><b>Gns. min</b> er den gennemsnitlige rejsetid fra de 14 andre skoler, hvor hver skole tæller med sit elevtal. En stor skole som Dybbøl-Skolen vejer derfor tungere end Lysabild Børneunivers.</p>
     </div>
     <div>
       <h3>Forbehold</h3>
-      <p>Køretider er estimeret: luftlinje × 1,35 (vejfaktor) ved 55 km/t plus 3 minutter til start og parkering. Skolernes placering er tilnærmet ud fra adressen (±0,5–1 km). Tallene er gode til at sammenligne skolerne, men er ikke præcise rutetider. Kollektiv transport er ikke regnet med.</p>
+      <p><b>Bil:</b> Køretider er estimeret: luftlinje × 1,35 (vejfaktor) ved 55 km/t plus 3 minutter til start og parkering. Skolernes placering er tilnærmet ud fra adressen (±0,5–1 km). Tallene er gode til at sammenligne skolerne, men er ikke præcise rutetider. </p>
+      <p><b>Bus:</b> Rejsetiden er modelleret, ikke slået op i Rejseplanen. Hver skole har en tid til Sønderborg Busterminal (gang + bus), fx ca. 45 min fra Nordborg og 25 min fra Broager, som passer med linje 223's køreplan. En tur mellem to skoler = 5 min til stoppestedet + tid ind til terminalen + 10 min skift + tid ud. Skoler på samme linje (fx Augustenborg og Fynshav) kører direkte uden skift, og de to Nordborg-skoler ligger i gåafstand. Ventetid ved lav afgangsfrekvens på landet er ikke med, så reelle tider kan være længere.</p>
     </div>
     <div>
       <h3>Data</h3>
@@ -153,8 +161,9 @@ td.pri{color:var(--accent)}
 </div>
 
 <script>
-const DATA = {"schools":[{"name":"Alssund-Skolen","addr":"Stråbjergvej 3, 6400 Sønderborg","elever":475,"lat":54.9185,"lon":9.78,"avg":12.6,"w15":4449,"w20":4519,"max":26,"rank":1},{"name":"Sønderskov-Skolen","addr":"Grundtvigs Allé 100, 6400 Sønderborg","elever":665,"lat":54.8965,"lon":9.8,"avg":14.6,"w15":3481,"w20":4519,"max":30,"rank":4},{"name":"Ulkebøl Skole","addr":"Kaplenivej 3, 6400 Sønderborg","elever":553,"lat":54.928,"lon":9.808,"avg":13.5,"w15":3909,"w20":4519,"max":26,"rank":3},{"name":"Dybbøl-Skolen","addr":"Gl. Aabenraavej 20, 6400 Sønderborg","elever":829,"lat":54.915,"lon":9.768,"avg":13.4,"w15":4449,"w20":4881,"max":26,"rank":2},{"name":"Nybøl Børneunivers","addr":"Videnvej 2, Nybøl, 6400 Sønderborg","elever":125,"lat":54.903,"lon":9.705,"avg":14.8,"w15":4047,"w20":4121,"max":32,"rank":5},{"name":"Nydamskolen","addr":"Skolevej 21A, Vester Sottrup, 6400 Sønderborg","elever":428,"lat":54.958,"lon":9.725,"avg":15.5,"w15":2410,"w20":4968,"max":28,"rank":6},{"name":"Broager Skole","addr":"Nejsvej 19, 6310 Broager","elever":540,"lat":54.889,"lon":9.672,"avg":18.3,"w15":2475,"w20":4121,"max":36,"rank":8},{"name":"Gråsten Skole","addr":"Degnevænget 2, 6300 Gråsten","elever":432,"lat":54.92,"lon":9.594,"avg":22.5,"w15":1171,"w20":2428,"max":41,"rank":10},{"name":"Rinkenæs Skole","addr":"Stenvej 10, 6300 Gråsten","elever":74,"lat":54.904,"lon":9.565,"avg":24.1,"w15":1046,"w20":1171,"max":44,"rank":12},{"name":"Augustenborg Skole","addr":"Kettingvej 1, 6440 Augustenborg","elever":338,"lat":54.95,"lon":9.873,"avg":17.4,"w15":3453,"w20":3951,"max":33,"rank":7},{"name":"Fynshav Børneunivers","addr":"Gyden 96, Fynshav, 6440 Augustenborg","elever":97,"lat":54.988,"lon":9.981,"avg":27.1,"w15":435,"w20":931,"max":44,"rank":15},{"name":"Nørreskov-Skolen","addr":"Skolegade 21, 6430 Nordborg","elever":341,"lat":55.058,"lon":9.744,"avg":26.6,"w15":583,"w20":1011,"max":38,"rank":14},{"name":"Nordals Skolen","addr":"Peblingestien 2, 6430 Nordborg","elever":242,"lat":55.055,"lon":9.735,"avg":25.8,"w15":583,"w20":1011,"max":38,"rank":13},{"name":"Hørup Centralskole","addr":"Vestervej 42, Kirke Hørup, 6470 Sydals","elever":496,"lat":54.905,"lon":9.887,"avg":18.4,"w15":3426,"w20":3523,"max":33,"rank":9},{"name":"Lysabild Børneunivers","addr":"Lysabildgade 2, Lysabild, 6470 Sydals","elever":70,"lat":54.882,"lon":9.949,"avg":23.5,"w15":566,"w20":2597,"max":39,"rank":11}],"matrix":[[0,7.1,6.1,4.3,10.5,11.3,14.3,20.5,23.4,13.2,25.1,26.1,25.7,13.3,20.0],[7.1,0,8.2,7.3,12.0,15.3,15.1,22.8,25.2,14.1,25.7,30.0,29.7,11.3,17.2],[6.1,8.2,0,7.3,13.5,12.2,17.3,23.2,26.2,10.1,22.0,25.1,24.9,11.3,18.3],[4.3,7.3,7.3,0,9.2,11.1,13.0,19.4,22.2,14.4,26.3,26.5,26.1,14.3,20.9],[10.5,12.0,13.5,9.2,0,12.2,6.9,13.8,16.2,20.6,32.5,28.6,28.1,20.1,26.2],[11.3,15.3,12.2,11.1,12.2,0,15.4,16.8,20.5,17.0,27.6,19.5,18.9,20.5,27.5],[14.3,15.1,17.3,13.0,6.9,15.4,0,11.9,13.4,24.4,36.3,31.5,30.8,23.4,29.1],[20.5,22.8,23.2,19.4,13.8,16.8,11.9,0,6.8,29.7,41.1,29.6,28.8,30.7,37.0],[23.4,25.2,26.2,22.2,16.2,20.5,13.4,6.8,0,32.9,44.5,33.3,32.4,33.3,39.3],[13.2,14.1,10.1,14.4,20.6,17.0,24.4,29.7,32.9,0,14.9,24.4,24.5,10.5,16.2],[25.1,25.7,22.0,26.3,32.5,27.6,36.3,41.1,44.5,14.9,0,28.0,28.6,19.2,20.6],[26.1,30.0,25.1,26.5,28.6,19.5,31.5,29.6,33.3,24.4,28.0,0,4.0,31.4,37.7],[25.7,29.7,24.9,26.1,28.1,18.9,30.8,28.8,32.4,24.5,28.6,4.0,0,31.4,37.7],[13.3,11.3,11.3,14.3,20.1,20.5,23.4,30.7,33.3,10.5,19.2,31.4,31.4,0,9.9],[20.0,17.2,18.3,20.9,26.2,27.5,29.1,37.0,39.3,16.2,20.6,37.7,37.7,9.9,0]],"total":5705};
-const S = DATA.schools, M = DATA.matrix, N = S.length;
+const DATA = {"schools":[{"name":"Alssund-Skolen","addr":"Stråbjergvej 3, 6400 Sønderborg","elever":475,"lat":54.9185,"lon":9.78,"avg":12.6,"w15":4449,"w20":4519,"max":26,"rank":1},{"name":"Sønderskov-Skolen","addr":"Grundtvigs Allé 100, 6400 Sønderborg","elever":665,"lat":54.8965,"lon":9.8,"avg":14.6,"w15":3481,"w20":4519,"max":30,"rank":4},{"name":"Ulkebøl Skole","addr":"Kaplenivej 3, 6400 Sønderborg","elever":553,"lat":54.928,"lon":9.808,"avg":13.5,"w15":3909,"w20":4519,"max":26,"rank":3},{"name":"Dybbøl-Skolen","addr":"Gl. Aabenraavej 20, 6400 Sønderborg","elever":829,"lat":54.915,"lon":9.768,"avg":13.4,"w15":4449,"w20":4881,"max":26,"rank":2},{"name":"Nybøl Børneunivers","addr":"Videnvej 2, Nybøl, 6400 Sønderborg","elever":125,"lat":54.903,"lon":9.705,"avg":14.8,"w15":4047,"w20":4121,"max":32,"rank":5},{"name":"Nydamskolen","addr":"Skolevej 21A, Vester Sottrup, 6400 Sønderborg","elever":428,"lat":54.958,"lon":9.725,"avg":15.5,"w15":2410,"w20":4968,"max":28,"rank":6},{"name":"Broager Skole","addr":"Nejsvej 19, 6310 Broager","elever":540,"lat":54.889,"lon":9.672,"avg":18.3,"w15":2475,"w20":4121,"max":36,"rank":8},{"name":"Gråsten Skole","addr":"Degnevænget 2, 6300 Gråsten","elever":432,"lat":54.92,"lon":9.594,"avg":22.5,"w15":1171,"w20":2428,"max":41,"rank":10},{"name":"Rinkenæs Skole","addr":"Stenvej 10, 6300 Gråsten","elever":74,"lat":54.904,"lon":9.565,"avg":24.1,"w15":1046,"w20":1171,"max":44,"rank":12},{"name":"Augustenborg Skole","addr":"Kettingvej 1, 6440 Augustenborg","elever":338,"lat":54.95,"lon":9.873,"avg":17.4,"w15":3453,"w20":3951,"max":33,"rank":7},{"name":"Fynshav Børneunivers","addr":"Gyden 96, Fynshav, 6440 Augustenborg","elever":97,"lat":54.988,"lon":9.981,"avg":27.1,"w15":435,"w20":931,"max":44,"rank":15},{"name":"Nørreskov-Skolen","addr":"Skolegade 21, 6430 Nordborg","elever":341,"lat":55.058,"lon":9.744,"avg":26.6,"w15":583,"w20":1011,"max":38,"rank":14},{"name":"Nordals Skolen","addr":"Peblingestien 2, 6430 Nordborg","elever":242,"lat":55.055,"lon":9.735,"avg":25.8,"w15":583,"w20":1011,"max":38,"rank":13},{"name":"Hørup Centralskole","addr":"Vestervej 42, Kirke Hørup, 6470 Sydals","elever":496,"lat":54.905,"lon":9.887,"avg":18.4,"w15":3426,"w20":3523,"max":33,"rank":9},{"name":"Lysabild Børneunivers","addr":"Lysabildgade 2, Lysabild, 6470 Sydals","elever":70,"lat":54.882,"lon":9.949,"avg":23.5,"w15":566,"w20":2597,"max":39,"rank":11}],"total":5705,"bus":[[0,31,33,31,43,50,50,55,62,43,57,69,70,47,57],[31,0,33,31,43,50,50,55,62,43,57,69,70,47,57],[33,33,0,33,45,52,52,57,64,45,59,71,72,49,59],[31,31,33,0,43,50,50,55,62,43,57,69,70,47,57],[43,43,45,43,0,58,58,23,30,51,65,77,78,55,65],[50,50,52,50,58,0,65,70,77,58,72,84,85,62,72],[50,50,52,50,58,65,0,70,77,58,72,84,85,62,72],[55,55,57,55,23,70,70,0,18,63,77,89,90,67,77],[62,62,64,62,30,77,77,18,0,70,84,96,97,74,84],[43,43,45,43,51,58,58,63,70,0,25,77,78,55,65],[57,57,59,57,65,72,72,77,84,25,0,91,92,69,79],[69,69,71,69,77,84,84,89,96,77,91,0,12,81,91],[70,70,72,70,78,85,85,90,97,78,92,12,0,82,92],[47,47,49,47,55,62,62,67,74,55,69,81,82,0,21],[57,57,59,57,65,72,72,77,84,65,79,91,92,21,0]],"car":[[0,7.1,6.1,4.3,10.5,11.3,14.3,20.5,23.4,13.2,25.1,26.1,25.7,13.3,20.0],[7.1,0,8.2,7.3,12.0,15.3,15.1,22.8,25.2,14.1,25.7,30.0,29.7,11.3,17.2],[6.1,8.2,0,7.3,13.5,12.2,17.3,23.2,26.2,10.1,22.0,25.1,24.9,11.3,18.3],[4.3,7.3,7.3,0,9.2,11.1,13.0,19.4,22.2,14.4,26.3,26.5,26.1,14.3,20.9],[10.5,12.0,13.5,9.2,0,12.2,6.9,13.8,16.2,20.6,32.5,28.6,28.1,20.1,26.2],[11.3,15.3,12.2,11.1,12.2,0,15.4,16.8,20.5,17.0,27.6,19.5,18.9,20.5,27.5],[14.3,15.1,17.3,13.0,6.9,15.4,0,11.9,13.4,24.4,36.3,31.5,30.8,23.4,29.1],[20.5,22.8,23.2,19.4,13.8,16.8,11.9,0,6.8,29.7,41.1,29.6,28.8,30.7,37.0],[23.4,25.2,26.2,22.2,16.2,20.5,13.4,6.8,0,32.9,44.5,33.3,32.4,33.3,39.3],[13.2,14.1,10.1,14.4,20.6,17.0,24.4,29.7,32.9,0,14.9,24.4,24.5,10.5,16.2],[25.1,25.7,22.0,26.3,32.5,27.6,36.3,41.1,44.5,14.9,0,28.0,28.6,19.2,20.6],[26.1,30.0,25.1,26.5,28.6,19.5,31.5,29.6,33.3,24.4,28.0,0,4.0,31.4,37.7],[25.7,29.7,24.9,26.1,28.1,18.9,30.8,28.8,32.4,24.5,28.6,4.0,0,31.4,37.7],[13.3,11.3,11.3,14.3,20.1,20.5,23.4,30.7,33.3,10.5,19.2,31.4,31.4,0,9.9],[20.0,17.2,18.3,20.9,26.2,27.5,29.1,37.0,39.3,16.2,20.6,37.7,37.7,9.9,0]]};
+const S = DATA.schools, N = S.length;
+let M = DATA.car, AVG = [];
 const svg = document.getElementById('map');
 const W = 1000, PAD = 60;
 const lat0 = 54.97, k = Math.cos(lat0*Math.PI/180);
@@ -187,15 +196,18 @@ const dots = S.map((s,i)=>{
 });
 
 const slider=document.getElementById('maxmin'), out=document.getElementById('maxout');
-let limit=15, mode='elever', sel=null, userPicked=false, order=[], rankOf=[], cov=[];
+let tr='car', limit=15, mode='elever', sel=null, userPicked=false, order=[], rankOf=[], cov=[];
 
 function coverage(i,lim){ let s=S[i].elever; for(let j=0;j<N;j++) if(j!==i && M[i][j]<=lim) s+=S[j].elever; return s; }
 
+function avgOf(i){ let s=0,w=0; for(let j=0;j<N;j++) if(j!==i){ s+=M[i][j]*S[j].elever; w+=S[j].elever; } return s/w; }
 function compute(){
+  M = tr==='bus' ? DATA.bus : DATA.car;
+  AVG=S.map((_,i)=>avgOf(i));
   cov=S.map((_,i)=>coverage(i,limit));
   order=S.map((_,i)=>i).sort((a,b)=> mode==='elever'
-    ? (cov[b]-cov[a]) || (S[a].avg-S[b].avg)
-    : (S[a].avg-S[b].avg) || (cov[b]-cov[a]));
+    ? (cov[b]-cov[a]) || (AVG[a]-AVG[b])
+    : (AVG[a]-AVG[b]) || (cov[b]-cov[a]));
   rankOf=[]; order.forEach((i,r)=>rankOf[i]=r);
 }
 function heatByRank(i){ const t=rankOf[i]/(N-1); return t<0.34?'var(--near)':t<0.67?'var(--mid)':'var(--far)'; }
@@ -205,7 +217,7 @@ function render(){
   compute();
   if(!userPicked || sel===null) sel=order[0];
   out.textContent=limit+' min';
-  document.getElementById('hint').textContent=`Fuld linje: højst ${limit} min fra den valgte skole`;
+  document.getElementById('hint').textContent=`${tr==='bus'?'Bus':'Bil'} · fuld linje: højst ${limit} min fra den valgte skole`;
   const hc=document.getElementById('h-cov'), ha=document.getElementById('h-avg');
   hc.textContent=`Elever ≤ ${limit} min`;
   hc.classList.toggle('pri',mode==='elever'); ha.classList.toggle('pri',mode==='tid');
@@ -214,13 +226,13 @@ function render(){
 
   tb.innerHTML='';
   const maxCov=Math.max(...cov), minCov=Math.min(...cov);
-  const aMin=Math.min(...S.map(s=>s.avg)), aMax=Math.max(...S.map(s=>s.avg));
+  const aMin=Math.min(...AVG), aMax=Math.max(...AVG);
   order.forEach((i,r)=>{
     const s=S[i]; const tr=document.createElement('tr'); tr.tabIndex=0;
-    const frac = mode==='elever' ? (cov[i]-minCov)/((maxCov-minCov)||1) : (aMax-s.avg)/((aMax-aMin)||1);
+    const frac = mode==='elever' ? (cov[i]-minCov)/((maxCov-minCov)||1) : (aMax-AVG[i])/((aMax-aMin)||1);
     const w=Math.round(15+85*frac);
     tr.innerHTML=`<td class="n">${r+1}</td><td>${s.name}<div class="bar" style="width:${w}%;background:${heatByRank(i)}"></div></td>`+
-      `<td class="n${mode==='elever'?' pri':''}">${dk(cov[i])}</td><td class="n${mode==='tid'?' pri':''}">${fmt(s.avg)}</td>`;
+      `<td class="n${mode==='elever'?' pri':''}">${dk(cov[i])}</td><td class="n${mode==='tid'?' pri':''}">${fmt(AVG[i])}</td>`;
     tr.classList.toggle('sel',i===sel);
     tr.addEventListener('click',()=>pick(i));
     tr.addEventListener('keydown',e=>{if(e.key==='Enter'){pick(i);}});
@@ -228,10 +240,10 @@ function render(){
   });
 
   const [b1,b2,b3]=order;
-  const val = i => mode==='elever' ? `${dk(cov[i])} elever` : `${fmt(S[i].avg)} min`;
+  const val = i => mode==='elever' ? `${dk(cov[i])} elever` : `${fmt(AVG[i])} min`;
   document.getElementById('verdict').innerHTML=
    `<div><div class="lbl">Bedst placeret</div><div class="big">${S[b1].name}</div></div>
-    <div><div class="lbl">${mode==='elever'?`Elever inden for ${limit} min`:'Gns. køretid fra andre skoler'}</div><div class="num">${mode==='elever'?`${dk(cov[b1])} af ${dk(DATA.total)} (${Math.round(100*cov[b1]/DATA.total)} %)`:`${fmt(S[b1].avg)} min`}</div></div>
+    <div><div class="lbl">${mode==='elever'?`Elever inden for ${limit} min`:(tr==='bus'?'Gns. busrejse fra andre skoler':'Gns. køretid fra andre skoler')}</div><div class="num">${mode==='elever'?`${dk(cov[b1])} af ${dk(DATA.total)} (${Math.round(100*cov[b1]/DATA.total)} %)`:`${fmt(AVG[b1])} min`}</div></div>
     <div><div class="lbl">Nr. 2 og 3</div><div class="num">${S[b2].name} ${val(b2)} · ${S[b3].name} ${val(b3)}</div></div>`;
   drawSel();
 }
@@ -253,14 +265,17 @@ function drawSel(){
    `<h2>${rankOf[i]+1}. ${s.name}</h2><p class="addr">${s.addr} · ${s.elever} elever (2023/24)</p>
     <div class="stats"><div><b>${dk(cov[i])}</b><small>elever inden for ${limit} min</small></div>
     <div><b>${reach} af ${N-1}</b><small>andre skoler inden for ${limit} min</small></div>
-    <div><b>${fmt(s.avg)}</b><small>min i gns. fra de andre skoler</small></div></div>
+    <div><b>${fmt(AVG[i])}</b><small>min i gns. fra de andre skoler</small></div></div>
     <p style="margin:10px 0 0"><a href="${gm}" target="_blank" rel="noopener">Åbn i Google Maps ↗</a></p>`;
 }
 function pick(i){ sel=i; userPicked=true; drawSel(); }
 
 slider.addEventListener('input',()=>{limit=+slider.value; render();});
+const PRESET={car:{max:40,val:15},bus:{max:90,val:45}};
+document.querySelectorAll('input[name=tr]').forEach(r=>r.addEventListener('change',()=>{
+  tr=r.value; slider.max=PRESET[tr].max; slider.value=PRESET[tr].val; limit=PRESET[tr].val; render();}));
 document.querySelectorAll('input[name=mode]').forEach(r=>r.addEventListener('change',()=>{mode=r.value; render();}));
-limit=+slider.value; mode=document.querySelector('input[name=mode]:checked').value;
+tr=document.querySelector('input[name=tr]:checked').value; slider.max=PRESET[tr].max; limit=+slider.value; mode=document.querySelector('input[name=mode]:checked').value;
 render();
 </script>
 
