@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andre projekter</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 30px 20px 60px;
+      color: #333;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      color: white;
+      margin-bottom: 25px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    header h1 {
+      font-size: 2.4em;
+      margin: 0 0 8px;
+    }
+    header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1.05em;
+    }
+    .fagnav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .fagnav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: background 0.2s ease;
+    }
+    .fagnav a:hover {
+      background: rgba(255,255,255,0.32);
+    }
+    h2.fag-title {
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      font-size: 1.7em;
+      margin: 50px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      scroll-margin-top: 20px;
+    }
+    h2.fag-title:first-of-type {
+      margin-top: 0;
+    }
+    h3.section-title {
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      font-size: 1.15em;
+      margin: 26px 0 16px;
+      opacity: 0.9;
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+    }
+    .thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9.5;
+      object-fit: cover;
+      background: #eef1f8;
+      border-bottom: 4px solid #667eea;
+    }
+    .thumb.gif {
+      object-fit: contain;
+      background: #0d0d12;
+    }
+    .card-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-body h3 {
+      margin: 0 0 8px;
+      color: #4a3a8a;
+      font-size: 1.2em;
+    }
+    .card-body p {
+      margin: 0 0 16px;
+      font-size: 0.94em;
+      color: #555;
+      flex: 1;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.72em;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+    .badge.sim { background: #e3f2fd; color: #1565c0; }
+    .badge.video { background: #ffebee; color: #c62828; }
+    .badge.extra { background: #fff9e6; color: #b8860b; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 18px;
+      border-radius: 25px;
+      text-align: center;
+      font-size: 0.92em;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: opacity 0.2s ease;
+    }
+    .btn:hover { opacity: 0.88; }
+    .grid.compact {
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    }
+    .grid.compact .card-body { padding: 14px 16px 16px; }
+    .grid.compact .card-body h3 { font-size: 1.05em; }
+    .grid.compact .card-body p { font-size: 0.88em; }
+    .intro {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: white;
+      border-radius: 14px;
+      padding: 14px 20px;
+      max-width: 760px;
+      margin: 0 auto 30px;
+      text-align: center;
+      font-size: 0.98em;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>🧭 Andre projekter</h1>
+      <p>Interaktive kort og værktøjer, der ikke hører til et bestemt fag</p>
+    </header>
+
+    <p class="intro">Her finder du sider, der er lavet til andre formål end selve undervisningen i fagene. Klik på <b>Åbn</b> på et kort for at se siden.</p>
+
+    <!-- ========== KORT ========== -->
+    <h2 class="fag-title" id="kort">🗺️ Kort</h2>
+    <div class="grid">
+
+      <div class="card">
+        <div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:3em;background:#eef1f8;">🏫</div>
+        <div class="card-body">
+          <span class="badge sim">Interaktivt kort</span>
+          <h3>🏫 Skolekort Sønderborg</h3>
+          <p>Interaktivt kort der rangerer skolerne i Sønderborg Kommune efter, hvor nemme de er at besøge, med elevtal og afstande for hver skole.</p>
+          <a class="btn" href="skoler_sonderborg_afstand.html">Åbn kort →</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>
