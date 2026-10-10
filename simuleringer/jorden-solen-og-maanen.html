@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///home/olefrandsen/Hentet/jorden_solen_og_maanen.html -->
+<html lang="da"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jorden, Solen og Månen</title>
+<style>
+  :root{
+    --bg:#0b1226; --panel:#131d38; --panel2:#1a2648; --text:#e9eefc; --muted:#a9b6d8;
+    --accent:#ffc83d; --accent2:#5ab0ff; --danger:#ff5d5d; --line:#2a3a66;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
+  header{padding:22px 16px 6px;text-align:center}
+  h1{margin:0;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:.5px}
+  h1 span{color:var(--accent)}
+  .sub{color:var(--muted);margin:4px 0 0}
+  main{max-width:1200px;margin:0 auto;padding:12px 16px 40px}
+  .grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+  @media (max-width:880px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .globe-card{padding:10px;background:radial-gradient(ellipse at center,#0d1736 0%,#03060f 75%)}
+  canvas#globe{width:100%;aspect-ratio:1/1;display:block;touch-action:none;cursor:grab;border-radius:12px}
+  canvas#globe:active{cursor:grabbing}
+  .hint{text-align:center;color:var(--muted);font-size:.9rem;margin:6px 0 2px}
+  .views{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
+  button{font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);
+    border-radius:10px;padding:7px 12px;cursor:pointer;transition:background .15s,border-color .15s}
+  button:hover{background:#24356a;border-color:#3d5296}
+  button.on{background:var(--accent2);border-color:var(--accent2);color:#06142e;font-weight:600}
+  button.big{font-size:1rem;padding:9px 14px}
+  .clock{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .clock .time{font-size:clamp(2.4rem,7vw,3.4rem);font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent)}
+  .clock .date{color:var(--muted)}
+  .live{font-size:.75rem;font-weight:700;background:var(--danger);color:#fff;padding:2px 8px;border-radius:999px;letter-spacing:1px}
+  .live.off{display:none}
+  .slider-wrap{margin:10px 0 4px}
+  input[type=range]{width:100%;height:34px;-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:12px;border-radius:6px;
+    background:linear-gradient(90deg,#0b1a3d 0%,#0b1a3d 22%,#f39b4a 27%,#7cc4ff 35%,#bfe3ff 50%,#7cc4ff 65%,#f39b4a 73%,#0b1a3d 78%,#0b1a3d 100%)}
+  input[type=range]::-moz-range-track{height:12px;border-radius:6px;
+    background:linear-gradient(90deg,#0b1a3d 0%,#0b1a3d 22%,#f39b4a 27%,#7cc4ff 35%,#bfe3ff 50%,#7cc4ff 65%,#f39b4a 73%,#0b1a3d 78%,#0b1a3d 100%)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-8px;border-radius:50%;
+    background:var(--accent);border:3px solid #fff;box-shadow:0 0 10px rgba(255,200,61,.8)}
+  input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--accent);border:3px solid #fff}
+  .ticks{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;padding:0 4px}
+  .row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}
+  .row label{color:var(--muted);font-size:.9rem}
+  input[type=date]{font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 10px;color-scheme:dark}
+  h2{font-size:1.15rem;margin:16px 0 8px}
+  h2:first-child{margin-top:0}
+  .status{display:flex;align-items:center;gap:12px;background:var(--panel2);border-radius:12px;padding:10px 12px}
+  .status .icon{font-size:2.2rem;line-height:1}
+  .status .big{font-size:1.2rem;font-weight:700}
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .fact{background:var(--panel2);border-radius:12px;padding:8px 12px}
+  .fact .k{color:var(--muted);font-size:.8rem}
+  .fact .v{font-size:1.1rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .legend{display:grid;gap:6px;font-size:.92rem}
+  .legend div{display:flex;gap:10px;align-items:center}
+  .sw{width:18px;height:18px;border-radius:5px;flex:none;border:1px solid rgba(255,255,255,.25)}
+  .check{display:flex;gap:8px;align-items:center;color:var(--text);font-size:.95rem;cursor:pointer}
+  .learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+  .learn h3{margin:0 0 6px;font-size:1.05rem;color:var(--accent)}
+  .learn p{margin:0;color:#d5ddf5}
+  .tasks ol{margin:6px 0 0;padding-left:22px}
+  .tasks li{margin-bottom:6px}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 16px 24px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Jorden, <span>Solen</span> og Månen</h1>
+  <p class="sub">Se hvordan Solens lys rammer Jorden og Månen – lige nu og på alle andre tidspunkter af døgnet</p>
+</header>
+
+<main>
+  <div class="grid">
+    <!-- Jordkloden -->
+    <section class="card globe-card">
+      <canvas id="globe" aria-label="Jordkloden belyst af Solen" height="617" width="617"></canvas>
+      <p class="hint">👆 Træk i Jorden med musen eller fingeren for at dreje den</p>
+      <div class="views" id="views">
+        <button data-view="dk" class="on">🇩🇰 Danmark</button>
+        <button data-view="np">⬆ Nordpolen</button>
+        <button data-view="sp">⬇ Sydpolen</button>
+        <button data-view="am">🌎 Amerika</button>
+        <button data-view="as">🌏 Asien</button>
+        <button data-view="sun">☀ Set fra Solen</button>
+      </div>
+    </section>
+
+    <!-- Styring og info -->
+    <section class="card">
+      <h2>Tidspunkt (dansk tid)</h2>
+      <div class="clock">
+        <div class="time" id="timeTxt">06:34</div>
+        <span class="live" id="liveBadge" title="Viser det aktuelle klokkeslæt">NU</span>
+        <div class="date" id="dateTxt">lørdag d. 10. oktober 2026 · sommertid · UTC 04:34</div>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" id="slider" min="0" max="1439" step="1" value="720" aria-label="Vælg klokkeslæt">
+        <div class="ticks"><span>00</span><span>03</span><span>06</span><span>09</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span></div>
+      </div>
+      <div class="row">
+        <button class="big" id="minus">◀ −1 time</button>
+        <button class="big" id="nowBtn">🕒 Nu</button>
+        <button class="big" id="plus">+1 time ▶</button>
+        <button class="big" id="playBtn">▶ Afspil døgnet</button>
+      </div>
+      <div class="row">
+        <label for="dateIn">Dato:</label>
+        <input type="date" id="dateIn">
+      </div>
+      <div class="row">
+        <label>Prøv årstiderne:</label>
+        <button data-season="2,20">Forår (20/3)</button>
+        <button data-season="5,21">Sommer (21/6)</button>
+        <button data-season="8,22">Efterår (22/9)</button>
+        <button data-season="11,21">Vinter (21/12)</button>
+      </div>
+
+      <h2>I Danmark</h2>
+      <div class="status">
+        <div class="icon" id="stIcon">🌆</div>
+        <div><div class="big" id="stTxt">Tusmørke</div><div class="k" id="stSub" style="color:var(--muted)">Solen er lige under horisonten – himlen er stadig lidt lys</div></div>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="k">Solens højde over horisonten</div><div class="v" id="alt">-9,7°</div></div>
+        <div class="fact"><div class="k">Dagens længde</div><div class="v" id="dayLen">10 t 56 min</div></div>
+        <div class="fact"><div class="k">Solopgang</div><div class="v" id="rise">07:39</div></div>
+        <div class="fact"><div class="k">Solnedgang</div><div class="v" id="set">18:35</div></div>
+      </div>
+      <div class="fact" style="margin-top:8px"><div class="k">Solen står lodret (lige over hovedet) over</div><div class="v" id="subsolar">6,2° syd · 108,2° øst</div></div>
+
+      <h2>Månen</h2>
+      <div class="status">
+        <canvas id="phaseIcon" width="56" height="56" style="width:48px;height:48px;flex:none" aria-label="Månefasen set fra Danmark"></canvas>
+        <div><div class="big" id="phaseTxt">Nymåne</div><div style="color:var(--muted)" id="illumTxt">0 % af Månen er belyst</div></div>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="k">Månens højde over horisonten i Danmark</div><div class="v" id="moonAlt">-7,0°</div></div>
+        <div class="fact"><div class="k">Kan Månen ses i Danmark?</div><div class="v" id="moonVis" style="font-size:.95rem">Under horisonten – kan ikke ses</div></div>
+      </div>
+
+      <h2>Forklaring til kloden</h2>
+      <div class="legend">
+        <div><span class="sw" style="background:#3f8f4a"></span>Lys side – her er det dag</div>
+        <div><span class="sw" style="background:linear-gradient(90deg,#c9783a,#3a2a3a)"></span>Tusmørke – solopgang eller solnedgang</div>
+        <div><span class="sw" style="background:#0b1530"></span>Mørk side – her er det nat</div>
+        <div><span class="sw" style="background:#ffd23d;border-radius:50%"></span>Stedet hvor Solen står lodret – her er det middag</div>
+        <div><span class="sw" style="background:#d9dde6;border-radius:50%"></span>Stedet hvor Månen står lodret</div>
+        <div><span class="sw" style="background:#ff4d4d;border-radius:50%"></span>Danmark</div>
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="gridChk" checked=""> Vis ækvator, vendekredse og polarcirkler</label>
+        <label class="check"><input type="checkbox" id="moonChk" checked=""> Vis Månen</label>
+      </div>
+      <p style="color:var(--muted);font-size:.85rem;margin:8px 0 0">Bemærk: Solen og Månen viser kun retningen. I virkeligheden er de meget længere væk – Månen ca. 30 jorddiametre og Solen ca. 11.700 jorddiametre.</p>
+    </section>
+  </div>
+
+  <!-- Faglig forklaring -->
+  <div class="learn">
+    <div class="card">
+      <h3>Hvorfor bliver det dag og nat?</h3>
+      <p>Solen lyser altid på den ene halvdel af Jorden. Jorden drejer rundt om sin egen akse én gang i døgnet – mod øst. Derfor bliver vi i Danmark skiftevis drejet ind i lyset (dag) og ud i skyggen (nat). Solen står altså ikke op – det er Jorden, der drejer os hen mod den.</p>
+    </div>
+    <div class="card">
+      <h3>15 grader i timen</h3>
+      <p>En hel omgang er 360°. Jorden bruger 24 timer på en omgang, så den drejer 360° ÷ 24 = 15° hver time. Derfor er der tidsforskel: når det er middag i Danmark, er det tidlig morgen i New York og aften i Japan.</p>
+    </div>
+    <div class="card">
+      <h3>Dag-nat-grænsen</h3>
+      <p>Linjen mellem den lyse og den mørke side kaldes dag-nat-grænsen (terminatoren). Står man på den, ser man enten solopgang eller solnedgang. Det farvede bånd langs grænsen er tusmørket, hvor himlen stadig er lys, selvom Solen er under horisonten.</p>
+    </div>
+    <div class="card">
+      <h3>Hvorfor ændrer dagenes længde sig?</h3>
+      <p>Jordens akse hælder ca. 23,4°. Om sommeren vender den nordlige halvkugle mod Solen, så Danmark er længe på den lyse side. Om vinteren vender vi væk fra Solen, og dagene bliver korte. Ved forårs- og efterårsjævndøgn er dag og nat næsten lige lange overalt.</p>
+    </div>
+    <div class="card">
+      <h3>Månen og månefaserne</h3>
+      <p>Månen lyser ikke selv – den bliver belyst af Solen, ligesom Jorden. Halvdelen af Månen er altid lys. Når Månen kredser om Jorden (ca. 29,5 døgn), ser vi forskellige dele af den lyse halvdel: nymåne, halvmåne og fuldmåne. Ved nymåne står Månen næsten i samme retning som Solen, ved fuldmåne i den modsatte retning.</p>
+    </div>
+  </div>
+
+  <div class="card tasks" style="margin-top:14px">
+    <h3 style="margin:0;color:var(--accent)">Prøv selv – opgaver</h3>
+    <ol>
+      <li>Hvad er klokken lige nu, og er det dag eller nat i Danmark? Hvor står Solen lodret lige nu?</li>
+      <li>Træk i slideren og find det tidspunkt, hvor Solen går ned i Danmark i dag. Passer det med tabellen?</li>
+      <li>Hvornår på dagen står Solen højest over Danmark? Hvorfor er det ikke præcis kl. 12.00? (Tip: sommertid.)</li>
+      <li>Vælg <b>Sommer (21/6)</b> og <b>Nordpolen</b>. Afspil døgnet. Hvad sker der med Nordpolen? Gør det samme med <b>Vinter (21/12)</b>.</li>
+      <li>Find ud af, hvor mange timer der er mellem solopgang i Danmark og solopgang i Kina. Brug at Jorden drejer 15° i timen.</li>
+      <li>Hvorfor er dag-nat-grænsen ikke en lige linje fra nord til syd om sommeren og vinteren – men næsten er det ved jævndøgn?</li>
+      <li>Hvilken månefase er det i dag? Skift datoen én uge frem ad gangen. Hvordan ændrer fasen sig – og hvor står Månen i forhold til Solen?</li>
+      <li>Find en dato med fuldmåne. Afspil døgnet: Hvornår kan man se Månen i Danmark? Hvorfor er det mest om natten?</li>
+    </ol>
+  </div>
+</main>
+<footer>Jorden, Solen og Månen · Solens og Månens positioner beregnes ud fra dato og klokkeslæt. Kontinenterne er tegnet forenklet.</footer>
+
+<script>
+(function(){
+"use strict";
+const D2R=Math.PI/180, R2D=180/Math.PI;
+const DK={lat:56.0, lon:10.0, name:"Danmark"};
+
+/* ---------- Forenklede kontinenter [længde, bredde] ---------- */
+const LAND=[
+ // Nordamerika
+ [[-168,66],[-162,70],[-156,71],[-140,70],[-128,70],[-115,68],[-95,72],[-85,70],[-80,63],[-94,58],[-90,57],[-82,55],[-79,52],[-77,60],[-70,61],[-64,60],[-61,56],[-56,52],[-60,47],[-66,45],[-70,42],[-74,40],[-76,35],[-81,31],[-80,25],[-82,27],[-84,30],[-90,29],[-97,27],[-97,22],[-95,18],[-90,21],[-87,21],[-88,16],[-84,15],[-83,10],[-79,9],[-77,8],[-80,7],[-85,10],[-92,14],[-105,20],[-110,24],[-112,29],[-114,31],[-110,23],[-112,25],[-117,32],[-121,35],[-124,40],[-124,48],[-130,54],[-137,58],[-147,60],[-152,59],[-158,57],[-165,55],[-158,58],[-162,60],[-166,62],[-165,64],[-168,66]],
+ // Grønland
+ [[-73,78],[-60,82],[-40,83],[-20,82],[-18,77],[-22,70],[-30,68],[-40,65],[-44,60],[-50,63],[-53,67],[-55,71],[-60,76],[-73,78]],
+ // Canadiske øer
+ [[-80,73],[-70,70],[-62,66.5],[-66,62],[-73,64],[-78,70]],
+ [[-118,69],[-102,69],[-100,73],[-110,75],[-120,74]],
+ [[-95,76],[-75,77],[-62,82],[-85,83],[-95,80]],
+ // Cuba
+ [[-85,22],[-80,23],[-74,20],[-78,20]],
+ // Sydamerika
+ [[-80,9],[-75,11],[-71,12],[-63,10],[-60,8],[-52,5],[-50,0],[-44,-2],[-35,-5],[-35,-9],[-39,-14],[-41,-22],[-48,-26],[-53,-34],[-58,-35],[-57,-38],[-62,-40],[-65,-45],[-67,-50],[-69,-55],[-74,-52],[-75,-46],[-73,-38],[-71,-30],[-70,-18],[-76,-14],[-80,-7],[-81,-3],[-80,1],[-78,4],[-77,7],[-80,9]],
+ // Eurasien
+ [[-9,37],[-9,43],[-2,43.5],[-1,46],[-4,48],[2,51],[5,53],[8,54],[8.2,55.5],[8.5,57],[10.5,57.7],[10.3,56.5],[10.5,55],[12,54.5],[14,54],[19,54.5],[21,57],[24,59.5],[28,60],[23,60.5],[21,61],[21.5,63.5],[25,65.5],[22,66],[18,63],[17,61],[18.5,59.5],[16.5,57],[14,55.5],[12.8,56],[11,59],[8,58],[5,59],[5,62],[10,64],[14,67.5],[19,70],[25,71],[30,70],[33,69],[41,67],[44,68.5],[54,68.5],[60,69.5],[68,71],[73,72],[80,73],[87,75],[100,77],[113,74],[130,72],[142,72.5],[160,70],[170,70],[180,69],[180,65],[170,60],[163,59],[156,51],[156,57],[160,61],[155,59],[143,59],[137,54],[141,52],[140,48],[135,43],[130,42],[129,36],[126,35],[126,38],[125,40],[121,39],[122,37],[119,37],[121,32],[122,30],[120,26],[117,23],[110,21],[109,19],[106,21],[106,17],[109,12],[105,9],[103,10],[100,13],[99,10],[101,6],[104,1.5],[101,3],[98,8],[98,16],[94,17],[92,21],[89,22],[87,21.5],[80,15],[80,10],[77,8],[73,17],[72,21],[68,23],[66,25],[61,25],[57,26],[56,27],[52,28],[49,30],[48,30],[50,27],[51,25],[55,25],[56,26],[58,23],[59,22],[55,17],[52,16],[45,13],[43,13],[39,22],[35,28],[34,28],[32.5,30],[34,31.5],[35,36],[30,36.5],[27,37],[26,40],[29,41],[31,41],[36,41.5],[41,41],[41.5,42],[38,45],[35,45],[33,46],[30,46],[28,44],[28,42],[26,40.8],[23,40],[24,38],[22,37],[21,39],[20,40],[19,42],[16,43.5],[13.5,45.5],[12.5,44],[16,41.5],[18.5,40],[16,38],[15.5,40],[11,42.5],[9,44.5],[7,43.5],[3,43],[3,42],[0,40],[0,38.5],[-2,37],[-5,36],[-6.5,37],[-9,37]],
+ // Sjælland og Fyn
+ [[10.9,55.1],[12.2,55.0],[12.6,55.6],[12.6,56.1],[11.8,56.0],[11.0,55.8]],
+ [[9.7,55.1],[10.8,55.0],[10.9,55.5],[10.3,55.6],[9.8,55.5]],
+ // Chukotka
+ [[-180,65],[-173,64.5],[-169,66],[-180,69]],
+ // Storbritannien, Irland, Island, Svalbard
+ [[-5.5,50],[1.5,51],[1.7,52.7],[0,53.5],[-1.5,55],[-2,56],[-1.8,57.6],[-3,58.6],[-5,58.6],[-6,57],[-5.5,55.5],[-3,54.8],[-3,53.4],[-4.5,52.8],[-5,51.6],[-3,51.4],[-5.5,50]],
+ [[-10,51.5],[-6,52],[-6,54],[-8,55.2],[-10,54]],
+ [[-24,65.5],[-22,66.5],[-15,66.5],[-13.5,65],[-18,63.4],[-22.5,63.8]],
+ [[11,78],[17,80],[27,80],[22,77],[15,77]],
+ // Afrika
+ [[-17,21],[-16,24],[-13,27.5],[-10,30],[-9.5,33],[-6,35.8],[-2,35],[3,36.8],[10,37.3],[11,35],[10,34],[15,32.5],[20,31],[20,32.8],[23,32.6],[29,31],[32.5,31.2],[32.5,30],[33.5,27],[35.5,23.5],[37,19],[39,15.5],[43,12.5],[44,11],[51,11.8],[51,10],[48,5],[42,-1],[40,-3],[39,-7],[40,-11],[40.5,-15],[35,-20],[35.5,-24],[32.5,-26],[32,-29],[28,-33],[25,-34],[20,-34.8],[18,-33],[17,-29],[15,-27],[14.5,-23],[12,-18],[13.5,-12],[13,-9],[12,-5],[9,-1],[9.5,3],[8,4.5],[5,6],[2,6.3],[-2,5],[-7.5,4.5],[-11,7],[-13,8.5],[-15,11],[-17,14.5],[-17,21]],
+ [[44,-25],[47,-25],[50,-16],[49.5,-12],[47,-15],[44,-17],[43.5,-22]],
+ // Asiatiske øer
+ [[130,31],[132,34],[135,34],[140,35],[141,38],[141.5,41.5],[140,40],[139,38],[136,37],[133,35.5],[130,33.5]],
+ [[140,42],[142,42],[145.5,43.3],[141.5,45.5]],
+ [[80,9.8],[82,7.5],[81,6],[80,6]],
+ [[95,5.5],[98,4],[104,-2],[106,-6],[102,-4],[96,2]],
+ [[109,1],[110,-3],[116,-4],[119,1],[117,7],[115,5],[110,2]],
+ [[105,-6],[114,-7],[114,-8.5],[106,-7.5]],
+ [[131,-1],[138,-1.5],[147,-6],[150,-10],[143,-9],[138,-8],[135,-4],[132,-2.5]],
+ [[120,18],[122,18],[124,13],[126,7],[124,7],[120,14]],
+ // Australien og New Zealand
+ [[114,-22],[114,-26],[115,-34],[118,-35],[123,-34],[128,-32],[131,-31.5],[135,-34.5],[138,-35],[140,-38],[146,-39],[150,-37.5],[153,-32],[153.5,-28],[153,-25],[150,-22],[146,-19],[145.5,-15],[143,-11],[142,-11],[141.5,-13],[141,-17],[139,-17],[136,-15],[137,-12],[132,-11.5],[130,-13],[127,-14],[125,-15],[122,-17.5],[120,-20],[114,-22]],
+ [[173,-35],[178,-37.5],[177,-39.5],[175,-41.5],[174,-39],[173,-35]],
+ [[172.5,-41],[174,-42],[171,-44.5],[169,-46.5],[166.5,-46],[168,-44],[172.5,-41]],
+ // Antarktis
+ [[-180,-90],[180,-90],[180,-78],[160,-71],[140,-66],[100,-66],[70,-68],[40,-69],[0,-70],[-40,-77],[-60,-74],[-58,-63],[-66,-66],[-75,-72],[-100,-73],[-140,-76],[-180,-78]]
+];
+const WATER=[ // Det Kaspiske Hav
+ [[47,45],[50,47],[53,46.5],[54,42],[53,39],[54,37],[51,36.7],[49,38],[49.5,40.5],[47.5,42.5]]
+];
+
+/* ---------- Landmaske (ækvidistant kort) ---------- */
+const MW=2048, MH=1024;
+const mask=(function(){
+  const c=document.createElement('canvas'); c.width=MW; c.height=MH;
+  const m=c.getContext('2d');
+  m.fillStyle='#000'; m.fillRect(0,0,MW,MH);
+  const draw=(polys,col)=>{ m.fillStyle=col; for(const p of polys){ m.beginPath();
+    p.forEach(([lo,la],i)=>{const X=(lo+180)/360*MW, Y=(90-la)/180*MH; i?m.lineTo(X,Y):m.moveTo(X,Y);});
+    m.closePath(); m.fill(); } };
+  draw(LAND,'#fff'); draw(WATER,'#000');
+  const d=m.getImageData(0,0,MW,MH).data; const out=new Uint8Array(MW*MH);
+  for(let i=0;i<out.length;i++) out[i]=d[i*4];
+  return out;
+})();
+
+function surfaceColor(lat,lon,landAmt){
+  // hav
+  let r=18+lat*0, g=62, b=140;
+  const ap=Math.abs(lat);
+  if(ap>66){ r=40; g=80; b=150; }
+  if(landAmt===0) return [r,g,b];
+  let lr,lg,lb;
+  const v=0.93+0.06*Math.sin(lat*D2R*9)*Math.cos(lon*D2R*7)+0.04*Math.sin((lon*3+lat*2)*D2R*3);
+  if(lat<-60 || lat>76 || (lat>59 && lon>-75 && lon<-12)){ lr=232; lg=238; lb=245; }        // is
+  else if(ap>60){ lr=128; lg=135; lb=105; }                                               // tundra
+  else if((lat>15 && lat<34 && lon>-17 && lon<60) || (lat>-30 && lat<-18 && lon>118 && lon<145) || (lat>36&&lat<48&&lon>55&&lon<110)){ lr=206; lg=178; lb=118; } // ørken
+  else if(ap<12){ lr=40; lg=120; lb=50; }                                                 // regnskov
+  else { lr=78; lg=140; lb=68; }
+  lr*=v; lg*=v; lb*=v;
+  const a=landAmt/255;
+  return [r+(lr-r)*a, g+(lg-g)*a, b+(lb-b)*a];
+}
+
+/* ---------- Tid (dansk tid uanset browserens tidszone) ---------- */
+let fmt=null;
+try{ fmt=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Copenhagen',hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}); }catch(e){ fmt=null; }
+function tzOffsetMin(ms){
+  if(!fmt) return -new Date(ms).getTimezoneOffset();
+  const p={}; fmt.formatToParts(new Date(ms)).forEach(x=>p[x.type]=x.value);
+  const asUTC=Date.UTC(+p.year,+p.month-1,+p.day,(+p.hour)%24,+p.minute,+p.second);
+  return Math.round((asUTC-Math.floor(ms/1000)*1000)/60000);
+}
+function dkNow(){
+  const now=Date.now(), d=new Date(now+tzOffsetMin(now)*60000);
+  return {y:d.getUTCFullYear(),mo:d.getUTCMonth(),d:d.getUTCDate(),min:d.getUTCHours()*60+d.getUTCMinutes()};
+}
+function dkToUTC(y,mo,d,min){
+  const guess=Date.UTC(y,mo,d)+min*60000;
+  let utc=guess-tzOffsetMin(guess)*60000;
+  utc=guess-tzOffsetMin(utc)*60000;
+  return utc;
+}
+function dkClock(ms){ const d=new Date(ms+tzOffsetMin(ms)*60000); return pad(d.getUTCHours())+':'+pad(d.getUTCMinutes()); }
+const pad=n=>String(n).padStart(2,'0');
+const f1=v=>v.toFixed(1).replace('.',',');
+
+/* ---------- Solens position (NOAA-formler) ---------- */
+function sunPos(ms){
+  const d=new Date(ms);
+  const y=d.getUTCFullYear();
+  const doy=Math.floor((ms-Date.UTC(y,0,1))/86400000)+1;
+  const hrs=d.getUTCHours()+d.getUTCMinutes()/60+d.getUTCSeconds()/3600;
+  const yl=((y%4===0&&y%100!==0)||y%400===0)?366:365;
+  const g=2*Math.PI/yl*(doy-1+(hrs-12)/24);
+  const decl=0.006918-0.399912*Math.cos(g)+0.070257*Math.sin(g)-0.006758*Math.cos(2*g)+0.000907*Math.sin(2*g)-0.002697*Math.cos(3*g)+0.00148*Math.sin(3*g);
+  const eqt=229.18*(0.000075+0.001868*Math.cos(g)-0.032077*Math.sin(g)-0.014615*Math.cos(2*g)-0.040849*Math.sin(2*g));
+  let lon=-(hrs*60+eqt-720)/4;
+  lon=((lon+540)%360)-180;
+  return {decl:decl*R2D, lon:lon};
+}
+/* ---------- Månens position og fase (forenklede formler) ---------- */
+function moonPos(ms){
+  const d=ms/86400000+2440587.5-2451545.0;
+  const r=x=>x*D2R, n=x=>((x%360)+360)%360;
+  const L=n(218.316+13.176396*d), M=n(134.963+13.064993*d), F=n(93.272+13.229350*d), Dm=n(297.850+12.190749*d), Ms=n(357.529+0.98560028*d);
+  const lam=L+6.289*Math.sin(r(M))-1.274*Math.sin(r(M-2*Dm))+0.658*Math.sin(r(2*Dm))+0.214*Math.sin(r(2*M))-0.186*Math.sin(r(Ms))-0.114*Math.sin(r(2*F));
+  const bet=5.128*Math.sin(r(F));
+  const eps=r(23.439-0.0000004*d), lr=r(lam), br=r(bet);
+  const ra=Math.atan2(Math.sin(lr)*Math.cos(eps)-Math.tan(br)*Math.sin(eps),Math.cos(lr))*R2D;
+  const dec=Math.asin(Math.sin(br)*Math.cos(eps)+Math.cos(br)*Math.sin(eps)*Math.sin(lr))*R2D;
+  const gmst=n(280.46061837+360.98564736629*d);
+  const lon=n(ra-gmst+180)-180;
+  const g=r(357.528+0.9856003*d), ls=280.460+0.9856474*d+1.915*Math.sin(g)+0.020*Math.sin(2*g);
+  const age=n(lam-ls);                                   // 0 = nymåne, 180 = fuldmåne
+  const illum=(1-Math.cos(br)*Math.cos(r(age)))/2;       // andel af skiven der er belyst
+  return {decl:dec, lon, age, illum};
+}
+function phaseName(a){
+  if(a<10||a>=350) return 'Nymåne';
+  if(a<80) return 'Tiltagende månesegl';
+  if(a<100) return 'Første kvarter';
+  if(a<170) return 'Tiltagende måne';
+  if(a<190) return 'Fuldmåne';
+  if(a<260) return 'Aftagende måne';
+  if(a<280) return 'Sidste kvarter';
+  return 'Aftagende månesegl';
+}
+function altitude(lat,lon,sp){
+  const s=Math.sin(lat*D2R)*Math.sin(sp.decl*D2R)+Math.cos(lat*D2R)*Math.cos(sp.decl*D2R)*Math.cos((lon-sp.lon)*D2R);
+  return Math.asin(Math.max(-1,Math.min(1,s)))*R2D;
+}
+
+/* ---------- Tilstand ---------- */
+const state=Object.assign(dkNow(),{live:true});
+const cam={lat:28,lon:10}; let follow=false;
+let E,N,U; // kameraets akser i verdenskoordinater
+
+/* ---------- Tegning ---------- */
+const cv=document.getElementById('globe'), ctx=cv.getContext('2d');
+const gc=document.createElement('canvas'), gctx=gc.getContext('2d');
+let W=0,R=0,C=0,img=null,cache=null,stars=[];
+
+function setAxes(){
+  const la=cam.lat*D2R, lo=cam.lon*D2R;
+  U=[Math.cos(la)*Math.cos(lo),Math.cos(la)*Math.sin(lo),Math.sin(la)];
+  E=[-Math.sin(lo),Math.cos(lo),0];
+  N=[-Math.sin(la)*Math.cos(lo),-Math.sin(la)*Math.sin(lo),Math.cos(la)];
+}
+function resize(){
+  const dpr=Math.min(window.devicePixelRatio||1,1.5);
+  const size=Math.max(260,Math.round(cv.clientWidth*dpr));
+  if(size===W) return;
+  W=size; cv.width=cv.height=gc.width=gc.height=W;
+  R=W*0.33; C=W/2;
+  img=gctx.createImageData(W,W); cache=null;
+  stars=[]; let s=12345; const rnd=()=>((s=(s*16807)%2147483647)/2147483647);
+  for(let i=0;i<Math.round(W*0.35);i++) stars.push([rnd()*W,rnd()*W,rnd()*1.3*(W/600)+0.3,rnd()*0.7+0.2]);
+  requestRender();
+}
+function buildCache(){
+  setAxes();
+  const x0=Math.max(0,Math.floor(C-R-1)), x1=Math.min(W-1,Math.ceil(C+R+1));
+  const est=Math.ceil(Math.PI*(R+2)*(R+2));
+  const idx=new Int32Array(est), nx=new Float32Array(est), ny=new Float32Array(est), nz=new Float32Array(est);
+  const cr=new Uint8ClampedArray(est), cg=new Uint8ClampedArray(est), cb=new Uint8ClampedArray(est), ca=new Uint8ClampedArray(est);
+  let k=0;
+  img.data.fill(0);
+  for(let py=x0;py<=x1;py++){
+    const y=(C-(py+0.5))/R;
+    for(let px=x0;px<=x1;px++){
+      const x=(px+0.5-C)/R, r2=x*x+y*y;
+      const rr=Math.sqrt(r2);
+      const edge=(1-rr)*R+0.5;
+      if(edge<=0) continue;
+      const z=Math.sqrt(Math.max(0,1-r2));
+      const Px=x*E[0]+y*N[0]+z*U[0], Py=x*E[1]+y*N[1]+z*U[1], Pz=x*E[2]+y*N[2]+z*U[2];
+      const lat=Math.asin(Math.max(-1,Math.min(1,Pz)))*R2D, lon=Math.atan2(Py,Px)*R2D;
+      let mx=Math.floor((lon+180)/360*MW), my=Math.floor((90-lat)/180*MH);
+      if(mx>=MW)mx=MW-1; if(my>=MH)my=MH-1; if(mx<0)mx=0; if(my<0)my=0;
+      const col=surfaceColor(lat,lon,mask[my*MW+mx]);
+      idx[k]=(py*W+px)*4; nx[k]=x; ny[k]=y; nz[k]=z;
+      cr[k]=col[0]; cg[k]=col[1]; cb[k]=col[2]; ca[k]=Math.min(1,edge)*255;
+      k++;
+    }
+  }
+  cache={n:k,idx,nx,ny,nz,cr,cg,cb,ca};
+}
+function project(lat,lon){
+  const la=lat*D2R, lo=lon*D2R;
+  const P=[Math.cos(la)*Math.cos(lo),Math.cos(la)*Math.sin(lo),Math.sin(la)];
+  const x=P[0]*E[0]+P[1]*E[1]+P[2]*E[2], y=P[0]*N[0]+P[1]*N[1]+P[2]*N[2], z=P[0]*U[0]+P[1]*U[1]+P[2]*U[2];
+  return {X:C+x*R, Y:C-y*R, z};
+}
+const showGrid=()=>document.getElementById('gridChk').checked;
+
+function render(){
+  if(!W) return;
+  const utc=dkToUTC(state.y,state.mo,state.d,state.min);
+  const sp=sunPos(utc);
+  if(follow){ cam.lat=sp.decl; cam.lon=sp.lon; cache=null; }
+  if(!cache) buildCache();
+
+  // Solens retning set fra kameraet
+  const dl=sp.decl*D2R, sl=sp.lon*D2R;
+  const S=[Math.cos(dl)*Math.cos(sl),Math.cos(dl)*Math.sin(sl),Math.sin(dl)];
+  const sx=S[0]*E[0]+S[1]*E[1]+S[2]*E[2], sy=S[0]*N[0]+S[1]*N[1]+S[2]*N[2], sz=S[0]*U[0]+S[1]*U[1]+S[2]*U[2];
+
+  // Belysning pixel for pixel
+  const c=cache, D=img.data;
+  for(let i=0;i<c.n;i++){
+    const d=c.nx[i]*sx+c.ny[i]*sy+c.nz[i]*sz;
+    const br=c.cr[i], bg=c.cg[i], bb=c.cb[i];
+    let r,g,b;
+    const nr=br*0.09+4, ng=bg*0.09+9, nb=bb*0.12+28; // nat
+    if(d>=0){
+      const L=0.28+0.72*d;
+      r=br*L; g=bg*L; b=bb*L;
+    }else{
+      let t=(d+0.21)/0.21; if(t<0)t=0;
+      t=t*t*(3-2*t);
+      const L=0.28;
+      r=nr+(br*L-nr)*t; g=ng+(bg*L-ng)*t; b=nb+(bb*L-nb)*t;
+    }
+    // varm farve ved solopgang/solnedgang
+    const q=(d+0.02)/0.07;
+    const w=Math.exp(-q*q)*0.55;
+    r+=w*120; g+=w*45; b-=w*10;
+    const j=c.idx[i];
+    D[j]=r; D[j+1]=g; D[j+2]=b; D[j+3]=c.ca[i];
+  }
+  gctx.putImageData(img,0,0);
+
+  ctx.clearRect(0,0,W,W);
+  // stjerner
+  ctx.fillStyle='#fff';
+  for(const s of stars){ ctx.globalAlpha=s[3]; ctx.beginPath(); ctx.arc(s[0],s[1],s[2],0,7); ctx.fill(); }
+  ctx.globalAlpha=1;
+  // atmosfære
+  const ag=ctx.createRadialGradient(C,C,R*0.98,C,C,R*1.09);
+  ag.addColorStop(0,'rgba(110,170,255,0.45)'); ag.addColorStop(1,'rgba(110,170,255,0)');
+  ctx.fillStyle=ag; ctx.beginPath(); ctx.arc(C,C,R*1.09,0,7); ctx.fill();
+  ctx.drawImage(gc,0,0);
+
+  const fs=Math.max(11,Math.round(W*0.024));
+  // breddekredse
+  if(showGrid()){
+    const lines=[[0,'Ækvator','rgba(255,255,255,0.75)',[]],[23.44,'Krebsens vendekreds','rgba(255,214,120,0.6)',[6,5]],[-23.44,'Stenbukkens vendekreds','rgba(255,214,120,0.6)',[6,5]],[66.56,'Polarcirklen','rgba(160,220,255,0.6)',[3,5]],[-66.56,'Polarcirklen','rgba(160,220,255,0.6)',[3,5]]];
+    ctx.lineWidth=Math.max(1,W/500);
+    // længdegrader
+    ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.setLineDash([]);
+    for(let lo=-180;lo<180;lo+=30){ strokePath(i=>project(-90+i,lo),180); }
+    for(let la=-60;la<=60;la+=30){ if(la!==0) strokePath(i=>project(la,-180+i*2),180); }
+    for(const [la,name,col,dash] of lines){
+      ctx.strokeStyle=col; ctx.setLineDash(dash.map(v=>v*W/600));
+      strokePath(i=>project(la,-180+i*2),180);
+      // navn ved det mest synlige punkt
+      let best=null;
+      for(let lo=-180;lo<180;lo+=5){ const p=project(la,lo); if(!best||p.z>best.z) best=p; }
+      if(best && best.z>0.25){
+        ctx.setLineDash([]); ctx.font=`${Math.round(fs*0.8)}px system-ui,sans-serif`;
+        ctx.fillStyle=col; ctx.textAlign='center'; ctx.textBaseline='bottom';
+        ctx.fillText(name,best.X,best.Y-3);
+      }
+    }
+    ctx.setLineDash([]);
+  }
+  // Danmark
+  const pd=project(DK.lat,DK.lon);
+  if(pd.z>0){
+    ctx.fillStyle='#ff4d4d'; ctx.strokeStyle='#fff'; ctx.lineWidth=Math.max(1.5,W/350);
+    ctx.beginPath(); ctx.arc(pd.X,pd.Y,Math.max(4,W*0.011),0,7); ctx.fill(); ctx.stroke();
+    label('Danmark',pd.X+W*0.018,pd.Y,fs,'left');
+  }
+  // Stedet hvor Solen står lodret
+  const ps=project(sp.decl,sp.lon);
+  if(ps.z>0){
+    const rr=Math.max(5,W*0.013);
+    const gl=ctx.createRadialGradient(ps.X,ps.Y,0,ps.X,ps.Y,rr*3.5);
+    gl.addColorStop(0,'rgba(255,230,120,0.9)'); gl.addColorStop(1,'rgba(255,230,120,0)');
+    ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(ps.X,ps.Y,rr*3.5,0,7); ctx.fill();
+    ctx.fillStyle='#ffd23d'; ctx.strokeStyle='#fff'; ctx.lineWidth=Math.max(1.5,W/350);
+    ctx.beginPath(); ctx.arc(ps.X,ps.Y,rr,0,7); ctx.fill(); ctx.stroke();
+    label('Solen står lodret',ps.X,ps.Y+rr*2.2,Math.round(fs*0.85),'center','top');
+  }
+  // Solen ved kanten
+  const len=Math.hypot(sx,sy);
+  ctx.textAlign='center';
+  if(len>0.12){
+    const ux=sx/len, uy=sy/len, dist=R+W*0.095;
+    const X=C+ux*dist, Y=C-uy*dist, sr=W*0.03;
+    // lysstråler mod Jorden
+    ctx.strokeStyle='rgba(255,215,90,0.35)'; ctx.lineWidth=Math.max(1,W/400); ctx.setLineDash([4*W/600,6*W/600]);
+    for(let k=-2;k<=2;k++){
+      const ox=-uy*k*W*0.03, oy=-ux*k*W*0.03;
+      ctx.beginPath(); ctx.moveTo(X+ox-ux*sr*1.2, Y+oy+uy*sr*1.2); ctx.lineTo(X+ox-ux*W*0.07, Y+oy+uy*W*0.07); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    const sg=ctx.createRadialGradient(X,Y,0,X,Y,sr*2);
+    sg.addColorStop(0,'rgba(255,240,170,1)'); sg.addColorStop(0.45,'rgba(255,200,60,0.9)'); sg.addColorStop(1,'rgba(255,170,30,0)');
+    ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(X,Y,sr*2,0,7); ctx.fill();
+    ctx.fillStyle='#fff3b0'; ctx.beginPath(); ctx.arc(X,Y,sr,0,7); ctx.fill();
+    ctx.fillStyle='#4a3200'; ctx.font=`bold ${Math.round(fs*0.8)}px system-ui,sans-serif`; ctx.textBaseline='middle';
+    ctx.fillText('Sol',X,Y);
+  }else{
+    label(sz>0?'☀ Solen er bag dig – du ser Jorden fra solsiden':'☀ Solen er bag Jorden – du ser natsiden',C,W*0.035,fs,'center','top');
+  }
+
+  // Månen
+  const mp=moonPos(utc);
+  if(showMoon()){
+    // stedet hvor Månen står lodret
+    const pm=project(mp.decl,mp.lon);
+    if(pm.z>0){
+      const rr=Math.max(4,W*0.009);
+      ctx.fillStyle='#d9dde6'; ctx.strokeStyle='#5b6478'; ctx.lineWidth=Math.max(1.5,W/350);
+      ctx.beginPath(); ctx.arc(pm.X,pm.Y,rr,0,7); ctx.fill(); ctx.stroke();
+      label('Månen står lodret',pm.X,pm.Y-rr*1.8,Math.round(fs*0.8),'center','bottom');
+    }
+    const ml=project(mp.decl,mp.lon); // samme retning: x,y,z i kameraets akser
+    const mx=(ml.X-C)/R, my=(C-ml.Y)/R, mz=ml.z;
+    const mlen=Math.hypot(mx,my);
+    if(mlen>0.12){
+      const dist=R+W*0.045, mr=W*0.022;
+      // Lyset tegnes fra Solens retning på skærmen, så man altid ser den belyste halvdel
+      const sl2=Math.hypot(sx,sy);
+      const lx=sl2>0.05?sx/sl2:sx, ly=sl2>0.05?sy/sl2:sy, lz=sl2>0.05?0:sz;
+      const MX=C+mx/mlen*dist, MY=C-my/mlen*dist;
+      drawMoon(MX, MY, mr, lx, ly, lz);
+      label('Månen',MX,MY+mr*1.4,Math.round(fs*0.75),'center','top');
+    }else{
+      label(mz>0?'🌙 Månen er bag dig':'🌙 Månen er bag Jorden',C,W*0.965,fs,'center','bottom');
+    }
+  }
+  updateInfo(utc,sp,mp);
+}
+
+// Tegner Månen som en kugle, belyst fra Solens retning (set fra kameraet)
+const moonCv=document.createElement('canvas'), moonCtx=moonCv.getContext('2d');
+const MARIA=[[-0.25,0.3,0.28],[0.2,0.35,0.22],[0.3,-0.05,0.2],[-0.1,-0.25,0.18],[-0.4,-0.1,0.15]];
+function drawMoon(X,Y,mr,sx,sy,sz){
+  const n=Math.ceil(mr)*2+2, c=n/2;
+  moonCv.width=moonCv.height=n;
+  const im=moonCtx.createImageData(n,n), D=im.data;
+  for(let py=0;py<n;py++) for(let px=0;px<n;px++){
+    const x=(px+0.5-c)/mr, y=(c-(py+0.5))/mr, r2=x*x+y*y;
+    const edge=(1-Math.sqrt(r2))*mr+0.5; if(edge<=0) continue;
+    const z=Math.sqrt(Math.max(0,1-r2));
+    let base=205;
+    for(const [ax,ay,ar] of MARIA){ const dx=x-ax, dy=y-ay; if(dx*dx+dy*dy<ar*ar) base=150; }
+    const d=x*sx+y*sy+z*sz;
+    const L=d>0?0.12+0.88*Math.min(1,d*1.2):0.12*Math.max(0,1+d*3)+0.06;
+    const j=(py*n+px)*4;
+    D[j]=base*L+6; D[j+1]=base*L+8; D[j+2]=base*L+14; D[j+3]=Math.min(1,edge)*255;
+  }
+  moonCtx.putImageData(im,0,0);
+  const gl=ctx.createRadialGradient(X,Y,mr*0.9,X,Y,mr*1.8);
+  gl.addColorStop(0,'rgba(220,230,255,0.25)'); gl.addColorStop(1,'rgba(220,230,255,0)');
+  ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(X,Y,mr*1.8,0,7); ctx.fill();
+  ctx.drawImage(moonCv,X-c,Y-c);
+}
+const showMoon=()=>document.getElementById('moonChk').checked;
+
+// Månefasen som den ses fra Danmark (nordlige halvkugle)
+function drawPhaseIcon(age,illum){
+  const cvs=document.getElementById('phaseIcon'), g=cvs.getContext('2d'), s=cvs.width, r=s/2-2, c=s/2;
+  g.clearRect(0,0,s,s);
+  const dark='#2a3150', lit='#e8e6d8';
+  g.fillStyle=dark; g.beginPath(); g.arc(c,c,r,0,7); g.fill();
+  const waxing=age<180;
+  g.fillStyle=lit; g.beginPath();
+  if(waxing) g.arc(c,c,r,-Math.PI/2,Math.PI/2); else g.arc(c,c,r,Math.PI/2,Math.PI*1.5);
+  g.fill();
+  const ex=r*Math.abs(1-2*illum);
+  g.fillStyle=illum>0.5?lit:dark;
+  g.beginPath(); g.ellipse(c,c,Math.max(0.01,ex),r,0,0,7); g.fill();
+}
+function strokePath(fn,n){
+  let on=false; ctx.beginPath();
+  for(let i=0;i<=n;i++){ const p=fn(i); if(p.z>0){ on?ctx.lineTo(p.X,p.Y):ctx.moveTo(p.X,p.Y); on=true; } else on=false; }
+  ctx.stroke();
+}
+function label(t,x,y,fs,align,base){
+  ctx.font=`bold ${fs}px system-ui,sans-serif`; ctx.textAlign=align; ctx.textBaseline=base||'middle';
+  ctx.lineWidth=Math.max(2,fs/4); ctx.strokeStyle='rgba(0,0,0,0.75)'; ctx.strokeText(t,x,y);
+  ctx.fillStyle='#fff'; ctx.fillText(t,x,y);
+}
+
+/* ---------- Infopanel ---------- */
+const $=id=>document.getElementById(id);
+const MONTHS=['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+const DAYS=['søndag','mandag','tirsdag','onsdag','torsdag','fredag','lørdag'];
+let dayKey='', dayInfo=null;
+function computeDay(){
+  const base=dkToUTC(state.y,state.mo,state.d,0), end=dkToUTC(state.y,state.mo,state.d+1,0);
+  let rise=null,set=null,prev=null,maxAlt=-90;
+  for(let t=base;t<=end;t+=60000){
+    const a=altitude(DK.lat,DK.lon,sunPos(t))+0.833;
+    maxAlt=Math.max(maxAlt,a);
+    if(prev!==null){ if(prev<0&&a>=0&&rise===null) rise=t; if(prev>=0&&a<0) set=t; }
+    prev=a;
+  }
+  return {rise,set,maxAlt};
+}
+function updateInfo(utc,sp,mp){
+  // Månen
+  drawPhaseIcon(mp.age,mp.illum);
+  $('phaseTxt').textContent=phaseName(mp.age);
+  $('illumTxt').textContent=`${Math.round(mp.illum*100)} % af Månen er belyst`;
+  const malt=altitude(DK.lat,DK.lon,mp);
+  $('moonAlt').textContent=f1(malt)+'°';
+  $('moonVis').textContent= malt<0 ? 'Under horisonten – kan ikke ses'
+    : (mp.illum<0.03 ? 'Over horisonten, men næsten usynlig (nymåne)'
+    : (altitude(DK.lat,DK.lon,sp)>-0.833 ? 'Over horisonten – kan måske ses i dagslys' : 'Over horisonten – kan ses, hvis det er skyfrit'));
+  $('timeTxt').textContent=pad(Math.floor(state.min/60))+':'+pad(state.min%60);
+  const wd=new Date(Date.UTC(state.y,state.mo,state.d)).getUTCDay();
+  const off=tzOffsetMin(utc);
+  $('dateTxt').textContent=`${DAYS[wd]} d. ${state.d}. ${MONTHS[state.mo]} ${state.y} · ${off===120?'sommertid':off===60?'vintertid':'UTC'+(off>=0?'+':'')+off/60} · UTC ${new Date(utc).toISOString().substr(11,5)}`;
+  $('liveBadge').classList.toggle('off',!state.live);
+  if($('slider').value!=state.min) $('slider').value=state.min;
+
+  const alt=altitude(DK.lat,DK.lon,sp);
+  $('alt').textContent=f1(alt)+'°';
+  let icon,txt,sub;
+  if(alt>-0.833){ icon=alt<6?'🌅':'☀️'; txt='Dag'; sub=alt<6?'Solen står lavt på himlen':'Solen er oppe'; }
+  else if(alt>-12){ icon='🌆'; txt='Tusmørke'; sub='Solen er lige under horisonten – himlen er stadig lidt lys'; }
+  else { icon='🌙'; txt='Nat'; sub='Danmark er på Jordens mørke side'; }
+  $('stIcon').textContent=icon; $('stTxt').textContent=txt; $('stSub').textContent=sub;
+
+  const key=state.y+'-'+state.mo+'-'+state.d;
+  if(key!==dayKey){ dayKey=key; dayInfo=computeDay(); }
+  const di=dayInfo;
+  if(di.rise===null && di.set===null){
+    const polar=di.maxAlt>0;
+    $('rise').textContent='–'; $('set').textContent='–';
+    $('dayLen').textContent=polar?'24 t':'0 t';
+  }else{
+    $('rise').textContent=di.rise?dkClock(di.rise):'–';
+    $('set').textContent=di.set?dkClock(di.set):'–';
+    if(di.rise&&di.set){ const m=Math.round((di.set-di.rise)/60000); $('dayLen').textContent=`${Math.floor(m/60)} t ${pad(m%60)} min`; }
+    else $('dayLen').textContent='–';
+  }
+  const ns=sp.decl>=0?'nord':'syd';
+  const ew=sp.lon>=0?'øst':'vest';
+  $('subsolar').textContent=`${f1(Math.abs(sp.decl))}° ${ns} · ${f1(Math.abs(sp.lon))}° ${ew}`;
+}
+
+/* ---------- Styring ---------- */
+let pending=false;
+function requestRender(){ if(pending) return; pending=true; requestAnimationFrame(()=>{pending=false; render();}); }
+function setDate(y,mo,d){
+  const t=new Date(Date.UTC(y,mo,d));
+  state.y=t.getUTCFullYear(); state.mo=t.getUTCMonth(); state.d=t.getUTCDate();
+  $('dateIn').value=`${state.y}-${pad(state.mo+1)}-${pad(state.d)}`;
+}
+function goNow(){ const n=dkNow(); setDate(n.y,n.mo,n.d); state.min=n.min; state.live=true; requestRender(); }
+function stopLive(){ state.live=false; }
+
+$('slider').addEventListener('input',e=>{ stopLive(); state.min=+e.target.value; requestRender(); });
+$('minus').onclick=()=>{ stopLive(); state.min=(state.min+1440-60)%1440; requestRender(); };
+$('plus').onclick=()=>{ stopLive(); state.min=(state.min+60)%1440; requestRender(); };
+$('nowBtn').onclick=()=>{ stopPlay(); goNow(); };
+$('dateIn').addEventListener('change',e=>{
+  const v=e.target.value.split('-'); if(v.length!==3) return;
+  stopLive(); setDate(+v[0],+v[1]-1,+v[2]); requestRender();
+});
+document.querySelectorAll('[data-season]').forEach(b=>b.onclick=()=>{
+  const [mo,d]=b.dataset.season.split(',').map(Number); stopLive(); setDate(state.y,mo,d); requestRender();
+});
+$('gridChk').addEventListener('change',requestRender);
+$('moonChk').addEventListener('change',requestRender);
+
+let playTimer=null;
+function stopPlay(){ if(playTimer){ clearInterval(playTimer); playTimer=null; $('playBtn').textContent='▶ Afspil døgnet'; $('playBtn').classList.remove('on'); } }
+$('playBtn').onclick=()=>{
+  if(playTimer){ stopPlay(); return; }
+  stopLive();
+  $('playBtn').textContent='⏸ Stop'; $('playBtn').classList.add('on');
+  playTimer=setInterval(()=>{ state.min=(state.min+5)%1440; requestRender(); },40);
+};
+
+const VIEWS={dk:[28,10],np:[90,10],sp:[-90,10],am:[20,-85],as:[25,105]};
+function setView(v){
+  document.querySelectorAll('#views button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  if(v==='sun'){ follow=true; }
+  else if(v){ follow=false; cam.lat=VIEWS[v][0]; cam.lon=VIEWS[v][1]; }
+  cache=null; requestRender();
+}
+document.querySelectorAll('#views button').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+
+// Træk for at dreje kloden
+let drag=null;
+cv.addEventListener('pointerdown',e=>{
+  drag={x:e.clientX,y:e.clientY,lat:cam.lat,lon:cam.lon};
+  try{cv.setPointerCapture(e.pointerId);}catch(_){}
+  if(follow){ follow=false; }
+  document.querySelectorAll('#views button').forEach(b=>b.classList.remove('on'));
+});
+cv.addEventListener('pointermove',e=>{
+  if(!drag) return;
+  const k=180/(cv.clientWidth*0.74*Math.PI/2*1.3);
+  const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+  cam.lat=Math.max(-90,Math.min(90,drag.lat+dy*k));
+  cam.lon=((drag.lon-dx*k+540)%360)-180;
+  cache=null; requestRender();
+});
+const endDrag=()=>{ drag=null; };
+cv.addEventListener('pointerup',endDrag); cv.addEventListener('pointercancel',endDrag);
+
+// Hold "NU" opdateret, så længe man ikke selv har valgt et tidspunkt
+setInterval(()=>{ if(state.live) goNow(); },20000);
+
+window.addEventListener('resize',resize);
+setDate(state.y,state.mo,state.d);
+resize();
+})();
+</script>
+
+
+</body></html>
