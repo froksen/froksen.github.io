@@ -145,7 +145,7 @@
   /* ── Stats ── */
   .stats-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 12px;
   }
 
@@ -356,14 +356,14 @@
     <div class="ctrl-box">
       <h3>Materiale foran kilden</h3>
       <div class="btn-group">
-        <button class="btn btn-mat none-btn active" onclick="setMaterial('ingen')">Ingen</button>
-        <button class="btn btn-mat" onclick="setMaterial('papir')">📄 Papir</button>
-        <button class="btn btn-mat" onclick="setMaterial('aluminium')">🥫 Aluminium</button>
-        <button class="btn btn-mat" onclick="setMaterial('bly')">⚫ Bly</button>
-        <button class="btn btn-mat" onclick="setMaterial('jern')">🔩 Jern</button>
-        <button class="btn btn-mat" onclick="setMaterial('koed')">🥩 Kødpålæg</button>
-        <button class="btn btn-mat" onclick="setMaterial('kartofler')">🥔 Kartofler</button>
-        <button class="btn btn-mat" onclick="setMaterial('fisk')">🐟 Fisk</button>
+        <button class="btn btn-mat none-btn active" onclick="setMaterial(this, 'ingen')">Ingen</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'papir')">📄 Papir</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'aluminium')">🥫 Aluminium</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'bly')">⚫ Bly</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'jern')">🔩 Jern</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'koed')">🥩 Kødpålæg</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'kartofler')">🥔 Kartofler</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'fisk')">🐟 Fisk</button>
       </div>
       <div id="thicknessCtrl" style="display:none; margin-top:12px;">
         <div class="slider-row">
@@ -412,6 +412,10 @@
         <button id="startBtn" class="btn" onclick="startMeasure()" style="color:#22c55e;width:100%;justify-content:center;">▶ Start måling</button>
         <div id="timerDisplay" style="display:none;text-align:center;margin-top:8px;font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--highlight);"></div>
       </div>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:0.78rem;color:var(--muted);cursor:pointer;">
+        <input type="checkbox" id="bgChk" onchange="setBackground(this.checked)" style="margin-top:2px;">
+        <span>Medregn baggrundsstråling<br><span style="font-size:0.7rem;">(som en rigtig Geiger-tæller)</span></span>
+      </label>
     </div>
 
     <!-- Distances -->
@@ -420,14 +424,14 @@
       <div id="d1Ctrl" style="display:none; margin-bottom:10px;">
         <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;">Kilde → Materiale</div>
         <div class="slider-row">
-          <input type="range" id="d1Slider" min="50" max="600" value="250" step="10" oninput="setD1(this.value)">
+          <input type="range" id="d1Slider" min="10" max="600" value="250" step="10" oninput="setD1(this.value)">
           <span id="d1Val" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:60px;text-align:right;">250 mm</span>
         </div>
       </div>
       <div>
         <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;" id="d2Label">Kilde → Geiger</div>
         <div class="slider-row">
-          <input type="range" id="d2Slider" min="50" max="720" value="720" step="10" oninput="setD2(this.value)">
+          <input type="range" id="d2Slider" min="10" max="720" value="720" step="10" oninput="setD2(this.value)">
           <span id="d2Val" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:60px;text-align:right;">720 mm</span>
         </div>
       </div>
@@ -454,10 +458,17 @@
       <div class="sub" id="sBlockPct" style="color:#f87171;">–</div>
     </div>
     <div class="stat-card">
+      <div class="label">Stoppet i luften</div>
+      <div class="value" id="sAir" style="color:#fb923c;">0</div>
+      <div class="sub">nåede ikke frem</div>
+      <div class="sub" id="sAirPct" style="color:#fb923c;">–</div>
+    </div>
+    <div class="stat-card">
       <div class="label">Opfanget</div>
       <div class="value val-detected" id="sDetect">0</div>
       <div class="sub">af Geiger-rør</div>
       <div class="sub" id="sDetectPct" style="color:#22c55e;">–</div>
+      <div class="sub" id="sBg" style="color:#94a3b8;display:none;">+ 0 fra baggrund</div>
     </div>
     <div class="stat-card">
       <div class="label">Forbi</div>
@@ -490,6 +501,18 @@
     </details>
 
     <details>
+      <summary>Rækkevidde, afstand og baggrundsstråling</summary>
+      <div class="acc-body">
+        <h4>Alfastråling når kun få centimeter</h4>
+        Alfapartikler støder hele tiden ind i luftens molekyler og mister energi. Efter ca. 3–7 cm i luft er de stoppet helt. Prøv at flytte Geiger-røret længere væk end ca. 7 cm (70 mm) fra en alfakilde – så tæller det ingenting, selv uden materiale foran. Betastråling når typisk en meter eller mere i luft, og gammastråling kan nå meget langt.
+        <h4>Afstandskvadratloven</h4>
+        Strålingen fra en kilde spreder sig ud i alle retninger. Når afstanden fordobles, fordeles strålingen på et fire gange så stort område, så Geiger-røret kun rammes af ca. ¼ så meget. Det er den bedste og billigste beskyttelse: <strong>hold afstand</strong>. I simuleringen kan du se det ved, at flere partikler suser forbi røret, når det står langt væk.
+        <h4>Baggrundsstråling</h4>
+        Der er altid lidt stråling omkring os – også uden en kilde. Den kommer bl.a. fra radon i jorden og husene, fra rummet (kosmisk stråling), fra bygningsmaterialer og fra vores mad. En Geiger-tæller i et klasselokale tæller typisk 15–30 gange i minuttet uden kilde. Når man måler i skolen, måler man derfor først baggrunden og trækker den fra sine målinger. Slå "Medregn baggrundsstråling" til under Måling for at prøve.
+      </div>
+    </details>
+
+    <details>
       <summary>Beregningsmodellen – eksponentiel dæmpning</summary>
       <div class="acc-body">
         For beta- og gammastråling beregnes blokeringssandsynligheden i simuleringen med formlen for eksponentiel dæmpning:
@@ -500,7 +523,7 @@
         <br><br>
         Formlen svarer til intensitetsformlen <em>I = I₀ · e<sup>−μt</sup></em>, hvor I₀ er intensiteten inden materialet og I er intensiteten bagved. Jo større produkt μ · t, desto større andel absorberes.
         <br><br>
-        <strong>Alfastråling</strong> følger ikke den eksponentielle model. Alfapartikler har en veldefineret rækkevidde og stoppes brat, ikke gradvist. Simuleringen forenkler dette til en fast blokeringssandsynlighed på 99 % for papir og biologisk væv og 100 % for metaller.
+        <strong>Alfastråling</strong> følger ikke den eksponentielle model. Alfapartikler har en veldefineret rækkevidde og stoppes brat, ikke gradvist. Simuleringen forenkler dette, så alfapartikler stoppes helt af alle materialerne og har en rækkevidde på ca. 4–7 cm i luft.
       </div>
     </details>
 
@@ -562,6 +585,9 @@ let emitted  = 0;
 let blocked  = 0;
 let detected = 0;
 let missed   = 0;
+let airStopped = 0;   // alfapartikler der er stoppet af luften
+let background = 0;   // tællinger fra baggrundsstråling
+let bgOn       = false;
 let particles = [];
 let frame    = 0;
 
@@ -576,7 +602,7 @@ let spawning        = true;
 // blockChance: probability (0-1) a particle is blocked by this material
 const penetration = {
   //          ingen   papir   koed   kartofler  fisk   jern   bly
-  alpha: {   ingen:0, papir:0.99, koed:0.99, kartofler:0.99, fisk:0.99, aluminium:1.00, jern:1.00, bly:1.00 },
+  alpha: {   ingen:0, papir:1.00, koed:1.00, kartofler:1.00, fisk:1.00, aluminium:1.00, jern:1.00, bly:1.00 },
   beta:  {   ingen:0, papir:0.04, koed:0.07, kartofler:0.06, fisk:0.06, aluminium:0.97, jern:0.90, bly:0.98 },
   gamma: {   ingen:0, papir:0.02, koed:0.05, kartofler:0.04, fisk:0.03, aluminium:0.12, jern:0.45, bly:0.90 },
 };
@@ -601,11 +627,11 @@ const bioMaterials = ['koed', 'kartofler', 'fisk'];
 
 function getBlockChance(radType, mat) {
   if (mat === 'papir') {
-    if (radType === 'alpha') return 0.99;
+    if (radType === 'alpha') return 1.0;
     return 1 - Math.exp(-paperMu[radType] * (paperSheets * 0.1));
   }
   if (bioMaterials.includes(mat)) {
-    if (radType === 'alpha') return 0.99;
+    if (radType === 'alpha') return 1.0;
     return 1 - Math.exp(-bioMu[radType][mat] * bioThickness);
   }
   if (!metals.includes(mat)) return penetration[radType][mat];
@@ -615,7 +641,7 @@ function getBlockChance(radType, mat) {
 
 // ── Info texts ─────────────────────────────────────────────────────────────
 const typeInfo = {
-  alpha: '<span class="badge badge-alpha">α Alfa</span> Alfastråling består af store, tunge partikler (2 protoner + 2 neutroner). Den stoppes meget let – selv et stykke papir eller huden er nok til at blokere den.',
+  alpha: '<span class="badge badge-alpha">α Alfa</span> Alfastråling består af store, tunge partikler (2 protoner + 2 neutroner). Den stoppes meget let – selv et stykke papir eller huden er nok til at blokere den, og i luft når den kun ca. 3–7 cm.',
   beta:  '<span class="badge badge-beta">β Beta</span> Betastråling er hurtige elektroner. Den trænger lidt dybere end alfa, men stoppes af f.eks. aluminium eller jern.',
   gamma: '<span class="badge badge-gamma">γ Gamma</span> Gammastråling er elektromagnetisk stråling (som lys, men langt kraftigere). Den trænger dybt ind i næsten alt – kun tykt bly eller beton bremser den effektivt.',
 };
@@ -652,10 +678,21 @@ let   d2    = 720;   // material → Geiger (or source → Geiger when no materi
 let   geiX  = 800;   // dynamic: srcX + d1 + d2 (material) or srcX + d2 (ingen)
 const GEI_Y = H/2, GEI_W = 60, GEI_H = 140;
 
-function getMatX() { return srcX + d1; }
+// Alle afstande måles fra kildens åbning (1 px = 1 mm), så linealen passer med partiklernes rækkevidde
+const PORT_X = srcX + 28;
+function getMatX() { return PORT_X + d1; }
 function updateGeiX() {
-  const total = material !== 'ingen' ? d1 + d2 : d2;
-  geiX = Math.min(srcX + total, W - GEI_W/2 - 10);
+  // Geiger-røret kan ikke stå længere ude end kanten af lærredet – begræns skyderen, så tallene passer
+  const start = material !== 'ingen' ? getMatX() + getMatW() : PORT_X;
+  const maxD2 = Math.max(10, Math.floor((W - GEI_W - 10 - start) / 10) * 10);
+  const sl = document.getElementById('d2Slider');
+  if (+sl.max !== maxD2) sl.max = maxD2;
+  if (d2 > maxD2) {
+    d2 = maxD2;
+    sl.value = d2;
+    document.getElementById('d2Val').textContent = d2 + ' mm';
+  }
+  geiX = start + d2 + GEI_W/2;
 }
 
 function getMatW() {
@@ -682,6 +719,8 @@ class Particle {
     this.opacity = 1;
     this.fadeOut = false;
     this.fadeTick = 0;
+    // Alfa: rækkevidde i luft ca. 4–7 cm (1 px = 1 mm), målt fra kildens åbning
+    this.range = type==='alpha' ? 40 + Math.random()*30 : Infinity;
     // Gamma gets a slight wave
     this.wave  = type==='gamma' ? Math.random()*Math.PI*2 : 0;
     this.waveA = type==='gamma' ? 12 : 0;
@@ -707,6 +746,18 @@ class Particle {
 
     // Bounce softly off top/bottom
     if (this.y < 10 || this.y > H-10) this.vy *= -1;
+
+    // Stoppet af luften? (kun alfa)
+    if (!this.blocked && this.x - PORT_X > this.range) {
+      this.blocked = true;
+      airStopped++;
+      this.color = '#7c4a2a';
+      this.speed = 0.2;
+      this.vy *= 0.2;
+      setTimeout(() => { this.fadeOut = true; }, 200 + Math.random()*300);
+      updateStats();
+      return;
+    }
 
     // Hit material?
     if (material !== 'ingen' && this.x >= getMatX() && this.x <= getMatX() + getMatW() && !this.blocked) {
@@ -780,6 +831,7 @@ function maybeSpawn() {
 
 // ── Draw scene ─────────────────────────────────────────────────────────────
 function drawScene() {
+  updateGeiX();
   // Background
   ctx.fillStyle = '#0a0e1a';
   ctx.fillRect(0,0,W,H);
@@ -899,7 +951,7 @@ function drawScene() {
   // Count display
   ctx.fillStyle = gp > 0.5 ? '#86efac' : '#22c55e';
   ctx.font = `bold ${gp>0.5?'18':'15'}px "Orbitron", monospace`;
-  ctx.fillText(detected, geiX, GEI_Y + 6);
+  ctx.fillText(detected + background, geiX, GEI_Y + 6);
 
   ctx.fillStyle = '#475569';
   ctx.font = '9px "Exo 2", sans-serif';
@@ -923,9 +975,9 @@ function drawScene() {
 
   // ── Lineal ──
   const rY    = H - 18;
-  const rSrc  = srcX + 28;
+  const rSrc  = PORT_X;
   const rGei  = geiX - GEI_W / 2;
-  const distMm = Math.round(geiX - srcX);
+  const distMm = Math.round(rGei - rSrc);
 
   ctx.save();
   // Ruler background
@@ -1009,6 +1061,13 @@ function loop() {
     }
   }
 
+  // Baggrundsstråling: ca. 25 tællinger i minuttet (≈ 0,4 pr. sekund ved 60 billeder/s)
+  if (bgOn && (!timedMode || measureActive) && Math.random() < 0.4/60) {
+    background++;
+    pulseGeiger();
+    updateStats();
+  }
+
   // Update & draw particles
   particles = particles.filter(p => p.alive);
   for (const p of particles) { p.update(); p.draw(); }
@@ -1024,12 +1083,12 @@ function setType(t) {
   updateInfo();
 }
 
-function setMaterial(m) {
+function setMaterial(btn, m) {
   const wasNone = material === 'ingen';
   const isNone  = m === 'ingen';
   material = m;
   document.querySelectorAll('.btn-mat').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  btn.classList.add('active');
   document.getElementById('thicknessCtrl').style.display = metals.includes(m) ? 'block' : 'none';
   document.getElementById('paperCtrl').style.display = m === 'papir' ? 'block' : 'none';
   document.getElementById('bioCtrl').style.display = bioMaterials.includes(m) ? 'block' : 'none';
@@ -1088,8 +1147,14 @@ function setRate(v) {
   document.getElementById('rateVal').textContent = v;
 }
 
+function setBackground(on) {
+  bgOn = on;
+  document.getElementById('sBg').style.display = on ? 'block' : 'none';
+  updateStats();
+}
+
 function resetCounters() {
-  emitted = blocked = detected = missed = 0;
+  emitted = blocked = detected = missed = airStopped = background = 0;
   particles = [];
   measureActive = false;
   measureStartTime = null;
@@ -1129,7 +1194,7 @@ function setDuration(v) {
 }
 
 function startMeasure() {
-  emitted = blocked = detected = missed = 0;
+  emitted = blocked = detected = missed = airStopped = background = 0;
   particles = [];
   updateStats();
   spawning = true;
@@ -1146,10 +1211,13 @@ function updateStats() {
   document.getElementById('sBlock').textContent   = blocked;
   document.getElementById('sDetect').textContent  = detected;
   document.getElementById('sMissed').textContent  = missed;
+  document.getElementById('sAir').textContent     = airStopped;
+  document.getElementById('sBg').textContent      = '+ ' + background + ' fra baggrund';
   const pct = n => emitted > 0 ? (n / emitted * 100).toFixed(1) + ' %' : '–';
   document.getElementById('sBlockPct').textContent  = pct(blocked);
   document.getElementById('sDetectPct').textContent = pct(detected);
   document.getElementById('sMissedPct').textContent = pct(missed);
+  document.getElementById('sAirPct').textContent    = pct(airStopped);
 }
 
 function updateInfo() {

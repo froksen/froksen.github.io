@@ -1,13 +1,70 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lithium – 3D og 2D atommodel</title>
 
 <style>
+:root {
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-text-primary: #2a2a27;
+  --color-text-secondary: #5f5e58;
+  --color-border-tertiary: rgba(80,78,70,0.25);
+  --color-bg: #ffffff;
+  --color-card: #f6f5f1;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary: #e4e2da;
+    --color-text-secondary: #b4b2a9;
+    --color-border-tertiary: rgba(180,178,169,0.3);
+    --color-bg: #121211;
+    --color-card: #1d1d1b;
+  }
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: transparent; }
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+h1 { font-size: 1.4rem; font-weight: 600; text-align: center; margin: 4px 0 2px; }
+.sub { text-align: center; color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 10px; }
 .container {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   min-height: 500px;
   font-family: var(--font-sans);
 }
+.panel { min-width: 280px; }
+@media (max-width: 620px) { .info { grid-template-columns: 1fr; } }
+@media (max-width: 620px) {
+  .panel:first-child { border-right: none !important; border-bottom: 0.5px solid var(--color-border-tertiary); }
+}
+.info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.info-card {
+  background: var(--color-card);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.info-card h2 { font-size: 0.95rem; margin-bottom: 6px; }
+.info-card table { width: 100%; border-collapse: collapse; }
+.info-card td { padding: 2px 0; vertical-align: top; }
+.info-card td:last-child { text-align: right; font-weight: 600; }
+.info-card ul { padding-left: 1.1rem; }
 .panel {
   flex: 1;
   display: flex;
@@ -44,6 +101,11 @@ canvas { display: block; }
 .legend-item { display: flex; align-items: center; gap: 5px; }
 .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 </style>
+</head>
+<body>
+
+<h1>Lithium (Li) – atomets opbygning</h1>
+<p class="sub">Samme atom vist på to måder: som roterende 3D-model og som Bohrs skalmodel</p>
 
 <div class="container">
   <!-- LEFT: 3D -->
@@ -62,10 +124,40 @@ canvas { display: block; }
     <div class="panel-title">Bohrs atommodel</div>
     <svg id="bohr" class="bohr-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="legend">
-      <div class="legend-item"><div class="dot" style="background:#E24B4A"></div> Proton (3)</div>
-      <div class="legend-item"><div class="dot" style="background:#888780"></div> Neutron (4)</div>
-      <div class="legend-item"><div class="dot" style="background:#378ADD"></div> Elektron (3)</div>
+      <div class="legend-item"><div class="dot" style="background:#E24B4A"></div> Proton (3) · +</div>
+      <div class="legend-item"><div class="dot" style="background:#888780"></div> Neutron (4) · 0</div>
+      <div class="legend-item"><div class="dot" style="background:#378ADD"></div> Elektron (3) · −</div>
     </div>
+  </div>
+</div>
+
+<div class="info">
+  <div class="info-card">
+    <h2>Lithium i tal</h2>
+    <table>
+      <tr><td>Atomnummer (antal protoner)</td><td>3</td></tr>
+      <tr><td>Antal neutroner (Li-7)</td><td>4</td></tr>
+      <tr><td>Massetal (protoner + neutroner)</td><td>7</td></tr>
+      <tr><td>Antal elektroner</td><td>3</td></tr>
+      <tr><td>Elektronfordeling (K, L)</td><td>2, 1</td></tr>
+      <tr><td>Placering i det periodiske system</td><td>Gruppe 1, periode 2</td></tr>
+    </table>
+  </div>
+  <div class="info-card">
+    <h2>Ladning</h2>
+    Protoner er positive (+), elektroner er negative (−), og neutroner har ingen ladning. Lithium har 3 protoner og 3 elektroner, så atomet er <b>neutralt</b> udadtil. Næsten al massen sidder i kernen – en elektron vejer ca. 1/1836 af en proton.
+  </div>
+  <div class="info-card">
+    <h2>Den ensomme elektron</h2>
+    Lithium har kun <b>1 elektron i yderste skal</b> (valenselektron). Den afgiver atomet let, så det bliver til ionen <b>Li⁺</b>. Derfor er lithium et meget reaktivt <b>alkalimetal</b> ligesom natrium og kalium – og derfor bruges det i genopladelige lithium-ion-batterier.
+  </div>
+  <div class="info-card">
+    <h2>Husk: det er en model</h2>
+    <ul>
+      <li>Ca. 92 % af alt lithium er Li-7 (4 neutroner). Resten er isotopen Li-6 med 3 neutroner.</li>
+      <li>Kernen er i virkeligheden ca. 100.000 gange mindre end atomet – tegningen er slet ikke i målestok.</li>
+      <li>Elektroner kører ikke i faste baner som planeter. I dag beskriver man dem som "elektronskyer", hvor de sandsynligvis befinder sig.</li>
+    </ul>
   </div>
 </div>
 
@@ -238,7 +330,7 @@ function draw() {
 
   // Label
   ctx.fillStyle = dark ? 'rgba(194,192,182,0.6)' : 'rgba(100,98,90,0.6)';
-  ctx.font = '11px var(--font-sans, sans-serif)';
+  ctx.font = '11px system-ui, sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText('Li — Lithium (Z=3)', CX, H - 14);
 
@@ -328,17 +420,17 @@ for (const e of shellElectrons) {
 const lbl = makeSVGEl('text', {
   x: BCX, y: 290,
   'text-anchor': 'middle',
-  fill: textColor, 'font-size': '11', 'font-family': 'var(--font-sans, sans-serif)'
+  fill: textColor, 'font-size': '11', 'font-family': 'system-ui, sans-serif'
 });
 lbl.textContent = 'Li — Lithium (Z=3)';
 bohr.appendChild(lbl);
 
 // Shell labels
-const s1lbl = makeSVGEl('text', { x: BCX + 28, y: BCY - 30, fill: textColor, 'font-size': '10', 'font-family': 'var(--font-sans)', opacity: '0.65' });
+const s1lbl = makeSVGEl('text', { x: BCX + 28, y: BCY - 30, fill: textColor, 'font-size': '10', 'font-family': 'system-ui, sans-serif', opacity: '0.65' });
 s1lbl.textContent = 'K (n=1)';
 bohr.appendChild(s1lbl);
 
-const s2lbl = makeSVGEl('text', { x: BCX + 62, y: BCY - 62, fill: textColor, 'font-size': '10', 'font-family': 'var(--font-sans)', opacity: '0.65' });
+const s2lbl = makeSVGEl('text', { x: BCX + 62, y: BCY - 62, fill: textColor, 'font-size': '10', 'font-family': 'system-ui, sans-serif', opacity: '0.65' });
 s2lbl.textContent = 'L (n=2)';
 bohr.appendChild(s2lbl);
 
@@ -367,3 +459,5 @@ function animateBohr() {
 }
 animateBohr();
 </script>
+</body>
+</html>

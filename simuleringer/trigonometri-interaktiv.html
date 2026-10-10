@@ -196,6 +196,8 @@
     display:none;
   }
   .helpbox.show{ display:block; }
+  .helpbox .setup-line{ margin-top:12px; padding:10px 12px; border:1px dashed var(--cyan-dim); border-radius:6px; font-size:1.02em; }
+  .diagram-note{ text-align:center; font-size:0.78rem; color:var(--paper-dim); margin:-6px 0 10px; font-style:italic; }
   .helpbox strong{ color:var(--amber); }
 
   .attempt-info{
@@ -943,6 +945,7 @@ function buildCard(q){
   let html = `<div class="task-label">SPØRGSMÅL ${qIndex+1} AF ${questions.length}</div>`;
   html += `<h2 class="prompt">${q.prompt}</h2>`;
   html += `<div class="diagram">${triangleSVG(q)}</div>`;
+  html += `<div class="diagram-note">Trekanten er ikke tegnet i målestok.</div>`;
 
   if(isSingleMethod){
     html += `<div class="formula-box">${formulaFor(q)}</div>`;
@@ -1121,7 +1124,8 @@ function checkAnswer(q){
     return;
   }
 
-  const tolerance = q.targetUnit === '°' ? 0.5 : 0.15;
+  // sider: 0,15 cm eller 1 % (så afrunding undervejs, fx sin(35°) ≈ 0,57, ikke giver forkert)
+  const tolerance = q.targetUnit === '°' ? 0.5 : Math.max(0.15, q.targetVal * 0.01);
   const correct = Math.abs(val - q.targetVal) < tolerance;
 
   if(correct){
@@ -1308,7 +1312,32 @@ function helpDiagram(q){
   </svg>`;
 }
 
+/* the equation set up with the actual numbers of the question — shown at the bottom of the help box */
+function setupLine(q){
+  if(q.kind === 'pyth'){
+    const g = q.given;
+    if(q.targetRole === 'hyp') return `c² = ${g.opposite}² + ${g.adjacent}² &nbsp;⇒&nbsp; c = √(${g.opposite}² + ${g.adjacent}²)`;
+    const leg = g.opposite !== undefined ? g.opposite : g.adjacent;
+    return `${leg}² + ?² = ${g.hyp}² &nbsp;⇒&nbsp; ? = √(${g.hyp}² − ${leg}²)`;
+  }
+  const top = { sin:'opposite', cos:'adjacent', tan:'opposite' }[q.fn];
+  const bottom = { sin:'hyp', cos:'hyp', tan:'adjacent' }[q.fn];
+  if(q.targetRole === 'angleA'){
+    return `${q.fn}(A) = ${q.given[top]} / ${q.given[bottom]} &nbsp;⇒&nbsp; A = ${q.fn}⁻¹(${q.given[top]} / ${q.given[bottom]})`;
+  }
+  const a = `${q.fn}(${q.angle}°)`;
+  if(q.targetRole === top){
+    return `${a} = ? / ${q.givenVal} &nbsp;⇒&nbsp; ? = ${q.givenVal} · ${a}`;
+  }
+  return `${a} = ${q.givenVal} / ? &nbsp;⇒&nbsp; ? = ${q.givenVal} / ${a}`;
+}
+
 function helpText(q){
+  if(q.kind === 'label') return helpTextBase(q);
+  return helpTextBase(q) + `<div class="setup-line"><strong>Opstillet med tallene fra opgaven:</strong><br>${setupLine(q)}</div>`;
+}
+
+function helpTextBase(q){
   if(q.kind === 'label'){
     return `<strong>Hjælp:</strong> I en retvinklet trekant navngiver vi vinklerne A, B og C, hvor C altid er den rette vinkel.<br><br>
     • <strong>Hypotenusen</strong> er den længste side — den ligger altid overfor den rette vinkel (C).<br>

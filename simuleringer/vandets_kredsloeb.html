@@ -69,6 +69,27 @@
     cursor: pointer;
   }
 
+  .presets { display:flex; flex-wrap:wrap; gap:6px; margin:0.2rem 0 0.5rem; }
+  .presets-label { width:100%; font-size:0.75rem; color:#5a7aae; font-weight:500; }
+  .presets button {
+    font: inherit; font-size:0.74rem; padding:4px 8px; border-radius:8px; cursor:pointer;
+    border:1px solid rgba(100,150,220,0.35); background:rgba(240,248,255,0.9); color:#1a3a6e;
+  }
+  .presets button:hover { background:#dcecff; }
+  .slider-note { font-size:0.7rem; color:#6a86ae; line-height:1.35; }
+
+  /* Fakta */
+  .facts {
+    max-width: 960px; margin: 0 auto 2rem; padding: 0 16px;
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;
+  }
+  .fact-card {
+    background: rgba(255,255,255,0.88); border-radius: 12px; padding: 0.8rem 1rem;
+    border: 1px solid rgba(255,255,255,0.7); font-size: 0.82rem; line-height: 1.5; color:#2a3a4e;
+  }
+  .fact-card h3 { font-size: 0.9rem; color:#1a3a6e; margin-bottom: 0.35rem; }
+  .fact-card ol { padding-left: 1.2rem; }
+
   /* Stats panel */
   .stats-grid {
     display: grid;
@@ -182,7 +203,7 @@
 
     <div class="slider-group">
       <div class="slider-label">
-        <span><span class="emoji-label">☀️</span>Fordampning</span>
+        <span><span class="emoji-label">☀️</span>Fordampning <small style="font-weight:400;color:#5a7aae">(inkl. planter)</small></span>
         <span id="evap-val">30%</span>
       </div>
       <input type="range" id="evap" min="0" max="100" value="30" step="1">
@@ -195,6 +216,15 @@
       </div>
       <input type="range" id="runoff" min="0" max="100" value="20" step="1">
     </div>
+
+    <div class="presets">
+      <div class="presets-label">Prøv et landskab:</div>
+      <button type="button" data-preset="60,55,10">🇩🇰 Dansk mark</button>
+      <button type="button" data-preset="60,35,60">🏙 By med asfalt</button>
+      <button type="button" data-preset="60,45,5">🌲 Skov</button>
+      <button type="button" data-preset="5,90,5">🏜 Tørt og varmt</button>
+    </div>
+    <p class="slider-note">Fordampning + afstrømning kan højst være 100 % af nedbøren – den sidste skyder rettes automatisk.</p>
 
     <hr style="border:none;border-top:1px solid #d0dff0; margin:0.8rem 0;">
 
@@ -248,6 +278,27 @@
   </div>
 </div>
 
+<section class="facts">
+  <div class="fact-card">
+    <h3>🔄 Vandets kredsløb trin for trin</h3>
+    <ol>
+      <li><b>Fordampning:</b> Solen varmer vand i hav, søer og jord op, så det bliver til usynlig vanddamp.</li>
+      <li><b>Transpiration:</b> Planter suger vand op med rødderne og afgiver det som damp gennem bladene.</li>
+      <li><b>Fortætning (kondensation):</b> Dampen stiger til vejrs og afkøles. Den bliver til små dråber, som danner skyer.</li>
+      <li><b>Nedbør:</b> Dråberne vokser og falder ned som regn, sne eller hagl.</li>
+      <li><b>Afstrømning og nedsivning:</b> Vandet løber via vandløb til søer og hav – eller siver ned og bliver til grundvand.</li>
+    </ol>
+  </div>
+  <div class="fact-card">
+    <h3>🇩🇰 Tal fra Danmark</h3>
+    I Danmark falder der i gennemsnit ca. <b>750 mm nedbør om året</b> – altså ca. 60 mm om måneden. Over halvdelen fordamper igen, især om sommeren, hvor det er varmt og planterne vokser. Resten løber af eller siver ned. Om vinteren fordamper der kun lidt, og det er især her, grundvandet bliver fyldt op.
+  </div>
+  <div class="fact-card">
+    <h3>💧 Grundvand er vores drikkevand</h3>
+    Næsten alt drikkevand i Danmark er grundvand, som pumpes op fra jordlag dybt under os. Det kan tage fra få år til flere tusind år, før en regndråbe er sivet ned til grundvandet. Asfalt, tage og fliser gør, at mere vand løber af og mindre siver ned – og forurening på jorden kan følge med vandet ned.
+  </div>
+</section>
+
 <script>
 const canvas = document.getElementById('scene');
 const ctx = canvas.getContext('2d');
@@ -283,6 +334,9 @@ function drawScene() {
 
   // Underground layer
   drawUnderground();
+
+  // Trees (transpiration)
+  drawTrees();
 
   // Cloud
   drawCloud(precip);
@@ -345,6 +399,20 @@ function drawGround() {
   soilGrad.addColorStop(1, '#7a5a30');
   ctx.fillStyle = soilGrad;
   ctx.fillRect(0, 320, W, 50);
+}
+
+function drawTrees() {
+  const trees = [[40, 262], [70, 266], [262, 262]];
+  for (const [x, y] of trees) {
+    ctx.fillStyle = '#6b4a2b';
+    ctx.fillRect(x - 3, y - 16, 6, 18);
+    ctx.fillStyle = '#3f8f3a';
+    ctx.beginPath();
+    ctx.arc(x, y - 24, 14, 0, Math.PI * 2);
+    ctx.arc(x - 9, y - 16, 9, 0, Math.PI * 2);
+    ctx.arc(x + 9, y - 16, 9, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function drawWater() {
@@ -464,6 +532,18 @@ function drawLabels() {
     ctx.font = 'bold 12px system-ui, sans-serif';
   }
 
+  // Condensation label
+  ctx.fillStyle = '#3a4a6e';
+  ctx.font = 'bold 12px system-ui, sans-serif';
+  ctx.fillText('← Fortætning (sky)', 450, 70);
+  ctx.font = '11px system-ui, sans-serif';
+
+  // Transpiration label
+  if (evapPct > 3) {
+    ctx.fillStyle = '#2d6a2a';
+    ctx.fillText('Transpiration', 62, 218);
+  }
+
   // Groundwater label
   ctx.fillStyle = '#1a5a2e';
   ctx.font = '11px system-ui, sans-serif';
@@ -496,9 +576,15 @@ function spawnRain() {
 function spawnSteam() {
   const rate = evapPct / 100;
   if (Math.random() < rate * 0.55) {
+    // Damp fra søen, jorden og fra planternes blade
+    const r = Math.random();
+    const x = r < 0.35 ? 410 + Math.random() * 160
+            : r < 0.55 ? [40, 70, 262][Math.floor(Math.random() * 3)] + (Math.random() - 0.5) * 20
+            : 80 + Math.random() * W * 0.75;
+    const y0 = r >= 0.35 && r < 0.55 ? 225 + Math.random() * 15 : 255 + Math.random() * 20;
     steamParticles.push({
-      x: 80 + Math.random() * W * 0.75,
-      y: 255 + Math.random() * 20,
+      x: x,
+      y: y0,
       vy: -(0.5 + Math.random() * 0.8),
       vx: (Math.random() - 0.5) * 0.6,
       r: 2 + Math.random() * 2.5,
@@ -581,9 +667,7 @@ function updateStats() {
   else fill.style.background = '#5da8e0';
 
   let balText = '';
-  if (usedPct > 100) {
-    balText = '⚠️ Fordampning + afstrømning overstiger nedbøren! Der vil opstå tørke.';
-  } else if (infilPct < 10) {
+  if (infilPct < 10) {
     balText = '⚠️ Næsten intet vand siver ned til grundvandet.';
   } else if (infilPct > 70) {
     balText = '✅ Masser af vand siver ned og fylder grundvandet op.';
@@ -599,9 +683,9 @@ function updateStats() {
   } else if (evapPct + runoffPct >= 100) {
     info = '⚠️ Al nedbør fordamper eller løber af – intet vand siver ned til grundvandet!';
   } else if (evapPct > 60) {
-    info = '☀️ Meget varmt og tørt vejr: Det meste vand fordamper hurtigt op i atmosfæren.';
+    info = '☀️ Meget varmt vejr og/eller mange planter: Det meste vand fordamper op i atmosfæren, hvor det fortættes til nye skyer.';
   } else if (runoffPct > 60) {
-    info = '🏃 Kraftig overfladeafstrømning – typisk på befæstet underlag (fx byer) eller ved kraftig regn.';
+    info = '🏃 Kraftig overfladeafstrømning – typisk på befæstet underlag (asfalt, tage, fliser i byer), på frossen jord eller ved skybrud. Vandet løber via kloakker og vandløb ud i søer og hav.';
   } else if (precip > 100) {
     info = '🌧 Kraftig regn! Meget vand tilføres. Se om grundvandet fyldes op.';
   } else {
@@ -625,13 +709,31 @@ document.getElementById('precip').addEventListener('input', e => {
   precip = parseInt(e.target.value);
   updateStats();
 });
+// Fordampning + afstrømning kan ikke være mere end 100 % af nedbøren
 document.getElementById('evap').addEventListener('input', e => {
   evapPct = parseInt(e.target.value);
+  if (evapPct + runoffPct > 100) {
+    runoffPct = 100 - evapPct;
+    document.getElementById('runoff').value = runoffPct;
+  }
   updateStats();
 });
 document.getElementById('runoff').addEventListener('input', e => {
   runoffPct = parseInt(e.target.value);
+  if (evapPct + runoffPct > 100) {
+    evapPct = 100 - runoffPct;
+    document.getElementById('evap').value = evapPct;
+  }
   updateStats();
+});
+document.querySelectorAll('[data-preset]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    [precip, evapPct, runoffPct] = btn.dataset.preset.split(',').map(Number);
+    document.getElementById('precip').value = precip;
+    document.getElementById('evap').value = evapPct;
+    document.getElementById('runoff').value = runoffPct;
+    updateStats();
+  });
 });
 
 updateStats();

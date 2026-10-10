@@ -300,7 +300,8 @@
     <div class="legend" id="legendRow">
       <span><i class="dot b" id="pathogenDot"></i> <span id="pathogenLegendLabel">Bakterie</span></span>
       <span><i class="dot w"></i> Hvidt blodlegeme (makrofag)</span>
-      <span><i class="dot l"></i> Lymfocyt (antistof-respons)</span>
+      <span><i class="dot l"></i> Lymfocyt (danner antistoffer)</span>
+      <span><b style="color:#7B4FCB">Y</b> Antistof – mærker fjenden</span>
       <span>🔴 Sårets indgangspunkt</span>
     </div>
   </div>
@@ -413,7 +414,7 @@
         'Bakterier trænger ind gennem en åbning i huden, f.eks. et sår.',
         'Bakterierne formerer sig ved celledeling — kroppens temperatur begynder at stige (feber), hvilket bremser dem lidt.',
         'Makrofager (hvide blodlegemer) opdager bakterierne og æder dem via fagocytose.',
-        'Efter noget tid aktiveres det <b>adaptive immunforsvar</b>: lymfocytter danner antistoffer, der gør bakterierne lettere at finde og uskadeliggøre.',
+        'Efter nogle dage aktiveres det <b>adaptive immunforsvar</b>: lymfocytter (B-celler) danner <b>antistoffer</b> (Y). Antistofferne sætter sig fast på bakterierne, så de ikke kan dele sig, og makrofagerne hurtigt kan finde og æde dem.',
         'Er kroppen <b>vaccineret</b> på forhånd, er hukommelsesceller allerede klar, og antistof-svaret kommer næsten med det samme.',
         'Immunforsvaret vinder som regel, evt. med hjælp fra antibiotika, hvis infektionen er slem.'
       ]
@@ -425,13 +426,14 @@
       spawnMultiplier: 3, wbcSpeedFactor: 0.7,
       adaptiveDelay: 18,
       immuneSliderMax: 5, immuneSliderDefault: 2,
+      vaccineDelay: 5,
       note: 'Dette faneblad viser en krop med <b>nedsat immunforsvar</b>, som fx ved blodkræft (leukæmi) eller kemoterapi. Knoglemarven er svækket, så der dannes <b>færre og langsommere</b> hvide blodlegemer og lymfocytter.',
       steps: [
         'Bakterier trænger ind gennem en åbning i huden, f.eks. et sår.',
         'Bakterierne formerer sig hurtigt — feberresponsen virker stadig, men kan ikke stoppe spredningen alene.',
         'Den svækkede knoglemarv kan kun sende få, langsomme makrofager af sted.',
         'Det adaptive immunforsvar (antistoffer/lymfocytter) aktiveres langt senere og i mindre omfang end normalt.',
-        'Vaccination hjælper stadig, fordi hukommelsesceller ikke kræver ny knoglemarvsproduktion for at "huske" fjenden.',
+        'Vaccination hjælper stadig, men virker ofte dårligere, fordi kroppen danner færre lymfocytter. Derfor er det vigtigt, at familie og venner omkring patienten er vaccineret, så de ikke smitter (flokimmunitet).',
         'Infektionen har lettere ved at brede sig ukontrolleret, og kroppen får ofte brug for antibiotika eller indlæggelse.'
       ]
     },
@@ -447,7 +449,7 @@
         'Virus trænger ind gennem en åbning i huden eller slimhinden.',
         'Virus formerer sig hurtigt (forenklet i denne model, som fri partikel) — feberen stiger og bremser dem lidt.',
         'Makrofager kan finde og svække virus, men skal ofte ramme flere gange for at uskadeliggøre den — de er ikke lige så effektive mod virus som mod bakterier.',
-        'Det er først når lymfocytterne danner <b>specifikke antistoffer</b>, at virus for alvor bliver ryddet effektivt.',
+        'Det er først når lymfocytterne danner <b>specifikke antistoffer</b> (Y), at virus for alvor bliver ryddet. Antistofferne dækker virus, så de ikke kan trænge ind i flere celler.',
         'Prøv at trykke på "Giv antibiotika" — det har <b>ingen effekt</b>, fordi antibiotika kun virker på bakterier, ikke virus.',
         'Vaccination virker rigtig godt her, fordi hukommelsescellerne genkender virussen med det samme.'
       ]
@@ -485,6 +487,7 @@
   let pathogens = [];
   let wbcs = [];
   let lymphs = [];
+  let antibodies = [];
   let entryPoint = null;
   let running = false;
   let infected = false;
@@ -523,7 +526,9 @@
       r: rand(4,5.5),
       divideTimer: rand(0,1),
       hp: type === 'virus' ? 2 : 1,
-      type
+      type,
+      marked: false,   // antistoffer har sat sig fast
+      markTimer: 0
     };
   }
 
@@ -558,6 +563,7 @@
     pathogens = [];
     wbcs = [];
     lymphs = [];
+    antibodies = [];
     entryPoint = null;
     running = false;
     infected = false;
@@ -626,15 +632,17 @@
       showAction('Der er ingen bakterier at bekæmpe endnu.', 4);
       return;
     }
-    const removeCount = Math.ceil(pathogens.length * 0.4);
+    // Hver ny kur virker lidt dårligere: de overlevende bakterier er de mest modstandsdygtige (resistens)
+    const effect = Math.max(0.08, 0.4 * Math.pow(0.65, antibioticUses - 1));
+    const removeCount = Math.ceil(pathogens.length * effect);
     for(let i=0;i<removeCount;i++){
       if(pathogens.length===0) break;
       pathogens.splice(Math.floor(Math.random()*pathogens.length),1);
     }
     antibioticGrowthPenaltyTimer = 6;
-    let msg = 'Antibiotika bekæmper en stor del af bakterierne direkte og bremser resten midlertidigt. Immunforsvaret skal stadig klare resten selv.';
-    if(antibioticUses >= 3){
-      msg += ' Bemærk: I virkeligheden kan hyppig brug af antibiotika gøre bakterier resistente over tid.';
+    let msg = 'Antibiotika slår ' + Math.round(effect*100) + ' % af bakterierne ihjel og bremser resten midlertidigt. Immunforsvaret skal stadig klare resten selv.';
+    if(antibioticUses >= 2){
+      msg += ' Effekten bliver mindre for hver gang: De bakterier, der overlever, er de mest modstandsdygtige, og de formerer sig videre. Det kaldes resistens – derfor skal antibiotika kun bruges, når det er nødvendigt.';
     }
     showAction(msg, 7);
   }
@@ -721,7 +729,7 @@
 
     // Adaptivt immunforsvar aktiveres efter en forsinkelse (kortere hvis vaccineret)
     if(!adaptiveActive){
-      const delay = vaccinated ? 1.5 : cfg.adaptiveDelay;
+      const delay = vaccinated ? (cfg.vaccineDelay || 1.5) : cfg.adaptiveDelay;
       if(elapsed >= delay){
         adaptiveActive = true;
       }
@@ -735,6 +743,12 @@
       p.x = Math.max(10, Math.min(W-10, p.x));
       p.y = Math.max(10, Math.min(H-10, p.y));
 
+      if(p.marked){
+        // mærket af antistoffer: kan ikke dele sig, bliver langsom og ryddes efter kort tid
+        p.markTimer += dt;
+        p.vx *= (1 - dt*2); p.vy *= (1 - dt*2);
+        continue;
+      }
       p.divideTimer -= dt;
       if(p.divideTimer <= 0 && pathogens.length < MAX_PATHOGENS){
         p.divideTimer = growthInterval() + rand(-0.5,0.5);
@@ -759,8 +773,14 @@
       }
     }
 
-    updateDefender(wbcs, dt, false);
-    updateDefender(lymphs, dt, true);
+    // mærkede patogener ryddes (neutraliseres) efter et stykke tid
+    for(let i = pathogens.length-1; i >= 0; i--){
+      if(pathogens[i].marked && pathogens[i].markTimer > 2){ pathogens.splice(i,1); kills++; }
+    }
+
+    updateDefender(wbcs, dt);
+    updateLymphs(dt);
+    updateAntibodies(dt);
 
     // sejr/nederlag
     if(infected){
@@ -796,7 +816,7 @@
     return [W, rand(0,H)];
   }
 
-  function updateDefender(list, dt, isLymph){
+  function updateDefender(list, dt){
     for(const w of list){
       w.wobble += dt*4;
       if(w.state === 'eating'){
@@ -807,7 +827,7 @@
       if(!w.target || !pathogens.includes(w.target)){
         let nearest = null, nd = Infinity;
         for(const p of pathogens){
-          const d = dist(w,p);
+          const d = dist(w,p) * (p.marked ? 0.5 : 1); // mærkede er lettere at finde
           if(d < nd){ nd = d; nearest = p; }
         }
         w.target = nearest;
@@ -816,18 +836,12 @@
       if(w.state === 'hunting' && w.target){
         const d = dist(w, w.target);
         if(d < w.r + w.target.r + 2){
-          if(isLymph){
-            // antistoffer: altid effektive med det samme
+          w.target.hp -= w.target.marked ? w.target.hp : 1;
+          if(w.target.hp <= 0){
             pathogens.splice(pathogens.indexOf(w.target), 1);
             kills++;
           } else {
-            w.target.hp -= 1;
-            if(w.target.hp <= 0){
-              pathogens.splice(pathogens.indexOf(w.target), 1);
-              kills++;
-            } else {
-              w.target.vx = rand(-30,30); w.target.vy = rand(-30,30);
-            }
+            w.target.vx = rand(-30,30); w.target.vy = rand(-30,30);
           }
           w.state = 'eating';
           w.eatTimer = 0.35;
@@ -843,6 +857,71 @@
         w.y = Math.max(15, Math.min(H-15, w.y));
       }
     }
+  }
+
+  // Lymfocytter æder ikke selv – de bevæger sig hen i nærheden og skyder antistoffer af sted
+  const ANTIBODY_RANGE = 150;
+  function updateLymphs(dt){
+    for(const l of lymphs){
+      l.wobble += dt*4;
+      l.eatTimer -= dt; // bruges som "genladetid"
+      let nearest = null, nd = Infinity;
+      for(const p of pathogens){
+        if(p.marked || p.incoming) continue; // allerede ramt eller et antistof er på vej
+        const d = dist(l,p);
+        if(d < nd){ nd = d; nearest = p; }
+      }
+      l.state = 'patrol';
+      if(nearest){
+        if(nd > ANTIBODY_RANGE*0.8){
+          const ang = Math.atan2(nearest.y - l.y, nearest.x - l.x);
+          l.x += Math.cos(ang) * l.speed * dt;
+          l.y += Math.sin(ang) * l.speed * dt;
+        }
+        if(nd < ANTIBODY_RANGE && l.eatTimer <= 0){
+          antibodies.push({ x:l.x, y:l.y, target:nearest, rot:rand(0,Math.PI*2) });
+          nearest.incoming = true;
+          l.eatTimer = 0.35;
+          l.state = 'eating';
+        }
+      } else {
+        l.x += Math.cos(l.wobble*0.3) * 12 * dt;
+        l.y += Math.sin(l.wobble*0.37) * 12 * dt;
+      }
+      l.x = Math.max(15, Math.min(W-15, l.x));
+      l.y = Math.max(15, Math.min(H-15, l.y));
+    }
+  }
+
+  function updateAntibodies(dt){
+    for(let i = antibodies.length-1; i >= 0; i--){
+      const a = antibodies[i];
+      if(!pathogens.includes(a.target)){ antibodies.splice(i,1); continue; }
+      const d = dist(a, a.target);
+      if(d < a.target.r + 3){
+        a.target.marked = true;
+        antibodies.splice(i,1);
+        continue;
+      }
+      const ang = Math.atan2(a.target.y - a.y, a.target.x - a.x);
+      a.x += Math.cos(ang) * 260 * dt;
+      a.y += Math.sin(ang) * 260 * dt;
+      a.rot += dt*8;
+    }
+  }
+
+  function drawAntibody(x, y, rot, size){
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.strokeStyle = '#7B4FCB';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(0, size); ctx.lineTo(0, 0);
+    ctx.lineTo(-size*0.7, -size*0.8);
+    ctx.moveTo(0, 0); ctx.lineTo(size*0.7, -size*0.8);
+    ctx.stroke();
+    ctx.restore();
   }
 
   // ---------------------------------------------------------------
@@ -901,6 +980,19 @@
         ctx.fill(); ctx.stroke();
       }
     }
+
+    // antistoffer der sidder fast på mærkede patogener
+    for(const p of pathogens){
+      if(!p.marked) continue;
+      ctx.globalAlpha = Math.max(0.3, 1 - p.markTimer/2);
+      for(let k=0;k<3;k++){
+        const a = k*2.1 + 0.4;
+        drawAntibody(p.x + Math.cos(a)*(p.r+5), p.y + Math.sin(a)*(p.r+5), a + Math.PI/2, 4);
+      }
+      ctx.globalAlpha = 1;
+    }
+    // antistoffer på vej
+    for(const a of antibodies) drawAntibody(a.x, a.y, a.rot, 4.5);
 
     function drawBlob(w, fillColor, lineColor){
       ctx.beginPath();
@@ -986,6 +1078,10 @@
     gctx.textAlign = 'right';
     gctx.fillText(Math.round(maxVal), padding.l-6, padding.t+10);
     gctx.fillText('0', padding.l-6, padding.t+plotH);
+    gctx.textAlign = 'right';
+    gctx.fillText('tid →', GW-padding.r, GH-5);
+    gctx.textAlign = 'left';
+    gctx.fillText('antal', padding.l+4, padding.t+10);
   }
 
   let lastTime = performance.now();

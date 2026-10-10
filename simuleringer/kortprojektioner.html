@@ -175,6 +175,7 @@ h1{margin:0;font-size:clamp(1.25rem,2.1vw,1.7rem);font-weight:900;letter-spacing
           <div class="radios" role="radiogroup" aria-label="Type cylinderkort">
             <label><input type="radio" name="cylmode" value="central" checked><span>Lys fra midten (den enkle udgave)</span></label>
             <label><input type="radio" name="cylmode" value="mercator"><span>Mercator (kortet fra atlasset)</span></label>
+            <label><input type="radio" name="cylmode" value="area"><span>Arealtro (alle lande i rigtig størrelse)</span></label>
           </div>
         </div>
         <div>
@@ -243,9 +244,12 @@ var RINGS = [];
    Alt regnes med globussens radius = 1, længde 0° mod +z, øst mod +x, nord opad (+y). */
 
 function makeCylinder(mode) {
-  var merc = mode === 'mercator';
-  var latMax = merc ? 80 : 70;
-  var yOf = merc ? function (f) { return Math.log(Math.tan(PI / 4 + f / 2)); } : function (f) { return Math.tan(f); };
+  var merc = mode === 'mercator', area = mode === 'area';
+  var latMax = merc ? 80 : area ? 90 : 70;
+  // central: lys fra midten · mercator: formtro · area: lys vandret ud fra aksen (Lamberts arealtro cylinderprojektion)
+  var yOf = merc ? function (f) { return Math.log(Math.tan(PI / 4 + f / 2)); }
+          : area ? function (f) { return Math.sin(f); }
+          : function (f) { return Math.tan(f); };
   var Ymax = yOf(latMax * D2R);
   return {
     id: 'cyl', mode: mode, latLo: -latMax, latHi: latMax, contact: 0, nu: 160, nv: 64,
@@ -324,9 +328,14 @@ var TEXT = {
     { t: 'Placér papiret', b: 'Papiret rulles til et rør, og globussen står inde i det. Røret rører kun globussen langs ækvator (den gule linje). Alle andre steder er der luft mellem globus og papir.', q: 'Hvor er der længst fra globussen til papiret?' },
     { t: 'Projicér', b: 'Forestil dig en pære i midten af globussen. Lyset skinner ud gennem landene og tegner dem på papiret. Ved ækvator sidder papiret tæt på, så billedet bliver næsten rigtigt. Tæt på polerne skal lyset rejse langt, og billedet bliver strakt voldsomt.', q: 'Hvad tror du, der sker med Grønland, når papiret rulles ud?' },
     { t: 'Fold ud', b: 'Vi klipper røret op langs en længdegrad på bagsiden (den røde streg) og ruller papiret ud, så det ligger fladt. Nu er kloden blevet til et kort.', q: 'Ændrer landene form, når papiret bliver fladt?' },
-    { t: 'Resultat', b: 'Længdegraderne er blevet lodrette linjer, breddegraderne vandrette. Tæt på ækvator passer størrelser og former nogenlunde. Jo tættere på polerne, jo mere er landene strakt. Sammenlign Grønland (orange) og Afrika (lilla): De ser næsten lige store ud, men Afrika er omkring 14 gange større. Papiret skulle være uendelig højt for at nå polerne, så vi har klippet det af ved 70°.', q: 'Hvilke røde cirkler er mest forvrængede? Hvor på kortet sidder de?',
+    { t: 'Resultat', b: 'Længdegraderne er blevet lodrette linjer, breddegraderne vandrette. Tæt på ækvator passer størrelser og former nogenlunde. Jo tættere på polerne, jo mere er landene strakt. Sammenlign Grønland (orange) og Afrika (lilla): De ser næsten lige store ud, men Afrika er omkring 14 gange større. Papiret skulle være uendelig højt for at nå polerne, så vi har klippet det af ved 70°.', q: 'Hvilke forvrængningscirkler er mest forvrængede? Hvor på kortet sidder de?',
       good: 'Områder tæt på ækvator.', bad: 'At sammenligne størrelser og at vise polarområder.' }
   ],
+  cylArea: {
+    2: 'I det arealtro kort skinner lyset ikke fra midten, men vandret ud fra Jordens akse. Strålerne er derfor helt vandrette. Landene tæt på polerne bliver trykket sammen i højden – præcis lige så meget, som de bliver strakt i bredden. Så får alle lande deres rigtige areal.',
+    4: 'Det arealtro kort viser alle lande i den rigtige størrelse i forhold til hinanden. Nu kan du se, at Afrika (lilla) er meget større end Grønland (orange). Til gengæld er formerne forvrænget: Lande nær polerne bliver flade og brede, og cirklerne bliver til ellipser – men de har stadig samme areal. Peters-kortet, som man nogle gange ser i skolen, er en strakt udgave af dette kort.',
+    good: 'At sammenligne landes størrelse, fx på verdenskort over befolkning, skov eller klima.', bad: 'At vise landenes rigtige form langt fra ækvator – og til navigation.'
+  },
   cylMerc: {
     2: 'I den rigtige Mercator-projektion er lyset ikke bare en pære. Kortmagerne har udregnet, præcis hvor hvert punkt skal placeres på papiret, så små former bevares. Strålerne viser, hvordan punkterne skubbes ud og op på papiret.',
     4: 'Mercator-kortet bevarer små former: cirklerne er stadig cirkler, men de bliver større og større mod polerne. Derfor ser Grønland (orange) lige så stort ud som Afrika (lilla), selvom Afrika er omkring 14 gange større. Retninger er rigtige, så kortet er godt til navigation. Papiret skulle være uendelig højt for at nå polerne, så vi har klippet det af ved 80°.',
@@ -792,9 +801,10 @@ function applyState() {
 function stepIndex(p) { return p < 0.002 ? 0 : p <= 0.242 ? 1 : p <= 0.502 ? 2 : p <= 0.802 ? 3 : 4; }
 function textFor(step) {
   var T = TEXT[proj === 'cyl' ? 'cyl' : proj], e = Object.assign({}, T[step]);
-  if (proj === 'cyl' && cylMode === 'mercator') {
-    if (step === 2) e.b = TEXT.cylMerc[2];
-    if (step === 4) { e.b = TEXT.cylMerc[4]; e.good = TEXT.cylMerc.good; e.bad = TEXT.cylMerc.bad; }
+  if (proj === 'cyl' && cylMode !== 'central') {
+    var V = cylMode === 'mercator' ? TEXT.cylMerc : TEXT.cylArea;
+    if (step === 2) e.b = V[2];
+    if (step === 4) { e.b = V[4]; e.good = V.good; e.bad = V.bad; }
   }
   e.b = e.b.replace(/\{phi\}/g, conePhi);
   return e;

@@ -132,6 +132,7 @@
         <div class="fact"><div class="k">Solopgang</div><div class="v" id="rise">07:39</div></div>
         <div class="fact"><div class="k">Solnedgang</div><div class="v" id="set">18:35</div></div>
       </div>
+      <div class="fact" style="margin-top:8px"><div class="k">Solens højeste højde i dag (ved middag)</div><div class="v" id="noonAlt">–</div></div>
       <div class="fact" style="margin-top:8px"><div class="k">Solen står lodret (lige over hovedet) over</div><div class="v" id="subsolar">6,2° syd · 108,2° øst</div></div>
 
       <h2>Månen</h2>
@@ -180,6 +181,10 @@
       <p>Jordens akse hælder ca. 23,4°. Om sommeren vender den nordlige halvkugle mod Solen, så Danmark er længe på den lyse side. Om vinteren vender vi væk fra Solen, og dagene bliver korte. Ved forårs- og efterårsjævndøgn er dag og nat næsten lige lange overalt.</p>
     </div>
     <div class="card">
+      <h3>Hvorfor er det varmere om sommeren?</h3>
+      <p>Det er <b>ikke</b> fordi Jorden er tættere på Solen – faktisk er Jorden tættest på Solen i januar. Om sommeren står Solen højt på himlen over Danmark (ca. 57° ved middag), så lyset rammer jorden mere lodret og varmer et mindre område mere op. Om vinteren står Solen kun ca. 11° over horisonten, lyset rammer skråt og spredes ud – og dagene er korte.</p>
+    </div>
+    <div class="card">
       <h3>Månen og månefaserne</h3>
       <p>Månen lyser ikke selv – den bliver belyst af Solen, ligesom Jorden. Halvdelen af Månen er altid lys. Når Månen kredser om Jorden (ca. 29,5 døgn), ser vi forskellige dele af den lyse halvdel: nymåne, halvmåne og fuldmåne. Ved nymåne står Månen næsten i samme retning som Solen, ved fuldmåne i den modsatte retning.</p>
     </div>
@@ -190,11 +195,12 @@
     <ol>
       <li>Hvad er klokken lige nu, og er det dag eller nat i Danmark? Hvor står Solen lodret lige nu?</li>
       <li>Træk i slideren og find det tidspunkt, hvor Solen går ned i Danmark i dag. Passer det med tabellen?</li>
-      <li>Hvornår på dagen står Solen højest over Danmark? Hvorfor er det ikke præcis kl. 12.00? (Tip: sommertid.)</li>
+      <li>Hvornår på dagen står Solen højest over Danmark? Hvorfor er det ikke præcis kl. 12.00? (Tip: sommertid – og Danmark ligger ca. 5° vest for den længdegrad, dansk tid er regnet ud fra.)</li>
       <li>Vælg <b>Sommer (21/6)</b> og <b>Nordpolen</b>. Afspil døgnet. Hvad sker der med Nordpolen? Gør det samme med <b>Vinter (21/12)</b>.</li>
       <li>Find ud af, hvor mange timer der er mellem solopgang i Danmark og solopgang i Kina. Brug at Jorden drejer 15° i timen.</li>
       <li>Hvorfor er dag-nat-grænsen ikke en lige linje fra nord til syd om sommeren og vinteren – men næsten er det ved jævndøgn?</li>
       <li>Hvilken månefase er det i dag? Skift datoen én uge frem ad gangen. Hvordan ændrer fasen sig – og hvor står Månen i forhold til Solen?</li>
+      <li>Sammenlign Solens højeste højde ved middag d. 21/6 og d. 21/12. Hvor stor er forskellen? Hvad betyder det for, hvor meget solen varmer?</li>
       <li>Find en dato med fuldmåne. Afspil døgnet: Hvornår kan man se Månen i Danmark? Hvorfor er det mest om natten?</li>
     </ol>
   </div>
@@ -620,14 +626,14 @@ const DAYS=['søndag','mandag','tirsdag','onsdag','torsdag','fredag','lørdag'];
 let dayKey='', dayInfo=null;
 function computeDay(){
   const base=dkToUTC(state.y,state.mo,state.d,0), end=dkToUTC(state.y,state.mo,state.d+1,0);
-  let rise=null,set=null,prev=null,maxAlt=-90;
+  let rise=null,set=null,prev=null,maxAlt=-90,noon=base;
   for(let t=base;t<=end;t+=60000){
     const a=altitude(DK.lat,DK.lon,sunPos(t))+0.833;
-    maxAlt=Math.max(maxAlt,a);
+    if(a>maxAlt){ maxAlt=a; noon=t; }
     if(prev!==null){ if(prev<0&&a>=0&&rise===null) rise=t; if(prev>=0&&a<0) set=t; }
     prev=a;
   }
-  return {rise,set,maxAlt};
+  return {rise,set,maxAlt,noon};
 }
 function updateInfo(utc,sp,mp){
   // Månen
@@ -667,6 +673,8 @@ function updateInfo(utc,sp,mp){
     if(di.rise&&di.set){ const m=Math.round((di.set-di.rise)/60000); $('dayLen').textContent=`${Math.floor(m/60)} t ${pad(m%60)} min`; }
     else $('dayLen').textContent='–';
   }
+  const noon=di.maxAlt-0.833;
+  $('noonAlt').textContent=noon>0 ? f1(noon)+'° kl. '+dkClock(di.noon) : 'Solen kommer ikke op';
   const ns=sp.decl>=0?'nord':'syd';
   const ew=sp.lon>=0?'øst':'vest';
   $('subsolar').textContent=`${f1(Math.abs(sp.decl))}° ${ns} · ${f1(Math.abs(sp.lon))}° ${ew}`;
