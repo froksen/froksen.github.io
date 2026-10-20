@@ -127,6 +127,48 @@
     text-align: right;
   }
 
+  /* ── Toggle-knap ── */
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    background: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle:hover { border-color: #475569; }
+  .toggle input { position: absolute; opacity: 0; pointer-events: none; }
+  .toggle-track {
+    flex-shrink: 0;
+    position: relative;
+    width: 46px;
+    height: 26px;
+    border-radius: 13px;
+    background: #475569;
+    transition: background 0.2s;
+  }
+  .toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    transition: transform 0.2s;
+  }
+  .toggle-text { display: flex; flex-direction: column; gap: 2px; font-size: 0.85rem; color: var(--text); }
+  .toggle-state { font-size: 0.74rem; color: #94a3b8; }
+  .toggle input:checked ~ .toggle-track { background: var(--highlight); }
+  .toggle input:checked ~ .toggle-track .toggle-knob { transform: translateX(20px); }
+  .toggle input:focus-visible ~ .toggle-track { outline: 2px solid var(--highlight); outline-offset: 2px; }
+  .toggle:has(input:checked) { border-color: var(--highlight); background: rgba(240,192,64,0.12); }
+  .toggle:has(input:checked) .toggle-state { color: var(--highlight); }
+
   /* ── Canvas area ── */
   .canvas-wrap {
     background: var(--panel);
@@ -336,6 +378,14 @@
         <button class="btn btn-beta"  onclick="setType('beta')">β Beta</button>
         <button class="btn btn-gamma" onclick="setType('gamma')">γ Gamma</button>
       </div>
+      <label class="toggle" for="rangeChk">
+        <input type="checkbox" id="rangeChk" onchange="setRealRange(this.checked)">
+        <span class="toggle-track"><span class="toggle-knob"></span></span>
+        <span class="toggle-text">
+          <strong>Realistisk rækkevidde i luft</strong>
+          <span class="toggle-state" id="rangeState">Slået fra – kun materialet bremser</span>
+        </span>
+      </label>
     </div>
 
     <!-- Rate + reset -->
@@ -457,7 +507,7 @@
       <div class="sub">af materialet</div>
       <div class="sub" id="sBlockPct" style="color:#f87171;">–</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="airCard" style="display:none;">
       <div class="label">Stoppet i luften</div>
       <div class="value" id="sAir" style="color:#fb923c;">0</div>
       <div class="sub">nåede ikke frem</div>
@@ -504,7 +554,7 @@
       <summary>Rækkevidde, afstand og baggrundsstråling</summary>
       <div class="acc-body">
         <h4>Alfastråling når kun få centimeter</h4>
-        Alfapartikler støder hele tiden ind i luftens molekyler og mister energi. Efter ca. 3–7 cm i luft er de stoppet helt. Prøv at flytte Geiger-røret længere væk end ca. 7 cm (70 mm) fra en alfakilde – så tæller det ingenting, selv uden materiale foran. Betastråling når typisk en meter eller mere i luft, og gammastråling kan nå meget langt.
+        Alfapartikler støder hele tiden ind i luftens molekyler og mister energi. Efter ca. 3–7 cm i luft er de stoppet helt. Slå "Realistisk rækkevidde i luft" til under Strålingskilde, og prøv at flytte Geiger-røret længere væk end ca. 7 cm (70 mm) fra en alfakilde – så tæller det ingenting, selv uden materiale foran. Betastråling når typisk en meter eller mere i luft, og gammastråling kan nå meget langt.
         <h4>Afstandskvadratloven</h4>
         Strålingen fra en kilde spreder sig ud i alle retninger. Når afstanden fordobles, fordeles strålingen på et fire gange så stort område, så Geiger-røret kun rammes af ca. ¼ så meget. Det er den bedste og billigste beskyttelse: <strong>hold afstand</strong>. I simuleringen kan du se det ved, at flere partikler suser forbi røret, når det står langt væk.
         <h4>Baggrundsstråling</h4>
@@ -523,7 +573,7 @@
         <br><br>
         Formlen svarer til intensitetsformlen <em>I = I₀ · e<sup>−μt</sup></em>, hvor I₀ er intensiteten inden materialet og I er intensiteten bagved. Jo større produkt μ · t, desto større andel absorberes.
         <br><br>
-        <strong>Alfastråling</strong> følger ikke den eksponentielle model. Alfapartikler har en veldefineret rækkevidde og stoppes brat, ikke gradvist. Simuleringen forenkler dette, så alfapartikler stoppes helt af alle materialerne og har en rækkevidde på ca. 4–7 cm i luft.
+        <strong>Alfastråling</strong> følger ikke den eksponentielle model. Alfapartikler har en veldefineret rækkevidde og stoppes brat, ikke gradvist. Simuleringen forenkler dette, så alfapartikler stoppes helt af alle materialerne og – når realistisk rækkevidde er slået til – har en rækkevidde på ca. 4–7 cm i luft. Som standard er rækkevidden i luft slået fra, så man kan fokusere på, hvad materialerne bremser.
       </div>
     </details>
 
@@ -588,6 +638,7 @@ let missed   = 0;
 let airStopped = 0;   // alfapartikler der er stoppet af luften
 let background = 0;   // tællinger fra baggrundsstråling
 let bgOn       = false;
+let realRange  = false; // realistisk rækkevidde i luft (slået fra som standard)
 let particles = [];
 let frame    = 0;
 
@@ -748,7 +799,7 @@ class Particle {
     if (this.y < 10 || this.y > H-10) this.vy *= -1;
 
     // Stoppet af luften? (kun alfa)
-    if (!this.blocked && this.x - PORT_X > this.range) {
+    if (realRange && !this.blocked && this.x - PORT_X > this.range) {
       this.blocked = true;
       airStopped++;
       this.color = '#7c4a2a';
@@ -1150,6 +1201,15 @@ function setRate(v) {
 function setBackground(on) {
   bgOn = on;
   document.getElementById('sBg').style.display = on ? 'block' : 'none';
+  updateStats();
+}
+
+function setRealRange(on) {
+  realRange = on;
+  document.getElementById('airCard').style.display = on ? '' : 'none';
+  document.getElementById('rangeState').textContent = on
+    ? 'Slået til – alfa stoppes i luften efter ca. 4–7 cm'
+    : 'Slået fra – kun materialet bremser';
   updateStats();
 }
 
