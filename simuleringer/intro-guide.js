@@ -1,64 +1,79 @@
 // ── Introduktionsguide ─────────────────────────────────────────────────────
 // Kort rundvisning, der vises første gang man besøger en simulering.
 // Brug:  IntroGuide.init({ key: 'straaling', steps: [{ target: '#id', title: '…', text: '…' }, …] })
+// theme (valgfri): farver og skrifttyper, se DEFAULT_THEME. before (valgfri pr. trin): funktion der køres, før trinnet vises.
+// buttonWrapStyle (valgfri): CSS til knappens beholder.
 // buttonAfter (valgfri): selektor for det element, knappen "Vis guide" placeres under.
 // target kan udelades (trinnet vises så midt på skærmen) eller være en liste af selektorer.
 (function () {
+  // Farver og skrifttyper kan tilpasses siden med opts.theme (se DEFAULT_THEME)
+  const DEFAULT_THEME = {
+    accent: '#f0c040',      // fremhævning, knapper og overskrift
+    onAccent: '#0a0e1a',    // tekst på accent-farven
+    bg: '#111827',          // tekstboksens baggrund
+    ink: '#e2e8f0',         // brødtekst
+    muted: '#94a3b8',       // dæmpet tekst
+    line: '#334155',        // kanter og inaktive prikker
+    btnBg: '#1e293b',       // sekundære knapper
+    dim: 'rgba(3,6,14,0.72)', // mørklægning af resten af siden
+    font: "'Exo 2', sans-serif",
+    titleFont: "'Orbitron', monospace",
+  };
   const CSS = `
   .ig-spot {
     position: fixed; z-index: 9000; pointer-events: none;
-    border-radius: 14px; border: 2px solid #f0c040;
-    box-shadow: 0 0 0 9999px rgba(3,6,14,0.72), 0 0 24px rgba(240,192,64,0.45);
+    border-radius: 14px; border: 2px solid var(--ig-accent);
+    box-shadow: 0 0 0 9999px var(--ig-dim), 0 0 24px color-mix(in srgb, var(--ig-accent) 45%, transparent);
     transition: all 0.3s ease;
   }
-  .ig-spot.ig-none { border-color: transparent; box-shadow: 0 0 0 9999px rgba(3,6,14,0.72); }
+  .ig-spot.ig-none { border-color: transparent; box-shadow: 0 0 0 9999px var(--ig-dim); }
   .ig-catch { position: fixed; inset: 0; z-index: 8999; }
   .ig-box {
     position: fixed; z-index: 9001; width: min(340px, calc(100vw - 32px));
-    background: #111827; color: #e2e8f0; border: 1px solid #f0c040; border-radius: 14px;
-    padding: 18px 18px 14px; font-family: 'Exo 2', sans-serif;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    background: var(--ig-bg); color: var(--ig-ink); border: 1px solid var(--ig-accent); border-radius: 14px;
+    padding: 18px 18px 14px; font-family: var(--ig-font); text-align: left;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
     transition: top 0.3s ease, left 0.3s ease;
   }
   .ig-box h4 {
-    font-family: 'Orbitron', monospace; font-size: 0.95rem; color: #f0c040;
+    font-family: var(--ig-title-font); font-size: 0.95rem; color: var(--ig-accent);
     margin: 0 28px 8px 0; letter-spacing: 1px;
   }
-  .ig-box p { font-size: 0.9rem; line-height: 1.5; margin: 0 0 14px; }
+  .ig-box p { font-size: 0.9rem; line-height: 1.5; margin: 0 0 14px; color: var(--ig-ink); }
   .ig-close {
     position: absolute; top: 10px; right: 10px; width: 28px; height: 28px;
-    background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; border-radius: 6px;
+    background: none; border: none; color: var(--ig-muted); font-size: 1.1rem; cursor: pointer; border-radius: 6px;
   }
-  .ig-close:hover { color: #e2e8f0; background: #1e293b; }
+  .ig-close:hover { color: var(--ig-ink); background: var(--ig-btn-bg); }
   .ig-dots { display: flex; gap: 6px; margin-bottom: 12px; }
-  .ig-dots span { width: 8px; height: 8px; border-radius: 50%; background: #334155; }
-  .ig-dots span.on { background: #f0c040; }
+  .ig-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--ig-line); }
+  .ig-dots span.on { background: var(--ig-accent); }
   .ig-row { display: flex; align-items: center; gap: 8px; }
   .ig-row .ig-skip { margin-right: auto; }
   .ig-btn {
-    font-family: 'Exo 2', sans-serif; font-weight: 600; font-size: 0.85rem; cursor: pointer;
-    padding: 8px 14px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #e2e8f0;
+    font-family: var(--ig-font); font-weight: 600; font-size: 0.85rem; cursor: pointer;
+    padding: 8px 14px; border-radius: 8px; border: 1px solid var(--ig-line); background: var(--ig-btn-bg); color: var(--ig-ink);
   }
-  .ig-btn:hover { background: #334155; }
-  .ig-btn.ig-primary { background: #f0c040; border-color: #f0c040; color: #0a0e1a; }
+  .ig-btn:hover { filter: brightness(1.15); }
+  .ig-btn.ig-primary { background: var(--ig-accent); border-color: var(--ig-accent); color: var(--ig-on-accent); }
   .ig-btn.ig-primary:hover { filter: brightness(1.1); }
-  .ig-skip { background: none; border: none; color: #94a3b8; text-decoration: underline; padding: 8px 0; }
-  .ig-skip:hover { background: none; color: #e2e8f0; }
+  .ig-skip { background: none; border: none; color: var(--ig-muted); text-decoration: underline; padding: 8px 0; }
+  .ig-skip:hover { background: none; color: var(--ig-ink); }
   .ig-help {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 7px 14px 7px 8px; border-radius: 999px; border: 1px solid #f0c040;
-    background: rgba(240,192,64,0.1); color: #f0c040; cursor: pointer;
-    font-family: 'Exo 2', sans-serif; font-size: 0.85rem; font-weight: 600;
+    padding: 7px 14px 7px 8px; border-radius: 999px; border: 1px solid var(--ig-accent);
+    background: color-mix(in srgb, var(--ig-accent) 10%, transparent); color: var(--ig-accent); cursor: pointer;
+    font-family: var(--ig-font); font-size: 0.85rem; font-weight: 600;
     transition: background 0.2s;
   }
-  .ig-help:hover { background: rgba(240,192,64,0.22); }
+  .ig-help:hover { background: color-mix(in srgb, var(--ig-accent) 22%, transparent); }
   .ig-help-icon {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 22px; height: 22px; border-radius: 50%; background: #f0c040; color: #0a0e1a;
-    font-family: 'Orbitron', monospace; font-size: 0.8rem; font-weight: 700;
+    width: 22px; height: 22px; border-radius: 50%; background: var(--ig-accent); color: var(--ig-on-accent);
+    font-family: var(--ig-title-font); font-size: 0.8rem; font-weight: 700;
   }
   .ig-help-wrap { display: flex; justify-content: center; margin: -6px 0 16px; }
-  .ig-help.ig-float { position: fixed; right: 16px; bottom: 16px; z-index: 8000; background: #111827; box-shadow: 0 4px 14px rgba(0,0,0,0.5); }
+  .ig-help.ig-float { position: fixed; right: 16px; bottom: 16px; z-index: 8000; background: var(--ig-bg); box-shadow: 0 4px 14px rgba(0,0,0,0.35); }
   @media (max-width: 600px) {
     .ig-box { left: 16px !important; right: 16px; top: auto !important; bottom: 16px; width: auto; }
   }`;
@@ -70,7 +85,12 @@
     const key = 'introSeen:' + opts.key;
     const steps = opts.steps;
     const style = document.createElement('style');
-    style.textContent = CSS;
+    const t = Object.assign({}, DEFAULT_THEME, opts.theme);
+    style.textContent = `:root {
+      --ig-accent: ${t.accent}; --ig-on-accent: ${t.onAccent}; --ig-bg: ${t.bg}; --ig-ink: ${t.ink};
+      --ig-muted: ${t.muted}; --ig-line: ${t.line}; --ig-btn-bg: ${t.btnBg}; --ig-dim: ${t.dim};
+      --ig-font: ${t.font}; --ig-title-font: ${t.titleFont};
+    }` + CSS;
     document.head.appendChild(style);
 
     // Knap til at vise guiden igen – under elementet i opts.buttonAfter, ellers fast i hjørnet
@@ -82,6 +102,7 @@
     if (anchor) {
       const wrap = document.createElement('div');
       wrap.className = 'ig-help-wrap';
+      if (opts.buttonWrapStyle) wrap.style.cssText = opts.buttonWrapStyle;
       wrap.appendChild(help);
       anchor.after(wrap);
     } else {
@@ -91,9 +112,15 @@
 
     let i = 0, spot, box, catcher;
 
+    // Kun synlige elementer (fx ikke dem på en skjult fane)
+    function targets(step) {
+      return [].concat(step.target || []).map(s => document.querySelector(s))
+        .filter(e => e && e.getClientRects().length);
+    }
+
     function rectOf(step) {
       if (!step.target) return null;
-      const els = [].concat(step.target).map(s => document.querySelector(s)).filter(Boolean);
+      const els = targets(step);
       if (!els.length) return null;
       const rs = els.map(e => e.getBoundingClientRect());
       const pad = 6;
@@ -134,6 +161,7 @@
 
     function render() {
       const step = steps[i];
+      if (step.before) step.before();
       const last = i === steps.length - 1;
       box.innerHTML = `
         <button class="ig-close" aria-label="Luk introduktion">✕</button>
@@ -153,7 +181,7 @@
       if (back) back.onclick = () => go(i - 1);
       box.querySelector('.ig-next').onclick = () => (last ? end() : go(i + 1));
 
-      const first = [].concat(step.target || []).map(s => document.querySelector(s)).find(Boolean);
+      const first = targets(step)[0];
       if (first) {
         const r = first.getBoundingClientRect();
         if (r.top < 0 || r.bottom > window.innerHeight) first.scrollIntoView({ block: 'center' });

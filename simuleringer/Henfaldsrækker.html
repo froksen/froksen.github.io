@@ -1,0 +1,730 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Henfaldsrækker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lexend:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: én kolonne med faner øverst; teori og træning i kort. Farver: α = rav, β⁻ = blå, γ = violet (som på et nuklidkort). */
+:root{
+  --bg:#eef2f5; --surface:#ffffff; --surface2:#f5f7f9; --ink:#14202c; --muted:#56636f; --line:#d3dbe2;
+  --alpha:#e08a2c; --alpha-ink:#8f4e0b; --on-alpha:#1d1003;
+  --beta:#2f6fd6; --beta-ink:#1c4d9c; --on-beta:#ffffff;
+  --gamma:#8b52d6; --gamma-ink:#5f32a3; --on-gamma:#ffffff;
+  --ok:#1b8253; --bad:#c03b34; --proton:#d9584a; --neutron:#a6b0ba; --cell:#e4ebf1;
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Lexend",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e141a; --surface:#16202a; --surface2:#1b2632; --ink:#e6edf3; --muted:#9caab8; --line:#2c3947;
+  --alpha:#f0a050; --alpha-ink:#f7c085; --on-alpha:#1d1003;
+  --beta:#5c95f5; --beta-ink:#9fc1ff; --on-beta:#0b1118;
+  --gamma:#ad84ef; --gamma-ink:#d2b6fb; --on-gamma:#0b1118;
+  --ok:#41c287; --bad:#f2716a; --proton:#e8705f; --neutron:#6e7c8a; --cell:#223140; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e141a; --surface:#16202a; --surface2:#1b2632; --ink:#e6edf3; --muted:#9caab8; --line:#2c3947;
+  --alpha:#f0a050; --alpha-ink:#f7c085; --on-alpha:#1d1003;
+  --beta:#5c95f5; --beta-ink:#9fc1ff; --on-beta:#0b1118;
+  --gamma:#ad84ef; --gamma-ink:#d2b6fb; --on-gamma:#0b1118;
+  --ok:#41c287; --bad:#f2716a; --proton:#e8705f; --neutron:#6e7c8a; --cell:#223140; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--beta);outline-offset:2px}
+
+/* Header */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{padding-block:22px 0;display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.brand h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.02em}
+.brand p{color:var(--muted);max-width:52ch}
+.teaser{font-size:1.5rem;display:flex;align-items:center;gap:.35em;flex-wrap:wrap;color:var(--muted)}
+.teaser .nuc{color:var(--ink)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;align-items:flex-end}
+.tab{border:0;background:none;padding:10px 14px 12px;border-bottom:3px solid transparent;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.tab .n{font-family:var(--f-mono);font-size:.8em;margin-right:6px;opacity:.7}
+.tabs .spacer{flex:1}
+.pt-btn{border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:7px 12px;font-weight:600;cursor:pointer;margin-bottom:8px;white-space:nowrap}
+
+main.wrap{padding-block:26px 60px}
+section{display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;color:var(--muted)}
+.lead{color:var(--muted);max-width:65ch}
+
+/* Nuklid-notation */
+.nuc{display:inline-flex;align-items:center;font-family:var(--f-display);font-weight:700;white-space:nowrap;line-height:1}
+.nuc .az{display:inline-flex;flex-direction:column;align-items:flex-end;font-family:var(--f-mono);font-weight:500;font-size:.5em;line-height:1.15;margin-right:.1em}
+.nuc .ex{font-size:.6em;align-self:flex-start;margin-left:.05em}
+.arr{font-family:var(--f-mono);color:var(--muted);margin:0 .2em}
+
+/* Henfaldsmærker */
+.chip{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:2.2em;padding:3px 10px;border-radius:999px;font-weight:700;font-family:var(--f-mono);font-size:.95rem;line-height:1.3}
+.chip.a{background:color-mix(in srgb,var(--alpha) 22%,transparent);color:var(--alpha-ink)}
+.chip.b{background:color-mix(in srgb,var(--beta) 20%,transparent);color:var(--beta-ink)}
+.chip.g{background:color-mix(in srgb,var(--gamma) 20%,transparent);color:var(--gamma-ink)}
+
+/* Knapper */
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer;transition:transform .08s}
+.btn:hover{background:var(--surface2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.primary:hover{opacity:.9}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.small{padding:7px 12px;font-size:.9rem}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;background:var(--surface2);border:1px solid var(--line);border-radius:12px}
+.seg button{border:0;background:none;border-radius:8px;padding:7px 12px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+/* Regel-stribe */
+.rules{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.9rem;color:var(--muted)}
+.rules span{display:inline-flex;align-items:center;gap:8px}
+.rules b{font-family:var(--f-mono);font-weight:500;color:var(--ink)}
+
+/* Teori */
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
+.decay-card{display:flex;flex-direction:column;gap:12px;border-top:5px solid var(--c)}
+.decay-card.a{--c:var(--alpha)} .decay-card.b{--c:var(--beta)} .decay-card.g{--c:var(--gamma)}
+.decay-card .big{font-family:var(--f-display);font-size:2.6rem;font-weight:800;color:var(--c);line-height:1}
+.decay-card ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px}
+.rule{font-family:var(--f-mono);background:var(--surface2);border-radius:8px;padding:8px 10px;font-size:.9rem}
+.eqline{font-size:1.45rem;display:flex;align-items:center;flex-wrap:wrap;gap:.2em}
+.anatomy{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.anatomy .nuc{font-size:4.5rem}
+.anatomy dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:baseline}
+.anatomy dt{font-family:var(--f-mono);font-weight:700}
+.anatomy dd{margin:0;color:var(--muted)}
+.howto{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.stop{font-size:.9rem;color:var(--muted)}
+
+/* Quiz */
+.qhead{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.dots{display:flex;gap:5px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line);display:block}
+.dots i.ok{background:var(--ok)} .dots i.no{background:var(--bad)} .dots i.cur{box-shadow:0 0 0 2px var(--ink)}
+.qcard{display:flex;flex-direction:column;gap:18px;min-height:280px}
+.qtype{display:flex;gap:8px;align-items:center}
+.qtext{font-size:1.15rem;font-weight:500;max-width:60ch}
+.qeq{font-size:1.9rem;display:flex;align-items:center;flex-wrap:wrap;gap:.25em}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:14px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;font-size:1rem}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt .nuc{font-size:1.8rem}
+.opt .chip{font-size:1.2rem}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface))}
+.opt[disabled]{cursor:default}
+.fb{font-size:.95rem;max-width:65ch}
+.fb.ok{color:var(--ok)} .fb.no{color:var(--bad)}
+.fb .why{display:block;color:var(--ink);margin-top:4px}
+.qfoot{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.result{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.result .score{font-family:var(--f-display);font-size:3.5rem;font-weight:800;line-height:1}
+
+/* Udfyldnings-felt formet som en kerne */
+.nucin{display:inline-grid;grid-template-columns:auto auto;grid-template-rows:auto auto;gap:4px 6px;align-items:stretch;vertical-align:middle}
+.nucin input{font-family:var(--f-mono);font-size:16px;width:4.2em;padding:5px 7px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);text-align:right;font-variant-numeric:tabular-nums}
+.nucin .iA{grid-column:1;grid-row:1}
+.nucin .iZ{grid-column:1;grid-row:2}
+.nucin .iS{grid-column:2;grid-row:1/3;width:2.4em;font-family:var(--f-display);font-weight:700;font-size:1.7rem;text-align:center;padding:2px 4px}
+.nucin input.good,select.good{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--surface))}
+.nucin input.bad,select.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 9%,var(--surface))}
+.nucin input[readonly]{background:var(--surface2)}
+.nucin input:disabled{opacity:1;background:var(--surface2)}
+.hintline{font-size:.82rem;color:var(--muted)}
+
+/* Hele rækken */
+.chain-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.cbtn{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px}
+.cbtn:hover{border-color:var(--muted)}
+.cbtn[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.cbtn .t{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cbtn .nuc{font-size:1.6rem}
+.cbtn .len{font-size:.75rem;font-weight:600;color:var(--muted);font-family:var(--f-mono)}
+.cbtn p{font-size:.85rem;color:var(--muted);line-height:1.4}
+.work-head{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:flex-end;justify-content:space-between}
+.opts-row{display:flex;flex-wrap:wrap;gap:14px 20px}
+.opts-row > div{display:flex;flex-direction:column;gap:6px}
+.progress{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.progress div{height:100%;background:var(--ok);width:0;transition:width .3s}
+.rows{display:flex;flex-direction:column}
+.crow{display:grid;grid-template-columns:88px auto auto minmax(0,1fr);gap:10px 16px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.crow:first-child{border-top:0}
+.crow .lead-cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.75rem;color:var(--muted)}
+.crow .lead-cell .arrow{font-size:1.2rem;line-height:1;color:var(--muted)}
+.crow select{border:1.5px solid var(--line);border-radius:8px;background:var(--surface);padding:6px 6px;font-size:.9rem;max-width:88px}
+.crow.locked{opacity:.4}
+.crow.locked *{pointer-events:none}
+.crow.active{background:linear-gradient(90deg,color-mix(in srgb,var(--beta) 7%,transparent),transparent 70%)}
+.crow .startnuc .nuc{font-size:2.2rem}
+.crow .fb{grid-column:4}
+.crow .actions{display:flex;gap:6px;flex-wrap:wrap}
+.sum{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:12px;background:color-mix(in srgb,var(--ok) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--ok) 35%,var(--line))}
+.sum .stats{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.95rem}
+.sum .stats b{font-family:var(--f-mono)}
+
+/* Grundstof-panel */
+.pt{position:fixed;top:0;right:0;bottom:0;width:min(380px,100%);background:var(--surface);border-left:1px solid var(--line);z-index:30;display:flex;flex-direction:column;box-shadow:-10px 0 30px rgba(0,0,0,.15);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.pt header{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--line);gap:10px}
+.pt input{width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface2)}
+.pt .body{overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.ptgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.el{border:1px solid var(--line);border-radius:8px;padding:6px 8px;display:flex;flex-direction:column;background:var(--surface2)}
+.el .z{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.el .s{font-family:var(--f-display);font-weight:800;font-size:1.25rem;line-height:1.1}
+.el .nm{font-size:.72rem;color:var(--muted);overflow-wrap:anywhere}
+.el.hot{border-color:color-mix(in srgb,var(--alpha) 60%,var(--line))}
+
+@media (max-width:900px){
+  .grid3{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .chain-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .crow{grid-template-columns:64px minmax(0,1fr)}
+  .crow .actions,.crow .fb{grid-column:2}
+  .now .nuc{font-size:3.2rem}
+  .teaser{font-size:1.2rem}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+
+<div class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div>
+        <h1>Henfaldsrækker</h1>
+        <p>Følg en radioaktiv kerne trin for trin, indtil den bliver stabil.</p>
+      </div>
+      <div class="teaser" id="teaser" aria-hidden="true"></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Afsnit">
+      <button class="tab" role="tab" data-tab="teori" aria-selected="true"><span class="n">1</span>Teori</button>
+      <button class="tab" role="tab" data-tab="raekke" aria-selected="false"><span class="n">2</span>Træning (Henfaldsrække)</button>
+      <button class="tab" role="tab" data-tab="bidder" aria-selected="false"><span class="n">3</span>Træning (Blandet)</button>
+      <span class="spacer"></span>
+      <button class="pt-btn" id="ptOpen" aria-controls="pt">Grundstoffer (Z)</button>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- 1 TEORI -->
+<section id="teori" role="tabpanel">
+  <div class="grid2">
+    <div class="card" style="display:flex;flex-direction:column;gap:14px">
+      <div class="label">Sådan læser du en kerne</div>
+      <div class="anatomy">
+        <span class="nuc"><span class="az"><span>238</span><span>92</span></span><span class="sym">U</span></span>
+        <dl>
+          <dt>238</dt><dd><b>Massetal A</b>: antal protoner + neutroner</dd>
+          <dt>92</dt><dd><b>Atomnummer Z</b>: antal protoner. Det bestemmer grundstoffet (92 = uran)</dd>
+          <dt>146</dt><dd><b>Neutroner N</b> = A − Z = 238 − 92</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <div class="label">Hvad er en henfaldsrække?</div>
+      <p>En radioaktiv kerne er ustabil. Den henfalder og bliver til en ny kerne, en <b>datterkerne</b>. Tit er datterkernen også ustabil, så den henfalder igen. Sådan fortsætter det, indtil kernen er stabil. Hele kæden kaldes en henfaldsrække.</p>
+      <p>Uran-238 skal igennem 14 henfald, før det ender som stabilt bly-206.</p>
+      <div class="eqline" id="miniChain"></div>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="card decay-card a">
+      <div class="big">α</div>
+      <h3>Alfahenfald</h3>
+      <ul>
+        <li>Kernen skyder en <b>alfapartikel</b> ud: 2 protoner + 2 neutroner (en heliumkerne).</li>
+        <li>Grundstoffet ændres: 2 pladser tilbage i det periodiske system.</li>
+      </ul>
+      <div class="rule">A − 4 &nbsp;&nbsp; Z − 2</div>
+      <div class="eqline" id="exA"></div>
+      <p class="stop">Stoppes af et stykke papir.</p>
+    </div>
+    <div class="card decay-card b">
+      <div class="big">β⁻</div>
+      <h3>Beta-minus-henfald</h3>
+      <ul>
+        <li>En <b>neutron</b> i kernen bliver til en <b>proton</b>.</li>
+        <li>Samtidig skydes en <b>elektron</b> ud af kernen.*</li>
+      </ul>
+      <div class="rule">A uændret &nbsp;&nbsp; Z + 1</div>
+      <div class="eqline" id="exB"></div>
+      <p class="stop">Stoppes af nogle mm aluminium. *Der kommer også en lille antineutrino, men den ser vi bort fra her.</p>
+    </div>
+    <div class="card decay-card g">
+      <div class="big">γ</div>
+      <h3>Gammahenfald</h3>
+      <ul>
+        <li>Kernen har <b>ekstra energi</b> (er exciteret, skrives med m eller *).</li>
+        <li>Energien sendes ud som gammastråling. Ingen partikler forlader kernen.</li>
+      </ul>
+      <div class="rule">A uændret &nbsp;&nbsp; Z uændret</div>
+      <div class="eqline" id="exG"></div>
+      <p class="stop">Kræver tykt bly eller beton. Kommer ofte lige efter et α- eller β⁻-henfald.</p>
+    </div>
+  </div>
+
+  <div class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="label">Sådan bruger du siden</div>
+    <ol class="howto">
+      <li><b>Træning (Henfaldsrække):</b> udfyld en henfaldsrække trin for trin, i bidder eller fra start til slut.</li>
+      <li><b>Træning (Blandet):</b> 10 korte opgaver ad gangen med trin fra forskellige henfaldsrækker. Nogle er multiple choice, andre skal du skrive selv.</li>
+    </ol>
+    <p class="lead">Brug knappen <b>Grundstoffer (Z)</b> øverst til at finde symbolet, der passer til et atomnummer.</p>
+  </div>
+</section>
+
+<!-- 3 SMÅ BIDDER -->
+<section id="bidder" role="tabpanel" hidden>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <h2>Træning (Blandet)</h2>
+    <p class="lead">Træn henfaldsrækker ét trin ad gangen. Hvert trin er taget fra en rigtig henfaldsrække, og opgaven viser, hvilken række det kommer fra. Trinene er blandet fra alle rækkerne, så du skal kunne reglerne for α, β⁻ og γ uden at følge én bestemt række.</p>
+  </div>
+  <div class="qhead">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="label">Øv dig i</div>
+      <div class="seg" id="qFilter">
+        <button data-f="all" aria-pressed="true">Alle typer</button>
+        <button data-f="a" aria-pressed="false">Kun α</button>
+        <button data-f="b" aria-pressed="false">Kun β⁻</button>
+        <button data-f="g" aria-pressed="false">Kun γ</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+      <div class="label" id="qScore">Point: 0</div>
+      <div class="dots" id="qDots"></div>
+    </div>
+  </div>
+  <div class="card qcard" id="qCard"></div>
+  <div class="rules" id="rules1"></div>
+</section>
+
+<!-- 4 HELE RÆKKEN -->
+<section id="raekke" role="tabpanel" hidden>
+  <div class="card" style="display:flex;flex-direction:column;gap:12px">
+    <div class="label">Vælg en henfaldsrække</div>
+    <div class="chain-grid" id="chainGrid"></div>
+  </div>
+  <div class="card" style="display:flex;flex-direction:column;gap:16px">
+    <div class="work-head">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <h2 id="chTitle"></h2>
+        <p class="lead" id="chBlurb"></p>
+      </div>
+    </div>
+    <div class="opts-row">
+      <div><div class="label">Hvor meget?</div><div class="seg" id="chChunks"></div></div>
+      <div><div class="label">Niveau</div>
+        <div class="seg" id="chLevel">
+          <button data-l="1" aria-pressed="true">Henfaldet er givet</button>
+          <button data-l="2" aria-pressed="false">Grundstoffet er givet</button>
+        </div>
+      </div>
+    </div>
+    <p class="hintline" id="chLevelHelp"></p>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="counts" id="chProg"></div>
+      <div class="progress"><div id="chBar"></div></div>
+    </div>
+    <div class="rows" id="chRows"></div>
+    <div id="chSum"></div>
+    <div class="label">Rækken på nuklidkortet</div>
+    <canvas id="chainCv"></canvas>
+    <div class="rules" id="rules2"></div>
+  </div>
+</section>
+</main>
+
+<aside class="pt" id="pt" hidden aria-label="Grundstoffer">
+  <header>
+    <h3>Grundstoffer</h3>
+    <button class="btn small" id="ptClose">Luk</button>
+  </header>
+  <div class="body">
+    <input id="ptSearch" placeholder="Søg på nummer, symbol eller navn" aria-label="Søg grundstof">
+    <p class="hintline">Atomnummer Z = antal protoner. Orange kant = radioaktive grundstoffer, der optræder i rækkerne.</p>
+    <div class="ptgrid" id="ptGrid"></div>
+  </div>
+</aside>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const SYM="_ H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm".split(" ");
+const DKN="_ Brint Helium Lithium Beryllium Bor Kulstof Kvælstof Ilt Fluor Neon Natrium Magnesium Aluminium Silicium Fosfor Svovl Klor Argon Kalium Calcium Scandium Titan Vanadium Krom Mangan Jern Kobolt Nikkel Kobber Zink Gallium Germanium Arsen Selen Brom Krypton Rubidium Strontium Yttrium Zirconium Niobium Molybdæn Technetium Ruthenium Rhodium Palladium Sølv Cadmium Indium Tin Antimon Tellur Jod Xenon Cæsium Barium Lanthan Cerium Praseodym Neodym Promethium Samarium Europium Gadolinium Terbium Dysprosium Holmium Erbium Thulium Ytterbium Lutetium Hafnium Tantal Wolfram Rhenium Osmium Iridium Platin Guld Kviksølv Thallium Bly Bismuth Polonium Astat Radon Francium Radium Actinium Thorium Protactinium Uran Neptunium Plutonium Americium Curium".split(" ");
+const T={a:{s:"α",n:"alfa"},b:{s:"β⁻",n:"beta-minus"},g:{s:"γ",n:"gamma"}};
+const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+function decay(n,t){ if(t==="a")return{A:n.A-4,Z:n.Z-2,ex:""}; if(t==="b")return{A:n.A,Z:n.Z+1,ex:""}; return{A:n.A,Z:n.Z,ex:""}; }
+const key=n=>`${n.Z}-${n.A}-${n.ex||""}`;
+const lbl=n=>`${SYM[n.Z]}-${n.A}${n.ex==="m"?"m":""}${n.ex==="*"?"*":""}`;
+const dk=n=>`${DKN[n.Z]}-${n.A}${n.ex==="m"?"m":""}${n.ex==="*"?"*":""}`;
+function nucH(n){ const sup=n.A+(n.ex==="m"?"m":""); return `<span class="nuc" title="${dk(n)}"><span class="az"><span>${sup}</span><span>${n.Z}</span></span><span class="sym">${SYM[n.Z]}</span>${n.ex==="*"?'<span class="ex">*</span>':""}</span>`; }
+function partH(t){
+  if(t==="a") return `<span class="nuc" title="alfapartikel"><span class="az"><span>4</span><span>2</span></span><span class="sym">He</span></span>`;
+  if(t==="b") return `<span class="nuc" title="elektron"><span class="az"><span>0</span><span>−1</span></span><span class="sym">e</span></span>`;
+  return `<span class="nuc" title="gammastråling" style="color:var(--gamma-ink)"><span class="sym">γ</span></span>`;
+}
+const chip=t=>`<span class="chip ${t}">${T[t].s}</span>`;
+const eqH=(p,t,c)=>`${nucH(p)}<span class="arr">→</span>${nucH(c)}<span class="arr">+</span>${partH(t)}`;
+
+/* ---------- Data: rigtige henfaldsrækker ---------- */
+const CHAINS=[
+ {id:"cs137",title:"Cæsium-137",blurb:"Blev spredt over Europa ved Tjernobyl-ulykken. Viser både β⁻ og γ.",start:[137,55],steps:["b:m","g"],end:"Ba-137 er stabilt. Rækken slutter her."},
+ {id:"co60",title:"Kobolt-60",blurb:"Bruges til strålebehandling af kræft og til at sterilisere udstyr.",start:[60,27],steps:["b:*","g"],end:"Ni-60 er stabilt. Rækken slutter her."},
+ {id:"mo99",title:"Molybdæn-99",blurb:"Laver technetium-99m, som hospitaler bruger til skanninger.",start:[99,42],steps:["b:m","g"],end:"Tc-99 henfalder meget langsomt videre, så vi stopper her."},
+ {id:"rn222",title:"Radon-222",blurb:"Radongas fra undergrunden, som kan sive ind i huse.",start:[222,86],steps:["a","a","b","b","a","b","b","a"],end:"Pb-206 er stabilt bly. Rækken slutter her."},
+ {id:"u238",title:"Uran-238",blurb:"Den lange uranrække. Uran findes i granit og jord.",start:[238,92],steps:["a","b","b","a","a","a","a","a","b","b","a","b","b","a"],end:"Pb-206 er stabilt bly. Rækken slutter her."},
+ {id:"u235",title:"Uran-235",blurb:"Den uran, der bruges som brændsel i atomkraftværker.",start:[235,92],steps:["a","b","a","b","a","a","a","a","b","a","b"],end:"Pb-207 er stabilt bly. Rækken slutter her."},
+ {id:"th232",title:"Thorium-232",blurb:"Thoriumrækken. Thorium findes i mange bjergarter.",start:[232,90],steps:["a","b","b","a","a","a","a","b","b","a"],end:"Pb-208 er stabilt bly. Rækken slutter her."},
+ {id:"np237",title:"Neptunium-237",blurb:"Den kunstige række. Den ender ikke ved bly!",start:[237,93],steps:["a","b","a","a","b","a","a","a","b","a","b"],end:"Bi-209 er så godt som stabilt. Rækken slutter her."}
+];
+const NATURE={}, STABLE=new Map(), ALLSTEPS=[];
+CHAINS.forEach(c=>{
+  let cur={A:c.start[0],Z:c.start[1],ex:""}; c.path=[cur]; c.modes=[];
+  c.steps.forEach(s=>{ const [t,ex=""]=s.split(":"); const nx={...decay(cur,t),ex}; NATURE[key(cur)]={t,c:nx}; ALLSTEPS.push({p:cur,t,c:nx,ch:c.title,k:c.modes.length+1}); cur=nx; c.path.push(cur); c.modes.push(t); });
+  STABLE.set(key(cur),c.end);
+});
+
+/* ---------- Faner ---------- */
+const redraws={};
+function showTab(id){
+  $$(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===id)));
+  $$("main section").forEach(s=>s.hidden=s.id!==id);
+  if(redraws[id]) requestAnimationFrame(redraws[id]);
+}
+$$(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+let rT; addEventListener("resize",()=>{clearTimeout(rT);rT=setTimeout(()=>{const s=$("main section:not([hidden])");if(s&&redraws[s.id])redraws[s.id]();},120);});
+
+/* ---------- Teori ---------- */
+$("#teaser").innerHTML=`${nucH({A:238,Z:92})}<span class="arr">→ … →</span>${nucH({A:206,Z:82})}`;
+{ const c=CHAINS[4]; let h=nucH(c.path[0]); for(let i=0;i<3;i++) h+=`<span class="arr">→</span>${chip(c.modes[i])}<span class="arr">→</span>${nucH(c.path[i+1])}`; $("#miniChain").innerHTML=h+`<span class="arr">→ …</span>`; }
+$("#exA").innerHTML=eqH({A:226,Z:88},"a",{A:222,Z:86});
+$("#exB").innerHTML=eqH({A:234,Z:90},"b",{A:234,Z:91});
+$("#exG").innerHTML=eqH({A:137,Z:56,ex:"m"},"g",{A:137,Z:56});
+const rulesH=`<span>${chip("a")}<b>A − 4, Z − 2</b></span><span>${chip("b")}<b>A uændret, Z + 1</b></span><span>${chip("g")}<b>A og Z uændret</b></span>`;
+$("#rules1").innerHTML=rulesH; $("#rules2").innerHTML=rulesH;
+
+/* ---------- Tegnehjælp ---------- */
+const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function prep(cv,h){ const dpr=window.devicePixelRatio||1; const w=cv.clientWidth||300; cv.style.height=h+"px"; cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr); const ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); return{ctx,w,h}; }
+const modeCol=t=>tok(t==="a"?"--alpha":t==="b"?"--beta":"--gamma");
+
+function drawChart(cv,path,modes,exps){
+  if(!cv.clientWidth) return;
+  const w=cv.clientWidth, pts=path.map(n=>({N:n.A-n.Z,Z:n.Z,n}));
+  let minN=Math.min(...pts.map(p=>p.N))-1, maxN=Math.max(...pts.map(p=>p.N))+1;
+  let minZ=Math.min(...pts.map(p=>p.Z))-1, maxZ=Math.max(...pts.map(p=>p.Z))+1;
+  while(maxN-minN+1<9){minN--; if(maxN-minN+1<9)maxN++;}
+  while(maxZ-minZ+1<6){minZ--; if(maxZ-minZ+1<6)maxZ++;}
+  const cols=maxN-minN+1, rows=maxZ-minZ+1, padL=34,padR=8,padT=22,padB=36;
+  const cell=Math.max(9,Math.min(46,(w-padL-padR)/cols));
+  const h=Math.round(padT+padB+rows*cell);
+  const {ctx}=prep(cv,h);
+  const gx=padL+((w-padL-padR)-cols*cell)/2, gy=padT;
+  const X=N=>gx+(N-minN)*cell, Y=Z=>gy+(maxZ-Z)*cell;
+  const cLine=tok("--line"),cMut=tok("--muted"),cInk=tok("--ink"),cCell=tok("--cell");
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle=cLine; ctx.lineWidth=1;
+  for(let c=0;c<=cols;c++){ctx.beginPath();ctx.moveTo(gx+c*cell+.5,gy);ctx.lineTo(gx+c*cell+.5,gy+rows*cell);ctx.stroke();}
+  for(let r=0;r<=rows;r++){ctx.beginPath();ctx.moveTo(gx,gy+r*cell+.5);ctx.lineTo(gx+cols*cell,gy+r*cell+.5);ctx.stroke();}
+  const stp=cell>=24?1:cell>=13?2:5;
+  ctx.fillStyle=cMut; ctx.font=`500 10px ${tok("--f-mono")}`; ctx.textBaseline="middle";
+  ctx.textAlign="center"; for(let N=minN;N<=maxN;N++) if(N%stp===0) ctx.fillText(N,X(N)+cell/2,gy+rows*cell+10);
+  ctx.textAlign="right"; for(let Z=minZ;Z<=maxZ;Z++) if(Z%stp===0) ctx.fillText(Z,gx-5,Y(Z)+cell/2);
+  ctx.font=`600 11px ${tok("--f-body")}`;
+  ctx.textAlign="right"; ctx.fillText("Neutroner (N) →",gx+cols*cell,gy+rows*cell+27);
+  ctx.textAlign="left"; ctx.fillText("↑ Protoner (Z)",gx,padT-11);
+  const seen=new Set();
+  pts.forEach((p,i)=>{
+    const k=p.N+","+p.Z; if(seen.has(k)) return; seen.add(k);
+    const x=X(p.N),y=Y(p.Z); ctx.fillStyle=cCell; ctx.fillRect(x+1,y+1,cell-1,cell-1);
+  });
+  const last=pts[pts.length-1];
+  ctx.strokeStyle=cInk; ctx.lineWidth=2.5; ctx.strokeRect(X(last.N)+1.5,Y(last.Z)+1.5,cell-2,cell-2);
+  seen.clear();
+  pts.forEach(p=>{
+    const k=p.N+","+p.Z; if(seen.has(k)) return; seen.add(k);
+    const cx=X(p.N)+cell/2, cy=Y(p.Z)+cell/2; ctx.fillStyle=cInk; ctx.textAlign="center";
+    if(cell>=34){ ctx.font=`800 ${Math.round(cell*.32)}px ${tok("--f-display")}`; ctx.fillText(SYM[p.Z],cx,cy-5); ctx.font=`500 ${Math.round(cell*.22)}px ${tok("--f-mono")}`; ctx.fillStyle=cMut; ctx.fillText(p.n.A,cx,cy+cell*.26); }
+    else if(cell>=19){ ctx.font=`800 ${Math.round(cell*.42)}px ${tok("--f-display")}`; ctx.fillText(SYM[p.Z],cx,cy+1); }
+  });
+  for(let i=0;i<modes.length;i++){
+    const a=pts[i],b=pts[i+1],col=modeCol(modes[i]); ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=2.5;
+    ctx.setLineDash(exps&&exps[i]?[5,4]:[]);
+    if(a.N===b.N&&a.Z===b.Z){
+      const x0=X(a.N)+cell*.18,x1=X(a.N)+cell*.82,y=Y(a.Z)+cell*.88; ctx.lineWidth=1.8; ctx.beginPath();
+      for(let x=x0;x<=x1;x+=1){const yy=y+Math.sin((x-x0)/(x1-x0)*Math.PI*4)*Math.min(3,cell*.06); x===x0?ctx.moveTo(x,yy):ctx.lineTo(x,yy);} ctx.stroke(); continue;
+    }
+    let x1=X(a.N)+cell/2,y1=Y(a.Z)+cell/2,x2=X(b.N)+cell/2,y2=Y(b.Z)+cell/2;
+    const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,sh=cell*.3;
+    x1+=ux*sh;y1+=uy*sh;x2-=ux*sh;y2-=uy*sh;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke(); ctx.setLineDash([]);
+    const ah=Math.max(5,Math.min(9,cell*.22)); ctx.beginPath(); ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-ux*ah-uy*ah*.6,y2-uy*ah+ux*ah*.6); ctx.lineTo(x2-ux*ah+uy*ah*.6,y2-uy*ah-ux*ah*.6); ctx.closePath(); ctx.fill();
+  }
+  ctx.setLineDash([]);
+}
+
+/* ---------- Udfyldningsfelt ---------- */
+function nucIn(id,fixedSym){ return `<span class="nucin"><input class="iA" id="${id}-A" inputmode="numeric" placeholder="A" aria-label="Massetal A" autocomplete="off"><input class="iZ" id="${id}-Z" inputmode="numeric" placeholder="Z" aria-label="Atomnummer Z" autocomplete="off"><input class="iS" id="${id}-S" placeholder="?" aria-label="Grundstoffets symbol" autocomplete="off" maxlength="3"${fixedSym?` value="${fixedSym}" readonly`:""}></span>`; }
+const normSym=s=>{s=(s||"").trim().replace(/[^A-Za-z]/g,"");return s?s[0].toUpperCase()+s.slice(1).toLowerCase():"";};
+function ruleHint(t,back){
+  if(back) return t==="a"?"Gå baglæns: før et α-henfald var kernen 4 tungere (A + 4) og havde 2 protoner mere (Z + 2).":t==="b"?"Gå baglæns: før et β⁻-henfald havde kernen samme A, men én proton mindre (Z − 1).":"Ved γ ændres A og Z ikke. Moderkernen er bare exciteret.";
+  return t==="a"?"Husk: ved α trækker du 4 fra A og 2 fra Z.":t==="b"?"Husk: ved β⁻ er A det samme, og Z bliver 1 større.":"Husk: ved γ ændres hverken A eller Z.";
+}
+function checkNuc(id,target,t,back){
+  const eA=$(`#${id}-A`),eZ=$(`#${id}-Z`),eS=$(`#${id}-S`);
+  const A=parseInt(eA.value,10),Z=parseInt(eZ.value,10),s=normSym(eS.value);
+  [eA,eZ,eS].forEach(e=>e.classList.remove("good","bad"));
+  if(isNaN(A)||isNaN(Z)||!s) return{ok:false,empty:true,msg:"Udfyld massetal (A), atomnummer (Z) og symbol."};
+  const okA=A===target.A,okZ=Z===target.Z,okS=s===SYM[target.Z];
+  eA.classList.add(okA?"good":"bad"); eZ.classList.add(okZ?"good":"bad"); eS.classList.add(okS?"good":"bad");
+  if(okA&&okZ&&okS) return{ok:true};
+  let m;
+  if(!okA&&!okZ) m="Både massetal og atomnummer er forkerte. "+ruleHint(t,back);
+  else if(!okA) m="Massetallet (A) er forkert. "+ruleHint(t,back);
+  else if(!okZ) m="Atomnummeret (Z) er forkert. "+ruleHint(t,back);
+  else m=`Tallene er rigtige! Men grundstof nummer ${Z} har ikke symbolet »${s}«. Slå nummer ${Z} op under Grundstoffer.`;
+  return{ok:false,msg:m};
+}
+function fillAnswer(id,n){ $(`#${id}-A`).value=n.A; $(`#${id}-Z`).value=n.Z; $(`#${id}-S`).value=SYM[n.Z]; }
+function explain(p,t,c){
+  if(t==="a") return `Alfa: A ${p.A} − 4 = ${c.A}, Z ${p.Z} − 2 = ${c.Z}. Nummer ${c.Z} er ${DKN[c.Z].toLowerCase()} (${SYM[c.Z]}).`;
+  if(t==="b") return `Beta-minus: A er stadig ${c.A}, Z ${p.Z} + 1 = ${c.Z}. Nummer ${c.Z} er ${DKN[c.Z].toLowerCase()} (${SYM[c.Z]}).`;
+  return `Gamma: kernen sender kun energi ud. A = ${c.A} og Z = ${c.Z} er uændrede, så det er stadig ${DKN[c.Z].toLowerCase()}.`;
+}
+
+/* ---------- Små bidder (quiz) ---------- */
+const CONCEPT=[
+ {q:"Hvad består en alfapartikel af?",o:["2 protoner og 2 neutroner","1 proton og 1 neutron","2 protoner og 2 elektroner","4 protoner"],why:"En alfapartikel er en heliumkerne: 2 protoner og 2 neutroner. Derfor falder A med 4 og Z med 2."},
+ {q:"Hvad sker der inde i kernen ved et β⁻-henfald?",o:["En neutron bliver til en proton, og en elektron sendes ud","En proton bliver til en neutron","Kernen mister 2 protoner og 2 neutroner","Kernen sender kun energi ud"],why:"En neutron omdannes til en proton. Der kommer én proton mere, så Z stiger med 1, men det samlede antal kernepartikler (A) er det samme."},
+ {q:"Hvilket henfald ændrer IKKE grundstoffet?",o:["Gammahenfald","Alfahenfald","Beta-minus-henfald","Alle tre ændrer grundstoffet"],why:"Ved γ sendes kun energi ud. Antallet af protoner er det samme, så det er stadig samme grundstof."},
+ {q:"Hvor meget falder massetallet (A) ved et alfahenfald?",o:["4","2","1","0"],why:"Alfapartiklen har 4 kernepartikler (2 protoner + 2 neutroner), så A falder med 4."},
+ {q:"Hvad sker der med atomnummeret (Z) ved et β⁻-henfald?",o:["Det stiger med 1","Det falder med 1","Det falder med 2","Det ændres ikke"],why:"Der kommer én proton mere i kernen, så Z stiger med 1."},
+ {q:"Hvilken stråling kan stoppes af et stykke papir?",o:["Alfastråling","Betastråling","Gammastråling","Ingen af dem"],why:"Alfapartikler er store og tunge og stoppes let. Beta kræver aluminium, og gamma kræver tykt bly eller beton."},
+ {q:"Hvad er gammastråling?",o:["Elektromagnetisk stråling, ligesom lys men med meget mere energi","Heliumkerner","Elektroner fra kernen","Neutroner"],why:"Gammastråling er energi, der sendes ud som elektromagnetisk stråling. Ingen partikler forlader kernen."},
+ {q:"Hvorfor ender uranrækken ved bly-206?",o:["Fordi bly-206 er stabil og ikke henfalder","Fordi bly er det tungeste grundstof","Fordi bly ikke har nogen neutroner","Fordi rækken løber tør for alfapartikler"],why:"En henfaldsrække fortsætter, indtil kernen er stabil. Bly-206 er stabil."},
+ {q:"Hvad betyder m i Ba-137m?",o:["Kernen er exciteret og har ekstra energi","Kernen er meget tung","Kernen har mistet en elektron","Kernen er menneskeskabt"],why:"m (eller *) betyder, at kernen har ekstra energi. Den slipper af med energien ved at sende gammastråling ud."},
+ {q:"En kerne har A = 214 og Z = 82. Hvor mange neutroner har den?",o:["132","82","214","296"],why:"N = A − Z = 214 − 82 = 132."}
+];
+const quiz={filter:"all",qs:[],i:0,score:0,res:[]};
+function stepPool(){ return quiz.filter==="all"?ALLSTEPS:ALLSTEPS.filter(s=>s.t===quiz.filter); }
+function distractors(p,correct){
+  const c=[decay(p,"a"),decay(p,"b"),{A:p.A,Z:p.Z-1},{A:p.A-4,Z:p.Z+2},{A:p.A-2,Z:p.Z-2},{A:p.A,Z:p.Z},{A:p.A-4,Z:p.Z},{A:p.A-1,Z:p.Z+1}];
+  const seen=new Set([correct.A+","+correct.Z]), out=[];
+  shuffle(c).forEach(n=>{const k=n.A+","+n.Z; if(!seen.has(k)&&n.Z>0){seen.add(k);out.push({A:n.A,Z:n.Z,ex:""});}});
+  return out.slice(0,3);
+}
+function newQuiz(){
+  const pool=stepPool(); const types=quiz.filter==="all"?["concept","concept","concept","mcProduct","mcProduct","mcMode","mcMode","write","write","writeBack"]:["concept","mcProduct","mcProduct","mcMode","write","write","write","writeBack","mcProduct","write"];
+  let concepts=shuffle(CONCEPT); const gammaSteps=ALLSTEPS.filter(s=>s.t==="g"); let usedG=false;
+  quiz.qs=shuffle(types).map(ty=>{
+    if(ty==="concept") return{ty,c:concepts.pop()};
+    let st=rnd(pool); if(quiz.filter==="all"&&!usedG&&ty!=="writeBack"){st=rnd(gammaSteps);usedG=true;}
+    return{ty,s:st};
+  });
+  quiz.i=0;quiz.score=0;quiz.res=[];renderQ();
+}
+function renderDots(){ $("#qDots").innerHTML=quiz.qs.map((_,i)=>`<i class="${quiz.res[i]===true?"ok":quiz.res[i]===false?"no":""}${i===quiz.i?" cur":""}"></i>`).join(""); $("#qScore").textContent=`Point: ${quiz.score} af ${quiz.qs.length}`; }
+let curQ=null;
+const tag=(txt)=>`<div class="qtype" style="flex-wrap:wrap;justify-content:space-between"><span class="label">${txt}</span>${curQ&&curQ.s?`<span class="hintline">Fra ${curQ.s.ch}-rækken, trin ${curQ.s.k}</span>`:""}</div>`;
+function renderQ(){
+  renderDots(); const card=$("#qCard");
+  if(quiz.i>=quiz.qs.length){
+    const s=quiz.score,n=quiz.qs.length; const word=s===n?"Perfekt!":s>=n*.7?"Godt gået!":s>=n*.4?"Godt på vej.":"Øvelse gør mester.";
+    card.innerHTML=`<div class="result"><div class="label">Runden er slut</div><div class="score">${s}/${n}</div><p class="qtext">${word} ${s<n?"Kig på reglerne nedenfor, og prøv en ny runde.":"Prøv en ny række under »Træning (Henfaldsrække)«."}</p><div class="qfoot"><button class="btn primary" id="qNew">Ny runde</button><button class="btn" id="qGo">Gå til Træning (Henfaldsrække)</button></div></div>`;
+    $("#qNew").onclick=newQuiz; $("#qGo").onclick=()=>showTab("raekke"); return;
+  }
+  const q=quiz.qs[quiz.i]; curQ=q; q.tries=0; let h="";
+  const foot=`<div class="fb" id="qFb" aria-live="polite"></div><div class="qfoot"><button class="btn primary" id="qNext" hidden>Næste opgave</button></div>`;
+  if(q.ty==="concept"){
+    const opts=shuffle(q.c.o.map((t,i)=>({t,ok:i===0})));
+    h=tag("Multiple choice · viden")+`<p class="qtext">${q.c.q}</p><div class="opts">${opts.map((o,i)=>`<button class="opt" data-ok="${o.ok}">${o.t}</button>`).join("")}</div>`+foot;
+    card.innerHTML=h; bindMC(q.c.why);
+  } else if(q.ty==="mcProduct"){
+    const {p,t,c}=q.s; const corr={A:c.A,Z:c.Z,ex:c.ex}; const opts=shuffle([{n:corr,ok:true},...distractors(p,c).map(n=>({n,ok:false}))]);
+    h=tag("Multiple choice · find datterkernen")+`<p class="qtext">${dk(p)} henfalder ved ${chip(t)} ${T[t].n}. Hvilken kerne bliver det til?</p><div class="qeq">${nucH(p)}<span class="arr">→</span><b>?</b><span class="arr">+</span>${partH(t)}</div><div class="opts">${opts.map(o=>`<button class="opt" data-ok="${o.ok}">${nucH(o.n)}<span>${DKN[o.n.Z]}-${o.n.A}</span></button>`).join("")}</div>`+foot;
+    card.innerHTML=h; bindMC(explain(p,t,c));
+  } else if(q.ty==="mcMode"){
+    const {p,t,c}=q.s;
+    h=tag("Multiple choice · find henfaldet")+`<p class="qtext">${dk(p)} bliver til ${dk(c)}. Hvilket henfald er det?</p><div class="qeq">${nucH(p)}<span class="arr">→</span>${nucH(c)}<span class="arr">+</span><b>?</b></div><div class="opts">${["a","b","g"].map(m=>`<button class="opt" data-ok="${m===t}">${chip(m)}<span>${T[m].n}</span></button>`).join("")}</div>`+foot;
+    card.innerHTML=h; bindMC(`Se på ændringen: A ${p.A} → ${c.A} og Z ${p.Z} → ${c.Z}. `+explain(p,t,c));
+  } else {
+    const back=q.ty==="writeBack"; const {p,t,c}=q.s; const target=back?p:c;
+    const eq=back?`${nucIn("q")}<span class="arr">→</span>${nucH(c)}<span class="arr">+</span>${partH(t)}`:`${nucH(p)}<span class="arr">→</span>${nucIn("q")}<span class="arr">+</span>${partH(t)}`;
+    const txt=back?`Et ${chip(t)} ${T[t].n}-henfald gav ${dk(c)}. Hvilken kerne henfaldt? Skriv <b>moderkernen</b>.`:`${dk(p)} henfalder ved ${chip(t)} ${T[t].n}. Skriv datterkernen.`;
+    h=tag(back?"Skriv selv · gå baglæns":"Skriv selv · find datterkernen")+`<p class="qtext">${txt}</p><div class="qeq">${eq}</div><p class="hintline">A = massetal (øverst), Z = atomnummer (nederst), og grundstoffets symbol til højre.</p><div class="qfoot"><button class="btn primary" id="qCheck">Tjek svar</button><button class="btn" id="qShow" hidden>Vis svar</button></div>`+`<div class="fb" id="qFb" aria-live="polite"></div><div class="qfoot"><button class="btn primary" id="qNext" hidden>Næste opgave</button></div>`;
+    card.innerHTML=h;
+    const why=explain(p,t,c);
+    const done=(ok)=>{ quiz.res[quiz.i]=ok; if(ok)quiz.score++; $$("#qCard input").forEach(e=>e.disabled=true); $("#qCheck").hidden=true; $("#qShow").hidden=true; $("#qNext").hidden=false; $("#qNext").focus(); renderDots(); };
+    const check=()=>{ const r=checkNuc("q",target,t,back);
+      if(r.ok){ $("#qFb").className="fb ok"; $("#qFb").innerHTML=`<b>Rigtigt!</b><span class="why">${why}</span>`; done(q.tries<2); return; }
+      if(r.empty){ $("#qFb").className="fb no"; $("#qFb").textContent=r.msg; return; }
+      q.tries++; $("#qFb").className="fb no"; $("#qFb").innerHTML=r.msg+(q.tries>=2?" Prøv én gang til, eller tryk Vis svar.":""); if(q.tries>=2)$("#qShow").hidden=false; };
+    $("#qCheck").onclick=check;
+    $("#qShow").onclick=()=>{ fillAnswer("q",target); checkNuc("q",target,t,back); $("#qFb").className="fb no"; $("#qFb").innerHTML=`Her er svaret: <b>${dk(target)}</b>.<span class="why">${why}</span>`; done(false); };
+    $$("#qCard .nucin input").forEach(e=>e.addEventListener("keydown",ev=>{if(ev.key==="Enter")check();}));
+    $("#q-A").focus({preventScroll:true});
+  }
+  $("#qNext").onclick=()=>{quiz.i++;renderQ();};
+}
+function bindMC(why){
+  $$("#qCard .opt").forEach(b=>b.addEventListener("click",()=>{
+    const ok=b.dataset.ok==="true";
+    $$("#qCard .opt").forEach(o=>{o.disabled=true; if(o.dataset.ok==="true")o.classList.add("right");});
+    if(!ok)b.classList.add("wrong");
+    quiz.res[quiz.i]=ok; if(ok)quiz.score++;
+    $("#qFb").className="fb "+(ok?"ok":"no"); $("#qFb").innerHTML=`<b>${ok?"Rigtigt!":"Ikke helt."}</b><span class="why">${why}</span>`;
+    $("#qNext").hidden=false; $("#qNext").focus(); renderDots();
+  }));
+}
+$$("#qFilter button").forEach(b=>b.addEventListener("click",()=>{ quiz.filter=b.dataset.f; $$("#qFilter button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); newQuiz(); }));
+newQuiz();
+
+/* ---------- Hele rækken ---------- */
+const ch={ci:4,from:0,to:14,level:1,rows:[],active:0};
+function chunks(c){
+  const n=c.modes.length; if(n<=5) return[{from:0,to:n,label:`Hele rækken (${n} trin)`}];
+  const out=[]; for(let f=0;f<n;f+=5) out.push({from:f,to:Math.min(n,f+5)});
+  if(out.length>1&&out[out.length-1].to-out[out.length-1].from<2){const l=out.pop();out[out.length-1].to=l.to;}
+  out.forEach((o,i)=>o.label=`Bid ${i+1}: trin ${o.from+1}–${o.to}`);
+  out.push({from:0,to:n,label:`Hele rækken (${n} trin)`}); return out;
+}
+$("#chainGrid").innerHTML=CHAINS.map((c,i)=>{ const n=c.modes.length; const len=n<=2?"Kort":n<=8?"Mellem":"Lang"; return `<button class="cbtn" data-i="${i}" aria-pressed="false"><span class="t">${nucH(c.path[0])}<span class="len">${n} trin · ${len}</span></span><b>${c.title}</b><p>${c.blurb}</p></button>`; }).join("");
+$$("#chainGrid .cbtn").forEach(b=>b.addEventListener("click",()=>{ ch.ci=+b.dataset.i; const cs=chunks(CHAINS[ch.ci]); ch.from=cs[0].from; ch.to=cs[0].to; buildChain(); }));
+$$("#chLevel button").forEach(b=>b.addEventListener("click",()=>{ ch.level=+b.dataset.l; $$("#chLevel button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); buildChain(); }));
+function buildChain(){
+  const c=CHAINS[ch.ci];
+  $$("#chainGrid .cbtn").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.i===ch.ci)));
+  $("#chTitle").textContent=`${c.title}-rækken`; $("#chBlurb").textContent=c.blurb;
+  const cs=chunks(c);
+  $("#chChunks").innerHTML=cs.map((o,i)=>`<button data-i="${i}" aria-pressed="${o.from===ch.from&&o.to===ch.to}">${o.label}</button>`).join("");
+  $$("#chChunks button").forEach(b=>b.addEventListener("click",()=>{const o=cs[+b.dataset.i];ch.from=o.from;ch.to=o.to;buildChain();}));
+  $("#chLevelHelp").textContent=ch.level===1?"Du får at vide, hvilket henfald der sker. Skriv massetal, atomnummer og symbol for den nye kerne.":"Du får grundstoffets symbol. Vælg selv, hvilket henfald der skete, og skriv massetal og atomnummer. Tip: slå symbolet op for at finde Z.";
+  ch.rows=[]; ch.active=ch.from;
+  let h=`<div class="crow"><div class="lead-cell"><span class="label">${ch.from===0?"Start":"Fra"}</span></div><div class="startnuc">${nucH(c.path[ch.from])}</div><div></div><div class="hintline">${dk(c.path[ch.from])}: ${c.path[ch.from].Z} protoner og ${c.path[ch.from].A-c.path[ch.from].Z} neutroner</div></div>`;
+  for(let i=ch.from;i<ch.to;i++){
+    const t=c.modes[i], tg=c.path[i+1]; ch.rows[i]={done:false,tries:0,shown:false};
+    const lead=ch.level===1?`<span class="label">Trin ${i+1}</span><span class="arrow">↓</span>${chip(t)}`:`<span class="label">Trin ${i+1}</span><span class="arrow">↓</span><select id="sel-${i}" aria-label="Henfaldstype i trin ${i+1}"><option value="">Vælg…</option><option value="a">α alfa</option><option value="b">β⁻ beta</option><option value="g">γ gamma</option></select>`;
+    h+=`<div class="crow locked" id="row-${i}"><div class="lead-cell">${lead}</div><div>${nucIn("r"+i,ch.level===2?SYM[tg.Z]:null)}</div><div class="actions"><button class="btn small primary" data-chk="${i}">Tjek</button><button class="btn small" data-show="${i}" hidden>Vis svar</button></div><div class="fb" id="fb-${i}" aria-live="polite"></div></div>`;
+  }
+  $("#chRows").innerHTML=h; $("#chSum").innerHTML="";
+  $$("[data-chk]").forEach(b=>b.addEventListener("click",()=>checkRow(+b.dataset.chk)));
+  $$("[data-show]").forEach(b=>b.addEventListener("click",()=>showRow(+b.dataset.show)));
+  $$("#chRows input, #chRows select").forEach(e=>e.addEventListener("keydown",ev=>{if(ev.key==="Enter"){const i=+e.closest(".crow").id.split("-")[1];checkRow(i);}}));
+  activate(ch.from,false); drawChain();
+}
+function activate(i,focus=true){
+  ch.active=i; $$("#chRows .crow[id]").forEach(r=>{const j=+r.id.split("-")[1]; r.classList.toggle("locked",j>i); r.classList.toggle("active",j===i);});
+  const c=CHAINS[ch.ci], tot=ch.to-ch.from, done=i-ch.from;
+  $("#chProg").textContent=`${done} af ${tot} trin udfyldt`; $("#chBar").style.width=(done/tot*100)+"%";
+  if(i>=ch.to){ summary(); return; }
+  if(focus){ const el=ch.level===2?$(`#sel-${i}`):$(`#r${i}-A`); el&&el.focus({preventScroll:false}); }
+}
+function finishRow(i,msg,ok){
+  const c=CHAINS[ch.ci], tg=c.path[i+1]; ch.rows[i].done=true;
+  $$(`#row-${i} input, #row-${i} select`).forEach(e=>e.disabled=true);
+  $(`#row-${i} [data-chk]`).hidden=true; $(`#row-${i} [data-show]`).hidden=true;
+  let extra=tg.ex?` <b>${lbl(tg)}</b> er exciteret, så næste trin er et γ-henfald.`:"";
+  $(`#fb-${i}`).className="fb "+(ok?"ok":"no"); $(`#fb-${i}`).innerHTML=msg+extra;
+  activate(i+1); drawChain();
+}
+function checkRow(i){
+  if(i!==ch.active||ch.rows[i].done) return;
+  const c=CHAINS[ch.ci], p=c.path[i], tg=c.path[i+1], t=c.modes[i], fb=$(`#fb-${i}`), r=ch.rows[i];
+  let okMode=true, modeMsg="";
+  if(ch.level===2){ const s=$(`#sel-${i}`); s.classList.remove("good","bad");
+    if(!s.value){fb.className="fb no";fb.textContent="Vælg først, hvilket henfald der skete.";return;}
+    okMode=s.value===t; s.classList.add(okMode?"good":"bad");
+    if(!okMode){ const d=tg.Z-p.Z; modeMsg=`Henfaldet passer ikke. ${SYM[p.Z]} har Z = ${p.Z}. Slå ${SYM[tg.Z]} op for at se, hvad Z bliver. ${d===0?"":""}`; }
+  }
+  const res=checkNuc("r"+i,tg,t,false);
+  if(res.empty&&okMode){fb.className="fb no";fb.textContent=res.msg;return;}
+  if(okMode&&res.ok){ finishRow(i,`<b>Rigtigt!</b> ${explain(p,t,tg)}`,true); return; }
+  r.tries++; fb.className="fb no"; fb.innerHTML=(modeMsg+(res.ok?"":" "+(res.msg||""))).trim()+(r.tries>=2?" Du kan også trykke Vis svar.":"");
+  if(r.tries>=2) $(`#row-${i} [data-show]`).hidden=false;
+}
+function showRow(i){
+  const c=CHAINS[ch.ci], p=c.path[i], tg=c.path[i+1], t=c.modes[i];
+  fillAnswer("r"+i,tg); checkNuc("r"+i,tg,t,false); if(ch.level===2){const s=$(`#sel-${i}`);s.value=t;s.classList.remove("bad");s.classList.add("good");}
+  ch.rows[i].shown=true; finishRow(i,`Svaret er <b>${lbl(tg)}</b>. ${explain(p,t,tg)}`,false);
+}
+function drawChain(){
+  const c=CHAINS[ch.ci]; const upto=Math.max(ch.from,ch.active);
+  const path=c.path.slice(ch.from,upto+1), modes=c.modes.slice(ch.from,upto);
+  if(path.length) drawChart($("#chainCv"),path,modes,[]);
+}
+function summary(){
+  const c=CHAINS[ch.ci], ms=c.modes.slice(ch.from,ch.to), s=c.path[ch.from], e=c.path[ch.to];
+  const na=ms.filter(m=>m==="a").length, nb=ms.filter(m=>m==="b").length, ng=ms.filter(m=>m==="g").length;
+  const self=ch.rows.slice(ch.from,ch.to).filter(r=>r&&!r.shown).length, tot=ch.to-ch.from;
+  const cs=chunks(c), idx=cs.findIndex(o=>o.from===ch.from&&o.to===ch.to), next=cs[idx+1];
+  const hasNext=next&&next.from===ch.to;
+  $("#chSum").innerHTML=`<div class="sum"><h3>Færdig! ${self} af ${tot} trin klaret uden hjælp.</h3>
+   <div class="eqline">${nucH(s)}<span class="arr">→ … →</span>${nucH(e)}</div>
+   <div class="stats"><span>${chip("a")} <b>${na}</b> alfahenfald</span><span>${chip("b")} <b>${nb}</b> beta-minus</span><span>${chip("g")} <b>${ng}</b> gamma</span></div>
+   <p>Massetallet faldt fra ${s.A} til ${e.A}, altså ${s.A-e.A}. Det passer med ${na} × 4 = ${na*4}, fordi kun α ændrer massetallet.</p>
+   <p>Atomnummeret gik fra ${s.Z} til ${e.Z}: ${na} × (−2) + ${nb} × (+1) = ${-2*na+nb}.</p>
+   ${ch.to===c.modes.length?`<p><b>${c.end}</b></p>`:""}
+   <div class="btnrow">${hasNext?`<button class="btn primary" id="chNext">Fortsæt med næste bid</button>`:""}<button class="btn${hasNext?"":" primary"}" id="chAgain">Prøv igen</button></div></div>`;
+  if(hasNext) $("#chNext").onclick=()=>{ch.from=next.from;ch.to=next.to;buildChain();$("#chRows").scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"start"});};
+  $("#chAgain").onclick=buildChain;
+}
+redraws.raekke=drawChain;
+buildChain();
+
+/* ---------- Grundstof-panel ---------- */
+const HOT=new Set(); CHAINS.forEach(c=>c.path.forEach(n=>HOT.add(n.Z)));
+$("#ptGrid").innerHTML=SYM.slice(1).map((s,i)=>`<div class="el${HOT.has(i+1)?" hot":""}" data-q="${i+1} ${s.toLowerCase()} ${DKN[i+1].toLowerCase()}" id="el-${i+1}"><span class="z">${i+1}</span><span class="s">${s}</span><span class="nm">${DKN[i+1]}</span></div>`).join("");
+$("#ptOpen").addEventListener("click",()=>{ const p=$("#pt"); p.hidden=!p.hidden; if(!p.hidden){ $("#ptSearch").value=""; filterPT(); $("#el-80").scrollIntoView({block:"start"}); } });
+$("#ptClose").addEventListener("click",()=>$("#pt").hidden=true);
+addEventListener("keydown",e=>{if(e.key==="Escape")$("#pt").hidden=true;});
+function filterPT(){ const q=$("#ptSearch").value.trim().toLowerCase(); $$("#ptGrid .el").forEach(el=>{ el.hidden=!!q&&!el.dataset.q.split(" ").some(w=>q===w.slice(0,q.length)&&(isNaN(q)||w===q)); }); }
+$("#ptSearch").addEventListener("input",filterPT);
+
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{const s=$("main section:not([hidden])"); if(s&&redraws[s.id]) redraws[s.id]();});
+</script>
+
+<script src="intro-guide.js"></script>
+<script>
+IntroGuide.init({
+  key: 'henfaldsraekker',
+  buttonAfter: '.brand p',
+  buttonWrapStyle: 'justify-content:flex-start;margin:12px 0 0;',
+  theme: {
+    accent: 'var(--beta)', onAccent: 'var(--on-beta)', bg: 'var(--surface)', ink: 'var(--ink)',
+    muted: 'var(--muted)', line: 'var(--line)', btnBg: 'var(--surface2)', dim: 'rgba(8,14,20,0.6)',
+    font: 'var(--f-body)', titleFont: 'var(--f-display)',
+  },
+  steps: [
+    { title: 'Velkommen!',
+      text: 'Her lærer du, hvordan en radioaktiv kerne henfalder trin for trin, indtil den bliver stabil. Det tager 20 sekunder at komme i gang.' },
+    { target: '.tabs', title: 'Tre faner',
+      text: 'Start med <b>Teori</b>. Når du kender reglerne, kan du træne en hel henfaldsrække eller blandede opgaver.' },
+    { target: '#teori .grid3', before: () => showTab('teori'), title: 'Reglerne for α, β⁻ og γ',
+      text: 'Her står, hvad der sker med massetallet A og atomnummeret Z ved hvert henfald. Kig tilbage hertil, når du træner.' },
+    { target: '#ptOpen', title: 'Find grundstoffet',
+      text: 'Brug <b>Grundstoffer (Z)</b> til at finde det grundstof, der passer til et atomnummer.' },
+  ],
+});
+</script>
+
+</body></html>
