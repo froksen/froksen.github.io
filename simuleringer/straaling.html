@@ -371,7 +371,7 @@
   <div class="controls">
 
     <!-- Radiation type -->
-    <div class="ctrl-box">
+    <div class="ctrl-box" id="introType">
       <h3>Strålingskilde</h3>
       <div class="btn-group">
         <button class="btn btn-alpha active" onclick="setType('alpha')">α Alfa</button>
@@ -403,7 +403,7 @@
     </div>
 
     <!-- Material -->
-    <div class="ctrl-box">
+    <div class="ctrl-box" id="introMaterial">
       <h3>Materiale foran kilden</h3>
       <div class="btn-group">
         <button class="btn btn-mat none-btn active" onclick="setMaterial(this, 'ingen')">Ingen</button>
@@ -1287,6 +1287,23 @@ function updateInfo() {
 
 updateInfo();
 loop();
+</script>
+<script src="intro-guide.js"></script>
+<script>
+IntroGuide.init({
+  key: 'straaling',
+  buttonAfter: '.subtitle',
+  steps: [
+    { title: 'Velkommen!',
+      text: 'Her kan du undersøge, hvad der kan stoppe alfa-, beta- og gammastråling. Det tager 20 sekunder at komme i gang.' },
+    { target: '#introType', title: 'Vælg stråling',
+      text: 'Klik på α, β eller γ for at vælge, hvilken slags stråling kilden sender ud.' },
+    { target: '#introMaterial', title: 'Sæt noget i vejen',
+      text: 'Vælg et materiale, og se, hvor mange partikler der slipper igennem.' },
+    { target: '.stats-row', title: 'Aflæs resultatet',
+      text: 'Geiger-røret til højre i simuleringen tæller de partikler, der når frem. Her kan du se, hvor mange der blev stoppet, og hvor mange der kom igennem.' },
+  ],
+});
 </script>
 </body>
 </html>
