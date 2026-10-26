@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Affaldsmester Sønderjylland</title>
+<meta name="description" content="Sorteringsspil for 7. klasse: Sorter affaldet rigtigt efter reglerne i Sønderborg, Aabenraa, Haderslev eller Tønder Kommune.">
+<style>
+  :root{
+    --bg:#f3f6ef; --card:#ffffff; --ink:#1f2a24; --muted:#5d6b63; --line:#d7dfd5;
+    --accent:#2e7d4f; --accent-ink:#ffffff; --ok:#2e9b4f; --bad:#d23c3c;
+    --c-rest:#3b3b3b; --c-mad:#3b8f3f; --c-papir:#1f6fb5; --c-glas:#14918f;
+    --c-plast:#7a3fa1; --c-karton:#a0457a; --c-metal:#68798a; --c-glasmetal:#2f7f86;
+    --c-farligt:#c62828; --c-andet:#4c5a66;
+    --radius:16px; --shadow:0 6px 18px rgba(20,40,30,.12);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.45;
+    -webkit-tap-highlight-color:transparent;
+  }
+  header{
+    background:var(--accent); color:var(--accent-ink);
+    padding:12px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  header h1{font-size:1.25rem; margin:0; flex:1; min-width:200px}
+  header .stats{display:flex; gap:10px; font-weight:600; flex-wrap:wrap}
+  header .pill{background:rgba(255,255,255,.18); padding:4px 10px; border-radius:999px; white-space:nowrap}
+  main{max-width:1100px; margin:0 auto; padding:16px}
+  .screen{display:none}
+  .screen.active{display:block}
+  h2{margin:.2em 0 .5em}
+  h3{margin:1em 0 .4em}
+  .panel{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:20px}
+  .btn{
+    font:inherit; font-weight:700; border:0; border-radius:12px; padding:12px 18px; cursor:pointer;
+    background:var(--accent); color:var(--accent-ink); box-shadow:0 3px 0 rgba(0,0,0,.18);
+  }
+  .btn:active{transform:translateY(2px); box-shadow:none}
+  .btn.ghost{background:#e7eee5; color:var(--ink)}
+  .btn:focus-visible,.zone:focus-visible,.mode:focus-visible,.kom:focus-visible{outline:3px solid #f2b705; outline-offset:2px}
+
+  /* Start */
+  .koms{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:8px 0 4px}
+  .kom{
+    font:inherit; color:inherit; cursor:pointer; text-align:center; padding:12px 10px;
+    background:#f7faf5; border:2px solid var(--line); border-radius:14px; font-weight:700;
+  }
+  .kom small{display:block; font-weight:500; color:var(--muted); font-size:.8rem}
+  .kom[aria-pressed="true"]{border-color:var(--accent); background:#e3f1e7; box-shadow:inset 0 0 0 1px var(--accent)}
+  .modes{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:8px 0 16px}
+  .mode{
+    text-align:left; background:#f7faf5; border:2px solid var(--line); border-radius:14px; padding:16px; cursor:pointer; font:inherit; color:inherit;
+  }
+  .mode:hover,.kom:hover{border-color:var(--accent)}
+  .mode b{display:block; font-size:1.1rem; margin-bottom:4px}
+  .mode span{color:var(--muted)}
+  .intro-bins{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+  .chip{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; color:#fff; font-size:.9rem; font-weight:600}
+
+  /* Game */
+  .stage{display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:16px}
+  .progress{width:100%; max-width:520px; height:10px; background:#dfe7dc; border-radius:999px; overflow:hidden}
+  .progress > div{height:100%; width:0; background:var(--accent); transition:width .3s}
+  .item-card{
+    background:var(--card); border-radius:20px; box-shadow:var(--shadow);
+    width:min(320px,100%); padding:16px; text-align:center; cursor:grab; user-select:none; touch-action:none;
+    border:3px dashed transparent; position:relative; z-index:5;
+  }
+  .item-card.dragging{cursor:grabbing; box-shadow:0 16px 30px rgba(0,0,0,.25); border-color:var(--accent); transition:none}
+  .item-card.back{transition:transform .25s ease}
+  .item-emoji{font-size:4rem; line-height:1.1}
+  .item-name{font-size:1.25rem; font-weight:800; margin-top:6px}
+  .item-sub{color:var(--muted); font-size:.92rem; margin-top:2px}
+  .tag{display:inline-block; font-size:.75rem; font-weight:700; padding:2px 8px; border-radius:999px; margin-top:8px}
+  .tag.let{background:#dff2e3; color:#1e6b34}
+  .tag.svaer{background:#fde7d2; color:#9a4a00}
+  .help-row{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
+  .hint{max-width:520px; background:#fff7d6; border:1px solid #f0d77a; padding:10px 14px; border-radius:12px; display:none}
+  .instr{color:var(--muted); font-size:.95rem; text-align:center}
+
+  .bins{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .bin{background:#cfd8d0; border-radius:14px 14px 10px 10px; padding:8px; box-shadow:var(--shadow)}
+  .bin-lid{height:12px; background:#9fb0a4; border-radius:8px; margin:-2px -2px 8px}
+  .bin-title{font-size:.8rem; font-weight:700; color:#3e4c44; text-transform:uppercase; letter-spacing:.04em; margin:0 0 6px 4px}
+  .bin-rooms{display:grid; grid-template-columns:1fr 1fr; gap:6px}
+  .bin-rooms.one{grid-template-columns:1fr}
+  .zone{
+    font:inherit; color:#fff; border:0; border-radius:10px; min-height:118px; padding:10px 6px; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:4px;
+    transition:transform .12s, box-shadow .12s, filter .12s;
+  }
+  .zone .z-icon{font-size:1.8rem}
+  .zone .z-name{font-weight:800; font-size:.95rem; line-height:1.15}
+  .zone .z-desc{font-size:.75rem; opacity:.92; line-height:1.2}
+  .zone.hover{transform:scale(1.05); box-shadow:0 0 0 4px #f2b705}
+  .zone.flash-ok{animation:ok .6s}
+  .zone.flash-bad{animation:bad .6s}
+  @keyframes ok{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 6px var(--ok)}}
+  @keyframes bad{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+  .extras{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:14px}
+  .extras .zone{min-height:96px; box-shadow:var(--shadow)}
+
+  /* Modal */
+  .modal-bg{position:fixed; inset:0; background:rgba(15,25,20,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:50}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--card); border-radius:18px; max-width:480px; width:100%; padding:22px; box-shadow:0 20px 40px rgba(0,0,0,.3); text-align:center; max-height:calc(100vh - 32px); overflow:auto}
+  .modal .big{font-size:3rem}
+  .modal h3{margin:.2em 0; font-size:1.4rem}
+  .modal.ok h3{color:var(--ok)} .modal.bad h3{color:var(--bad)}
+  .modal p{margin:.5em 0}
+  .answer{display:inline-flex; align-items:center; gap:6px; color:#fff; font-weight:700; padding:6px 12px; border-radius:10px; margin:4px 2px}
+
+  /* End */
+  .score-big{font-size:2.6rem; font-weight:900; color:var(--accent)}
+  .medal{font-size:4rem}
+  .miss{display:flex; gap:12px; align-items:flex-start; border-top:1px solid var(--line); padding:10px 0}
+  .miss .e{font-size:2rem}
+  .miss small{color:var(--muted)}
+
+  /* Learn */
+  .learn-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin-top:12px}
+  .learn-card{border-radius:14px; overflow:hidden; background:var(--card); box-shadow:var(--shadow)}
+  .learn-card .head{color:#fff; padding:10px 14px; font-weight:800}
+  .learn-card .body{padding:10px 14px; font-size:.92rem}
+  .learn-card ul{margin:.3em 0 .2em 1.1em; padding:0}
+  .note{background:#eef4ff; border-left:4px solid var(--c-papir); padding:10px 14px; border-radius:8px; margin-top:14px}
+  footer{max-width:1100px; margin:0 auto; padding:8px 16px 24px; color:var(--muted); font-size:.85rem}
+  footer a, .note a{color:inherit}
+
+  @media (max-width:720px){
+    .bins{grid-template-columns:1fr}
+    .extras{grid-template-columns:1fr 1fr}
+    .zone{min-height:84px}
+    .item-emoji{font-size:3.2rem}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="title">♻️ Affaldsmester</h1>
+  <div class="stats" id="stats" hidden>
+    <span class="pill" id="sCount">1/15</span>
+    <span class="pill" id="sScore">0 point</span>
+    <span class="pill" id="sStreak">🔥 0</span>
+  </div>
+</header>
+
+<main>
+  <!-- START -->
+  <section id="start" class="screen active">
+    <div class="panel">
+      <h2>Kan du sortere affald som en rigtig husstand?</h2>
+      <p>Reglerne for affaldssortering er ikke helt ens i alle kommuner. Vælg den kommune, hvis regler du vil spille efter.</p>
+      <h3>1. Vælg kommune</h3>
+      <div class="koms" id="koms"></div>
+      <p id="komIntro" style="margin-top:12px"></p>
+      <div class="intro-bins" id="introChips"></div>
+      <p style="margin-top:14px"><b>Sådan spiller du:</b> Træk tingen ned i det rigtige rum, eller tryk på rummet. Efter hvert svar får du en forklaring. Et rigtigt svar giver 10 point (5 point, hvis du har brugt et hint), og du får bonus, når du svarer rigtigt flere gange i træk.</p>
+      <h3>2. Vælg sværhedsgrad</h3>
+      <div class="modes">
+        <button class="mode" data-mode="let"><b>🌱 Begynder</b><span>15 ting, der er lette at placere.</span></button>
+        <button class="mode" data-mode="blandet"><b>🌿 Øvet</b><span>15 ting – 7 lette og 8 svære.</span></button>
+        <button class="mode" data-mode="svaer"><b>🌳 Ekspert</b><span>15 ting, hvor mange er i tvivl. Tør du?</span></button>
+        <button class="mode" data-mode="tilfaeldig"><b>🎲 Blandet sværhed</b><span>15 tilfældige ting fra hele bunken – du ved aldrig, hvad der kommer.</span></button>
+      </div>
+      <button class="btn ghost" id="btnLearn">📖 Se hvad der skal i hver beholder</button>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="screen">
+    <div class="stage">
+      <div class="progress"><div id="bar"></div></div>
+      <div class="item-card" id="card" tabindex="0" aria-live="polite">
+        <div class="item-emoji" id="cEmoji">🍌</div>
+        <div class="item-name" id="cName">Bananskræl</div>
+        <div class="item-sub" id="cSub"></div>
+        <span class="tag" id="cTag">Let</span>
+      </div>
+      <div class="instr">Træk tingen ned i det rigtige rum, eller tryk på rummet.</div>
+      <div class="help-row">
+        <button class="btn ghost" id="btnHint">💡 Hint</button>
+        <button class="btn ghost" id="btnHome">🏠 Til forsiden</button>
+      </div>
+      <div class="hint" id="hint"></div>
+    </div>
+
+    <div class="bins" id="bins"></div>
+    <div class="extras" id="extras"></div>
+  </section>
+
+  <!-- END -->
+  <section id="end" class="screen">
+    <div class="panel" style="text-align:center">
+      <div class="medal" id="medal">🏆</div>
+      <h2 id="endTitle">Godt sorteret!</h2>
+      <div class="score-big" id="endScore">0 point</div>
+      <p id="endText"></p>
+      <div class="help-row" style="margin:12px 0">
+        <button class="btn" id="btnAgain">🔁 Spil igen</button>
+        <button class="btn ghost" id="btnMenu">🏠 Til forsiden</button>
+        <button class="btn ghost" id="btnLearn2">📖 Se oversigten</button>
+      </div>
+    </div>
+    <div class="panel" id="missPanel" style="margin-top:14px">
+      <h3>Det skal du huske næste gang</h3>
+      <div id="misses"></div>
+    </div>
+  </section>
+
+  <!-- LEARN -->
+  <section id="learn" class="screen">
+    <div class="panel">
+      <h2 id="learnTitle">📖 Hvad skal hvor?</h2>
+      <p id="learnIntro"></p>
+      <div class="learn-grid" id="learnGrid"></div>
+      <div class="note">
+        <b>Gode regler at huske – i alle fire kommuner:</b>
+        <ul>
+          <li>Skil tingene ad: Metallåget skal af syltetøjsglasset, og plastfolien skal af paprammen med sodavand.</li>
+          <li>Tøm emballagen, og skrab den ren. Den behøver ikke at være vasket grundigt.</li>
+          <li>Vådt og fedtet papir og pap kan ikke genanvendes. Derfor skal pizzabakker i restaffald.</li>
+          <li>Står der et faresymbol på emballagen, skal den i kassen til farligt affald – også når den er tom.</li>
+          <li>Slidt tøj kommer i en lukket pose i rummet til pap og papir. Tøj, der stadig kan bruges, skal i en genbrugsbutik.</li>
+          <li id="learnGuide"></li>
+        </ul>
+      </div>
+      <p style="margin-top:16px"><button class="btn" id="btnBack">← Tilbage</button></p>
+    </div>
+  </section>
+</main>
+
+<footer id="footer"></footer>
+
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
+    <div class="big" id="mBig">✅</div>
+    <h3 id="mTitle">Rigtigt!</h3>
+    <div id="mAnswer"></div>
+    <p id="mText"></p>
+    <button class="btn" id="mNext">Næste ➜</button>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   RUM (zoner). "accepts" = hvilke affaldstyper (fraktioner) rummet tager.
+   Fraktioner: rest, mad, papir, tekstil, glas, metal, plast, karton, farligt, andet
+   ===================================================================== */
+const Z = {
+  mad:   {id:"mad",  name:"Madaffald",  icon:"🍎", desc:"Madrester i den grønne pose", color:"var(--c-mad)",  accepts:["mad"],
+          info:"Madaffald bliver til biogas, som giver strøm og varme. Bind en knude på posen."},
+  rest:  {id:"rest", name:"Restaffald", icon:"🗑️", desc:"Det, der ikke kan genanvendes", color:"var(--c-rest)", accepts:["rest"],
+          info:"Restaffald bliver brændt og laver varme og strøm. Kom det i en lukket pose."},
+  glas:  {id:"glas", name:"Glas", icon:"🍾", desc:"Flasker og glas uden pant", color:"var(--c-glas)", accepts:["glas"],
+          info:"Glasset bliver smeltet om til nyt glas. Porcelæn, spejle og drikkeglas af hærdet glas må ikke komme i."},
+  metal: {id:"metal", name:"Metal", icon:"🥫", desc:"Dåser, låg, kapsler, sølvpapir", color:"var(--c-metal)", accepts:["metal"],
+          info:"Metal kan smeltes om igen og igen. Spraydåser må ikke komme i – de er farligt affald."},
+  glasmetal: {id:"glasmetal", name:"Glas & metal", icon:"🍾", desc:"Flasker, glas, dåser, låg", color:"var(--c-glasmetal)", accepts:["glas","metal"],
+          info:"Glas og metal deler rum og bliver skilt ad bagefter. Porcelæn og spraydåser må ikke komme i."},
+  plast: {id:"plast", name:"Plast", icon:"🧴", desc:"Hård og blød plast", color:"var(--c-plast)", accepts:["plast"],
+          info:"Både hård og blød plast. Tøm og skrab emballagen."},
+  karton:{id:"karton", name:"Mad- & drikkekartoner", icon:"🥛", desc:"Mælk, juice, yoghurt", color:"var(--c-karton)", accepts:["karton"],
+          info:"Kartoner har plast (og nogle gange aluminium) indeni, så de må ikke i papir og pap. Tøm dem, og fold dem sammen."},
+  plastkarton: {id:"plastkarton", name:"Plast + mad- og drikkekartoner", icon:"🧴", desc:"Må gerne være lidt beskidt", color:"var(--c-plast)", accepts:["plast","karton"],
+          info:"Plast og mad- og drikkekartoner kommer i samme rum. Kartonerne bliver skilt fra plasten bagefter."},
+  andet: {id:"andet", name:"Et andet sted", icon:"🏪", desc:"Apotek, genbrugsbutik eller genbrugsplads", color:"var(--c-andet)", accepts:["andet"],
+          info:"Medicin → apoteket. Store ting → genbrugspladsen. Tøj, der kan bruges → genbrugsbutik."}
+};
+// Rum, der hedder noget forskelligt i kommunerne
+const papirZ = (name, desc) => ({id:"papir", name, icon:"📦", desc, color:"var(--c-papir)", accepts:["papir","tekstil"],
+          info:"Papir og pap skal være rent og tørt. Slidt tøj og tekstiler må komme i – i en lukket pose."});
+const farligtZ = (name) => ({id:"farligt", name, icon:"☠️", desc:"Farligt affald, batterier, pærer, småt elektronik", color:"var(--c-farligt)", accepts:["farligt"],
+          info:"Læg batterier og pærer i hver sin klare pose. Når kassen er fuld, stilles den ud ved affaldsbeholderne og byttes til en ny."});
+
+/* =====================================================================
+   KOMMUNER
+   ===================================================================== */
+const KOMMUNER = {
+  son: {
+    name:"Sønderborg", firma:"SONFOR (Sønderborg Forsyning)",
+    url:"https://sonfor.dk/affald/affaldssortering/", guide:"https://sonfor.dk/sorteringsguide/",
+    intro:"I Sønderborg Kommune har en husstand tre beholdere med to rum hver og en Miljøkasse til farligt affald. Slidt tøj kommer i en tekstilpose, som lægges i rummet til papir og pap.",
+    bins:[
+      {title:"Mad og rest · 2 rum", rooms:[Z.rest, Z.mad]},
+      {title:"Genbrug · 2 rum", rooms:[papirZ("Papir & pap","Rent og tørt + fulde tekstilposer"), Z.glas]},
+      {title:"Genbrug · 2 rum", rooms:[Z.plastkarton, Z.metal]}
+    ],
+    extras:[farligtZ("Miljøkassen"), Z.andet]
+  },
+  aab: {
+    name:"Aabenraa", firma:"Arwos",
+    url:"https://arwos.dk/sortering/", guide:"https://arwos.dk/sortering/",
+    intro:"I Aabenraa Kommune har en husstand seks rum til affald og en kasse til farligt affald. Mad- og drikkekartoner har deres eget rum. Slidt tøj kommer i den røde pose i rummet til pap, papir og tekstil.",
+    bins:[
+      {title:"Mad og rest · 2 rum", rooms:[Z.mad, Z.rest]},
+      {title:"Genbrug · 2 rum", rooms:[Z.glasmetal, papirZ("Pap, papir & tekstil","Rent og tørt – tekstil i den røde pose")]},
+      {title:"Genbrug · 2 rum", rooms:[Z.karton, Z.plast]}
+    ],
+    extras:[farligtZ("Kassen til farligt affald"), Z.andet]
+  },
+  had: {
+    name:"Haderslev", firma:"Provas",
+    url:"https://www.provas.dk/affald-og-genbrug/sortering-derhjemme/", guide:"https://www.provas.dk/affald-og-genbrug/sorteringsvejledning/",
+    intro:"I Haderslev Kommune har en husstand tre beholdere med to rum hver og en Miljøkasse til farligt affald. Mad- og drikkekartoner har deres eget rum ved siden af plast. Slidt tøj kommer i en klar pose i rummet til papir, pap og tekstil.",
+    bins:[
+      {title:"Mad og rest · 2 rum", rooms:[Z.mad, Z.rest]},
+      {title:"Genbrug · 2 rum", rooms:[papirZ("Papir, pap & tekstil","Rent og tørt – tekstil i klar pose"), Z.glasmetal]},
+      {title:"Genbrug · 2 rum", rooms:[Z.plast, Z.karton]}
+    ],
+    extras:[farligtZ("Miljøkassen"), Z.andet]
+  },
+  ton: {
+    name:"Tønder", firma:"Tønder Forsyning",
+    url:"https://www.tonfor.dk/affald/hjemme-hos-dig/affaldsloesning-privat/", guide:"https://www.tonfor.dk/affald/sorteringsguide/",
+    intro:"I Tønder Kommune har en husstand en beholder til mad- og restaffald, en genbrugsbeholder med okkerfarvet låg (to rum), en genbrugsbeholder med violet låg (ét rum) og en Miljøkasse. Slidt tøj kommer i en lukket, klar pose i rummet til pap, papir og tekstil.",
+    bins:[
+      {title:"Mad og rest · 2 rum", rooms:[Z.mad, Z.rest]},
+      {title:"Okker låg · 2 rum", rooms:[Z.glasmetal, papirZ("Pap, papir & tekstil","Rent og tørt – tekstil i klar pose")]},
+      {title:"Violet låg · 1 rum", rooms:[Z.plastkarton]}
+    ],
+    extras:[farligtZ("Miljøkassen"), Z.andet]
+  }
+};
+
+/* =====================================================================
+   AFFALD
+   e = emoji, n = navn, s = ekstra beskrivelse, f = rigtig(e) fraktion(er),
+   d = sværhed (let/svaer), h = hint, x = forklaring,
+   k = kommune-specifik fraktion (null = tingen er ikke med i den kommune),
+   xk = kommune-specifik forklaring
+   ===================================================================== */
+const ITEMS = [
+  // --- LETTE ---
+  {e:"🍌", n:"Bananskræl", f:"mad", d:"let", h:"Det er en rest fra noget, man har spist.", x:"Madrester og skræl kommer i madaffald. Madaffaldet bliver lavet til biogas, som kan blive til strøm og varme."},
+  {e:"🍎", n:"Æbleskrog", f:"mad", d:"let", h:"Kan det rådne?", x:"Frugt- og grøntrester er madaffald og bliver til biogas."},
+  {e:"🥔", n:"Kartoffelskræller", s:"(skrællerne – ikke kniven!)", f:"mad", d:"let", h:"Det kommer fra aftensmaden.", x:"Skræller fra grøntsager er madaffald."},
+  {e:"🍳", n:"Æggeskaller", f:"mad", d:"let", h:"De kommer fra køkkenet.", x:"Æggeskaller kommer i madaffald sammen med de andre madrester."},
+  {e:"📰", n:"Gammel avis", f:"papir", d:"let", h:"Den er lavet af papir.", x:"Aviser, reklamer og blade kommer i rummet til papir og pap. De bliver til nyt papir."},
+  {e:"📦", n:"Papkasse fra en pakke", s:"(foldet sammen)", f:"papir", d:"let", h:"Den er brun og tør.", x:"Rent og tørt pap kommer i rummet til papir og pap. Fold kassen sammen, så fylder den mindre."},
+  {e:"🧻", n:"Papkernen fra en toiletrulle", f:"papir", d:"let", h:"Selve rullen er lavet af pap.", x:"Papkernen er rent pap og kan genanvendes som nyt pap."},
+  {e:"🥚", n:"Æggebakke af pap", f:"papir", d:"let", h:"Hvad er bakken lavet af?", x:"Æggebakker af pap kommer i rummet til papir og pap. (Er bakken af plast, skal den i plast.)"},
+  {e:"🍯", n:"Tomt syltetøjsglas", s:"(låget er taget af)", f:"glas", d:"let", h:"Det kan gå i stykker, hvis du taber det.", x:"Tomme glas og flasker uden pant kommer i glas. Glasset bliver smeltet om til nyt glas."},
+  {e:"🍾", n:"Tom vinflaske", f:"glas", d:"let", h:"Den er lavet af glas.", x:"Glasflasker uden pant kommer i glas."},
+  {e:"🧴", n:"Tom shampooflaske", f:"plast", d:"let", h:"Den er lidt blød og bøjelig.", x:"Plastflasker kommer i plast. Plast kan blive til ny plast."},
+  {e:"🛍️", n:"Plastpose", f:"plast", d:"let", h:"Blød plast tæller også.", x:"Både hård og blød plast kommer i plast."},
+  {e:"🥛", n:"Tom mælkekarton", f:"karton", d:"let", h:"Kartoner har deres helt egen plads – men ikke sammen med papir.", x:"Mælkekartoner er mad- og drikkekartoner. De er ofte våde og har plast indeni, så de må ikke i papir og pap."},
+  {e:"🥫", n:"Tom konservesdåse", s:"(fra flåede tomater)", f:"metal", d:"let", h:"Den er lavet af metal.", x:"Konservesdåser er metal. Metal kan smeltes om og blive til nyt metal igen og igen."},
+  {e:"🔋", n:"Brugte batterier", f:"farligt", d:"let", h:"Batterier kan indeholde giftige stoffer.", x:"Batterier er farligt affald. Læg dem i en klar pose i kassen til farligt affald. De kan indeholde tungmetaller og kan starte brand i skraldebilen.",
+     xk:{ton:"Batterier er farligt affald. I Tønder kan de komme i Miljøkassen – eller i en klar pose oven på låget af genbrugsbeholderen. De kan indeholde tungmetaller og kan starte brand i skraldebilen."}},
+  {e:"🧦", n:"Sok med store huller", f:"tekstil", d:"let", h:"Den er lavet af stof. Find rummet, hvor der står tekstil.", x:"Slidt tøj og tekstiler kommer i en lukket pose, som lægges i rummet til papir og pap. Så kan stoffet blive genanvendt."},
+  {e:"👶", n:"Brugt ble", f:"rest", d:"let", h:"Den kan hverken genanvendes eller blive til biogas.", x:"Bleer er restaffald. Restaffald bliver brændt og laver varme og strøm."},
+  {e:"🍬", n:"Slikpapir fra en karamel", s:"(klistret og krøllet)", f:"rest", d:"let", h:"Det er klistret og beskidt.", x:"Klistret og beskidt papir kan ikke genanvendes og kommer derfor i restaffald."},
+
+  // --- SVÆRE ---
+  {e:"🍕", n:"Pizzabakke", s:"(fra en takeaway-pizza)", f:"rest", d:"svaer", h:"Kan man lave nyt pap af noget, der har været fedt på?", x:"Pizzabakker skal altid i restaffald – også selvom de ser rene ud. Fedt og madrester, man ikke kan se, ødelægger det andet pap, så det ikke kan genanvendes."},
+  {e:"🧾", n:"Kassebon fra supermarkedet", f:"papir", d:"svaer", h:"Den er tør og ren – og lavet af papir.", x:"Kvitteringer og kassebonner må gerne komme i rummet til papir og pap, når de er tørre og rene.", k:{ton:null}},
+  {e:"🍟", n:"Tom chipspose", s:"(sølvfarvet indeni, uden genbrugssymbol)", f:"rest", d:"svaer", h:"Den er både plast og metal – kan man skille det ad?", x:"De fleste chipsposer er lavet af plast og et tyndt lag metal, som ikke kan skilles ad. Derfor skal de i restaffald. Kun hvis posen er mærket med symbolet for blød plast, må den i plast."},
+  {e:"🔘", n:"Metallåg fra et syltetøjsglas", f:"metal", d:"svaer", h:"Glasset og låget er af to forskellige materialer.", x:"Låget skal af glasset. Låget er metal, og glasset er glas."},
+  {e:"🎞️", n:"Plastfolie fra en papramme med sodavand", f:"plast", d:"svaer", h:"Pap og plast skal hver for sig.", x:"Plastfolien skal af paprammen. Folien kommer i plast, og paprammen kommer i papir og pap."},
+  {e:"🍺", n:"Kapsel fra en ølflaske", f:"metal", d:"svaer", h:"Den er lille – men hvad er den lavet af?", x:"Kapsler er metal. Selv små ting af metal kan genanvendes."},
+  {e:"✨", n:"Sølvpapir", s:"(krøllet sammen til en kugle)", f:"metal", d:"svaer", h:"Navnet snyder – det er ikke papir.", x:"Sølvpapir er tynd aluminium – altså metal. Krøl det sammen til en kugle, så det er nemmere at sortere."},
+  {e:"🥤", n:"Dåse uden pant", s:"(købt i Tyskland)", f:"metal", d:"svaer", h:"Ingen pant – så hvad er dåsen lavet af?", x:"Dåser med dansk pant skal tilbage i butikken. Men en dåse uden pant er metal."},
+  {e:"🍦", n:"Yoghurtkarton med rester", f:"karton", d:"svaer", h:"Kartoner må gerne være lidt beskidte – men ikke i papiret.", x:"Yoghurtkartoner er mad- og drikkekartoner. Hvis de kom i papir og pap, ville papiret blive vådt og beskidt og kunne ikke genanvendes."},
+  {e:"🧃", n:"Tom juicekarton", f:"karton", d:"svaer", h:"Kartonen er lavet af pap – men har plast indeni.", x:"Juicekartoner er mad- og drikkekartoner. Plasten indeni bliver skilt fra papfibrene, så begge dele kan genanvendes."},
+  {e:"💨", n:"Tom deodorant-spraydåse", f:"farligt", d:"svaer", h:"Kig efter faresymbolet på dåsen.", x:"Spraydåser er farligt affald – også selvom de er tomme og lavet af metal. Der kan være gas tilbage, som kan eksplodere i skraldebilen."},
+  {e:"🔥", n:"Lighter", f:"farligt", d:"svaer", h:"Hvad kan der ske, hvis den kommer i klemme i skraldebilen?", x:"Lightere kan selvantænde og eksplodere. De er farligt affald."},
+  {e:"💡", n:"LED-pære", f:"farligt", d:"svaer", h:"Pæren er elektronik.", x:"Elpærer og LED-pærer er farligt affald. Læg dem i en klar pose for sig. De indeholder elektronik og stoffer, der ikke må brændes."},
+  {e:"📱", n:"Gammel mobiltelefon", f:"farligt", d:"svaer", h:"Småt elektronik har en særlig plads.", x:"Småt elektronik som mobiltelefoner kommer i kassen til farligt affald. Telefonen har også et batteri indeni – og indeholder guld, sølv og kobber, som kan genbruges."},
+  {e:"🪥", n:"Elektrisk tandbørste", f:"farligt", d:"svaer", h:"Den har et batteri indeni.", x:"En elektrisk tandbørste er småt elektronik med batteri, så den er farligt affald."},
+  {e:"💅", n:"Halvtom flaske neglelak", f:"farligt", d:"svaer", h:"Neglelak indeholder stærke kemikalier.", x:"Neglelak og neglelakfjerner er farligt affald."},
+  {e:"☕", n:"Kaffegrums med kaffefilter", f:"mad", d:"svaer", h:"Filteret er af papir – men det er vådt og fuld af kaffe.", x:"Kaffegrums og kaffefiltre kommer i madaffald. Filteret må gerne komme med."},
+  {e:"🍵", n:"Brugt tepose", f:"mad", d:"svaer", h:"Hvad er der mest af i posen?", x:"Brugte teposer er madaffald."},
+  {e:"🍗", n:"Kyllingeknogler", f:"mad", d:"svaer", h:"De er rester fra aftensmaden.", x:"Knogler og ben fra kød kommer i madaffald, ligesom de andre madrester."},
+  {e:"🌀", n:"Fuld støvsugerpose", f:"rest", d:"svaer", h:"Støv og snavs kan ikke genanvendes.", x:"Støvsugerposer kommer i restaffald. Posen skal være helt lukket, så støvet ikke kommer ud."},
+  {e:"🍽️", n:"Ødelagt porcelænstallerken", f:"andet", d:"svaer", h:"Porcelæn er ikke det samme som glas.", x:"Porcelæn må aldrig i glas – selv et lille stykke kan ødelægge en masse genbrugsglas. Porcelæn skal afleveres på genbrugspladsen.",
+     k:{son:["rest","andet"]}, xk:{son:"Porcelæn må aldrig i glas – selv et lille stykke kan ødelægge en masse genbrugsglas. I Sønderborg må en enkelt ødelagt kop eller tallerken komme i restaffald. Større mængder skal på genbrugspladsen."}},
+  {e:"🐈", n:"Brugt kattegrus", f:"rest", d:"svaer", h:"Det er ikke mad – og kan ikke genanvendes.", x:"Kattegrus er restaffald – også selvom posen siger, at det er naturligt."},
+  {e:"🎁", n:"Blankt gavepapir", s:"(med glimmer)", f:"rest", d:"svaer", h:"Glimmer og blank folie er ikke rent papir.", x:"Blankt gavepapir med glimmer eller folie kan ikke blive til nyt papir. Det kommer i restaffald."},
+  {e:"🧥", n:"Hel og pæn jakke", s:"(du er bare vokset ud af den)", f:"andet", d:"svaer", h:"Er den virkelig affald?", x:"Tøj, der stadig kan bruges, er ikke affald. Giv det til en genbrugsbutik eller en nødhjælpsorganisation, så andre kan bruge det. Posen til tekstil er kun til slidt tøj."},
+  {e:"💊", n:"Gamle piller", s:"(rester af medicin)", f:"andet", d:"svaer", h:"Hvor køber man medicin?", x:"Medicinrester skal afleveres på apoteket. Medicin må ikke komme i skraldespanden.",
+     k:{son:["andet","farligt"]}, xk:{son:"I Sønderborg kan medicinrester afleveres på apoteket eller i Miljøkassen. Medicin må aldrig i skraldespanden."}},
+  {e:"🛏️", n:"Gammel madras", f:"andet", d:"svaer", h:"Kan den overhovedet være i en beholder?", x:"Store ting som madrasser skal afleveres på genbrugspladsen."}
+];
+
+const ROUND = 15;
+
+/* ---------- Tilstand ---------- */
+let kom = "son";
+try { const saved = localStorage.getItem("affald-kommune"); if (saved && KOMMUNER[saved]) kom = saved; } catch(e){}
+let state = {mode:"blandet", queue:[], i:0, score:0, streak:0, best:0, correct:0, misses:[], hintUsed:false, locked:false};
+
+/* ---------- Hjælpere ---------- */
+const $ = s => document.querySelector(s);
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; };
+const K = () => KOMMUNER[kom];
+const allZones = () => [...K().bins.flatMap(b=>b.rooms), ...K().extras];
+function fracs(it){ // rigtige fraktioner for tingen i den valgte kommune (null = ikke med)
+  if (it.k && kom in it.k) { const v = it.k[kom]; return v===null ? null : [].concat(v); }
+  return [].concat(it.f);
+}
+const explain = it => (it.xk && it.xk[kom]) || it.x;
+const itemsHere = () => ITEMS.filter(it => fracs(it));
+const correctZones = it => { const f = fracs(it); return allZones().filter(z => z.accepts.some(a => f.includes(a))); };
+const zoneById = id => allZones().find(z => z.id===id);
+const chipHTML = z => `<span class="answer" style="background:${z.color}">${z.icon} ${z.name}</span>`;
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active", s.id===id));
+  $("#stats").hidden = id!=="game";
+  window.scrollTo({top:0});
+}
+
+/* ---------- Kommunevalg ---------- */
+function buildKoms(){
+  $("#koms").innerHTML = Object.entries(KOMMUNER).map(([id,k])=>
+    `<button class="kom" data-kom="${id}" aria-pressed="${id===kom}">${k.name}<small>${k.firma.split(" (")[0]}</small></button>`).join("");
+  document.querySelectorAll(".kom").forEach(b=>b.addEventListener("click",()=>setKommune(b.dataset.kom)));
+}
+function setKommune(id){
+  kom = id;
+  try { localStorage.setItem("affald-kommune", id); } catch(e){}
+  document.querySelectorAll(".kom").forEach(b=>b.setAttribute("aria-pressed", b.dataset.kom===id));
+  renderKommune();
+}
+function renderKommune(){
+  const k = K();
+  $("#title").textContent = `♻️ Affaldsmester · ${k.name}`;
+  document.title = `Affaldsmester ${k.name}`;
+  $("#komIntro").textContent = k.intro;
+  $("#introChips").innerHTML = allZones().filter(z=>z.id!=="andet").map(z=>
+    `<span class="chip" style="background:${z.color}">${z.icon} ${z.name}</span>`).join("");
+  $("#footer").innerHTML = `Reglerne i spillet bygger på sorteringsvejledningen fra ${k.firma} for ${k.name} Kommune. Reglerne kan ændre sig – tjek altid <a href="${k.url}" target="_blank" rel="noopener">${new URL(k.url).hostname.replace("www.","")}</a>, hvis du er i tvivl.`;
+  buildBins();
+  buildLearn();
+}
+
+/* ---------- Byg beholdere ---------- */
+function zoneHTML(z){
+  return `<button class="zone" style="background:${z.color}" data-zone="${z.id}" aria-label="${z.name}">
+    <span class="z-icon">${z.icon}</span><span class="z-name">${z.name}</span><span class="z-desc">${z.desc}</span></button>`;
+}
+function buildBins(){
+  $("#bins").innerHTML = K().bins.map(b=>`
+    <div class="bin"><div class="bin-lid"></div><div class="bin-title">${b.title}</div>
+      <div class="bin-rooms ${b.rooms.length===1?"one":""}">${b.rooms.map(zoneHTML).join("")}</div></div>`).join("");
+  $("#extras").innerHTML = K().extras.map(zoneHTML).join("");
+  document.querySelectorAll(".zone").forEach(z=>z.addEventListener("click",()=>answer(z.dataset.zone, z)));
+}
+
+/* ---------- Oversigt ---------- */
+function buildLearn(){
+  const k = K();
+  $("#learnTitle").textContent = `📖 Hvad skal hvor i ${k.name}?`;
+  $("#learnIntro").textContent = k.intro;
+  $("#learnGuide").innerHTML = `Er du i tvivl? Brug sorteringsguiden fra ${k.firma}: <a href="${k.guide}" target="_blank" rel="noopener">${new URL(k.guide).hostname.replace("www.","")}</a>.`;
+  $("#learnGrid").innerHTML = allZones().map(z=>{
+    const ex = itemsHere().filter(it => fracs(it).some(f => z.accepts.includes(f))).slice(0,8)
+      .map(it=>`<li>${it.e} ${it.n}</li>`).join("");
+    return `<div class="learn-card"><div class="head" style="background:${z.color}">${z.icon} ${z.name}</div>
+      <div class="body"><div>${z.info}</div><ul>${ex}</ul></div></div>`;
+  }).join("");
+}
+
+/* ---------- Spil ---------- */
+function start(mode){
+  state.mode = mode;
+  const pool = itemsHere();
+  const easy = shuffle(pool.filter(i=>i.d==="let"));
+  const hard = shuffle(pool.filter(i=>i.d==="svaer"));
+  let q;
+  if(mode==="let") q = easy.slice(0,ROUND);
+  else if(mode==="svaer") q = hard.slice(0,ROUND);
+  else if(mode==="tilfaeldig") q = shuffle(pool).slice(0,ROUND);
+  else q = shuffle([...easy.slice(0,7), ...hard.slice(0,ROUND-7)]);
+  Object.assign(state,{queue:q, i:0, score:0, streak:0, best:0, correct:0, misses:[]});
+  show("game");
+  loadItem();
+}
+function loadItem(){
+  const it = state.queue[state.i];
+  state.hintUsed=false; state.locked=false;
+  $("#cEmoji").textContent = it.e;
+  $("#cName").textContent = it.n;
+  $("#cSub").textContent = it.s || "";
+  const tag=$("#cTag"); tag.className="tag "+it.d; tag.textContent = it.d==="let" ? "Let" : "Svær";
+  $("#hint").style.display="none"; $("#hint").textContent = "💡 " + it.h;
+  $("#btnHint").disabled=false;
+  $("#bar").style.width = (state.i/state.queue.length*100)+"%";
+  updateStats();
+  resetCard();
+}
+function updateStats(){
+  $("#sCount").textContent = `${Math.min(state.i+1,state.queue.length)}/${state.queue.length}`;
+  $("#sScore").textContent = `${state.score} point`;
+  $("#sStreak").textContent = `🔥 ${state.streak}`;
+}
+function answer(zoneId, zoneEl){
+  if(state.locked || !$("#game").classList.contains("active")) return;
+  state.locked = true;
+  const it = state.queue[state.i];
+  const right = correctZones(it);
+  const ok = right.some(z => z.id===zoneId);
+  const chosen = zoneById(zoneId);
+  if(zoneEl){ zoneEl.classList.remove("flash-ok","flash-bad"); void zoneEl.offsetWidth; zoneEl.classList.add(ok?"flash-ok":"flash-bad"); }
+  let gained=0;
+  if(ok){
+    state.correct++; state.streak++; state.best=Math.max(state.best,state.streak);
+    gained = state.hintUsed ? 5 : 10;
+    if(state.streak>=3) gained += 2;
+    state.score += gained;
+  } else {
+    state.streak=0;
+    state.misses.push({it, chosen});
+  }
+  updateStats();
+  const rightHTML = right.map(chipHTML).join(right.length>1 ? "<div><small>eller</small></div>" : "");
+  $("#modal").className = "modal " + (ok?"ok":"bad");
+  $("#mBig").textContent = ok ? "✅" : "❌";
+  $("#mTitle").textContent = ok
+    ? (state.streak>=3 ? `Rigtigt! ${state.streak} i træk 🔥` : "Rigtigt!")
+    : "Ikke helt…";
+  $("#mAnswer").innerHTML = ok
+    ? `<div>${it.e} <b>${it.n}</b> skal i:</div>${rightHTML}<div><small>+${gained} point</small></div>`
+    : `<div>Du valgte ${chipHTML(chosen)}</div><div>${it.e} <b>${it.n}</b> skal i:</div>${rightHTML}`;
+  $("#mText").textContent = explain(it);
+  $("#mNext").textContent = state.i+1>=state.queue.length ? "Se resultat ➜" : "Næste ➜";
+  setTimeout(()=>{ $("#modalBg").classList.add("show"); $("#mNext").focus(); }, 350);
+}
+function next(){
+  $("#modalBg").classList.remove("show");
+  state.i++;
+  if(state.i>=state.queue.length) finish(); else loadItem();
+}
+function finish(){
+  $("#bar").style.width="100%";
+  const n=state.queue.length, c=state.correct, pct=c/n;
+  $("#medal").textContent = pct===1 ? "🏆" : pct>=.8 ? "🥇" : pct>=.6 ? "🥈" : pct>=.4 ? "🥉" : "🌱";
+  $("#endTitle").textContent = pct===1 ? "Affaldsmester! Alt var rigtigt!" : pct>=.8 ? "Super flot sorteret!" : pct>=.6 ? "Godt gået!" : pct>=.4 ? "Du er godt på vej!" : "Øvelse gør mester!";
+  $("#endScore").textContent = `${state.score} point`;
+  $("#endText").textContent = `Du sorterede ${c} ud af ${n} ting rigtigt efter reglerne i ${K().name}. Din længste stime var ${state.best} i træk.`;
+  if(state.misses.length){
+    $("#missPanel").style.display="";
+    $("#misses").innerHTML = state.misses.map(({it,chosen})=>`
+      <div class="miss"><div class="e">${it.e}</div><div>
+        <b>${it.n}</b> → ${correctZones(it).map(chipHTML).join(" ")}<br><small>Du valgte: ${chosen.name}</small>
+        <div>${explain(it)}</div></div></div>`).join("");
+  } else $("#missPanel").style.display="none";
+  show("end");
+}
+
+/* ---------- Træk og slip (mus + touch) ---------- */
+const card = $("#card");
+let drag = null, hoverZone = null;
+function resetCard(){
+  card.classList.add("back"); card.classList.remove("dragging");
+  card.style.transform = "translate(0,0)";
+  setTimeout(()=>card.classList.remove("back"),260);
+}
+function zoneAt(x,y){
+  card.style.visibility="hidden";
+  const el = document.elementFromPoint(x,y);
+  card.style.visibility="";
+  return el ? el.closest(".zone") : null;
+}
+card.addEventListener("pointerdown", e=>{
+  if(state.locked) return;
+  drag = {x:e.clientX, y:e.clientY, moved:false};
+  card.setPointerCapture(e.pointerId);
+});
+card.addEventListener("pointermove", e=>{
+  if(!drag) return;
+  const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+  if(!drag.moved && Math.hypot(dx,dy)<6) return;
+  drag.moved=true;
+  card.classList.add("dragging");
+  card.style.transform = `translate(${dx}px,${dy}px) rotate(${Math.max(-8,Math.min(8,dx/25))}deg)`;
+  const z = zoneAt(e.clientX,e.clientY);
+  if(z!==hoverZone){ hoverZone?.classList.remove("hover"); z?.classList.add("hover"); hoverZone=z; }
+  if(e.clientY > window.innerHeight-60) window.scrollBy(0,12);
+  else if(e.clientY < 60) window.scrollBy(0,-12);
+});
+function endDrag(e){
+  if(!drag) return;
+  const moved = drag.moved; drag=null;
+  hoverZone?.classList.remove("hover");
+  const z = moved ? zoneAt(e.clientX,e.clientY) : null;
+  hoverZone=null;
+  resetCard();
+  if(z) answer(z.dataset.zone, z);
+}
+card.addEventListener("pointerup", endDrag);
+card.addEventListener("pointercancel", ()=>{ drag=null; hoverZone?.classList.remove("hover"); hoverZone=null; resetCard(); });
+
+/* ---------- Knapper ---------- */
+document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>start(b.dataset.mode)));
+$("#btnHint").addEventListener("click",()=>{ state.hintUsed=true; $("#hint").style.display="block"; $("#btnHint").disabled=true; });
+$("#mNext").addEventListener("click", next);
+$("#btnAgain").addEventListener("click",()=>start(state.mode));
+$("#btnMenu").addEventListener("click",()=>show("start"));
+$("#btnHome").addEventListener("click",()=>{
+  if((state.i===0 && !state.locked) || confirm("Vil du stoppe spillet og gå til forsiden? Dine point bliver ikke gemt.")){
+    $("#modalBg").classList.remove("show");
+    state.locked=false;
+    show("start");
+  }
+});
+let learnBack="start";
+$("#btnLearn").addEventListener("click",()=>{learnBack="start"; show("learn");});
+$("#btnLearn2").addEventListener("click",()=>{learnBack="end"; show("learn");});
+$("#btnBack").addEventListener("click",()=>show(learnBack));
+document.addEventListener("keydown",e=>{
+  if($("#modalBg").classList.contains("show") && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); next(); }
+});
+
+buildKoms();
+renderKommune();
+</script>
+</body>
+</html>
