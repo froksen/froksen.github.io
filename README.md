@@ -1,6 +1,6 @@
 <div align="center" markdown="1">
 
-# 🔬 froksen.github.io
+# 🔬 Naturfag i browseren
 
 **Interaktive simuleringer, spil og ressourcer til naturfagsundervisningen i folkeskolen**
 
@@ -83,12 +83,14 @@ Træk, drej, justér og eksperimentér. Klik på et billede for at åbne simuler
 
 Ressourcer til den fællesfaglige naturfagsprøve i 9. klasse – fysik/kemi, biologi og geografi samlet ét sted.
 
-| | |
-|---|---|
-| 🧩 **53 delemner** | med undersøgelsesforslag og faglige fokusområder |
-| 🎬 **Videoer** | et YouTube-søgelink til hvert delemne |
-| 📰 **Artikler** | links til DR til hvert delemne |
-| 🧪 **Simuleringer** | forslag til en interaktiv simulering til hvert delemne |
+<table>
+  <tr>
+    <td width="25%" align="center"><h3>🧩</h3><b>53 delemner</b><br><sub>med undersøgelsesforslag og faglige fokusområder</sub></td>
+    <td width="25%" align="center"><h3>🎬</h3><b>Videoer</b><br><sub>et YouTube-søgelink til hvert delemne</sub></td>
+    <td width="25%" align="center"><h3>📰</h3><b>Artikler</b><br><sub>links til DR til hvert delemne</sub></td>
+    <td width="25%" align="center"><h3>🧪</h3><b>Simuleringer</b><br><sub>en interaktiv simulering til hvert delemne</sub></td>
+  </tr>
+</table>
 
 <p align="center"><a href="https://froksen.github.io/fff/"><b>➜ Gå til naturfagsprøven</b></a></p>
 
