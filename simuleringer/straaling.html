@@ -415,7 +415,7 @@
         <button class="btn btn-mat" onclick="setMaterial(this, 'kartofler')">🥔 Kartofler</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'fisk')">🐟 Fisk</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'beton')">🧱 Betonflise</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'blaendplade')">🔲 Blændplade i jern</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'blaendplade')">🔲 Jernplade</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'glas')">🪟 Glasplade</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'trae')">🪵 Træskive</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'aluplade')">🔳 Aluminiumsplade</button>
@@ -629,8 +629,8 @@
         <table>
           <tr><th>Metal</th><th>Densitet (g/cm³)</th><th>μ beta (mm⁻¹)</th><th>μ gamma (mm⁻¹)</th></tr>
           <tr><td>Aluminium</td><td>2,70</td><td>0,701</td><td>0,0256</td></tr>
-          <tr><td>Jern</td><td>7,87</td><td>0,461</td><td>0,0572</td></tr>
-          <tr><td>Bly</td><td>11,35</td><td>0,782</td><td>0,142</td></tr>
+          <tr><td>Jern</td><td>7,87</td><td>2,04</td><td>0,0572</td></tr>
+          <tr><td>Bly</td><td>11,35</td><td>2,95</td><td>0,142</td></tr>
         </table>
         <h4>Papir og biologiske materialer</h4>
         <table>
@@ -644,7 +644,7 @@
         <table>
           <tr><th>Materiale</th><th>μ beta (mm⁻¹)</th><th>μ gamma (mm⁻¹)</th></tr>
           <tr><td>Betonflise (~2,3 g/cm³)</td><td>0,600</td><td>0,0178</td></tr>
-          <tr><td>Blændplade i jern (7,87 g/cm³)</td><td>0,461</td><td>0,0572</td></tr>
+          <tr><td>Jernplade (7,87 g/cm³)</td><td>2,04</td><td>0,0572</td></tr>
           <tr><td>Glasplade (~2,5 g/cm³)</td><td>0,650</td><td>0,0194</td></tr>
           <tr><td>Træskive (~0,6 g/cm³)</td><td>0,115</td><td>0,0050</td></tr>
           <tr><td>Aluminiumsplade (2,70 g/cm³)</td><td>0,701</td><td>0,0256</td></tr>
@@ -697,7 +697,8 @@ const penetration = {
 // ── Metal attenuation coefficients (per mm), derived from 5mm reference values ──
 // Formula: blockChance(t) = 1 - exp(-mu * t)
 const metalMu = {
-  beta:  { aluminium: 0.701, jern: 0.461, bly: 0.782 },
+  // Beta bremses efter masse pr. areal, så μ følger densiteten (skaleret ud fra aluminium)
+  beta:  { aluminium: 0.701, jern: 2.04, bly: 2.95 },
   gamma: { aluminium: 0.0256, jern: 0.0572, bly: 0.142 },
 };
 const metals = ['aluminium', 'jern', 'bly'];
@@ -716,7 +717,7 @@ const bioMaterials = ['koed', 'kartofler', 'fisk'];
 // Beta-μ skaleret med densitet ud fra de øvrige materialer. px = tegnet bredde pr. mm.
 const plates = {
   beton:       { label:'BETON',      beta:0.600, gamma:0.0178, min:10,  max:80, step:5,   def:20, px:1.5 },
-  blaendplade: { label:'BLÆNDPLADE', beta:0.461, gamma:0.0572, min:0.5, max:3,  step:0.5, def:1,  px:10 },
+  blaendplade: { label:'JERNPLADE',  beta:2.04,  gamma:0.0572, min:0.5, max:3,  step:0.5, def:1,  px:10 },
   glas:        { label:'GLAS',       beta:0.650, gamma:0.0194, min:2,   max:10, step:1,   def:4,  px:10 },
   trae:        { label:'TRÆ',        beta:0.115, gamma:0.0050, min:5,   max:40, step:5,   def:20, px:2.5 },
   aluplade:    { label:'ALU-PLADE',  beta:0.701, gamma:0.0256, min:0.5, max:5,  step:0.5, def:1,  px:10 },
@@ -758,7 +759,7 @@ const matInfo = {
   jern:      '🔩 Jern: Metal. Stopper alfa og bremser beta kraftigt. Bremser gamma delvist.',
   bly:       '⚫ Bly: Meget tæt metal. Den bedste afskærmning – bremser selv gammastråling kraftigt.',
   beton:       '🧱 Betonflise: Tung og tyk. Stopper alfa og beta, og en tyk flise bremser også en del gammastråling. Derfor bygges strålebeskyttelse ofte af beton.',
-  blaendplade: '🔲 Blændplade i jern: Tynd jernplade (ca. 1 mm). Stopper alfa og bremser beta godt, men gamma slipper næsten igennem.',
+  blaendplade: '🔲 Jernplade: Tynd plade af jern (ca. 1 mm). Stopper alfa, og fordi jern er tungt, bremser selv en tynd plade det meste beta. Gamma slipper næsten igennem.',
   glas:        '🪟 Glasplade: Stopper alfa helt og bremser beta ret godt. Gamma går næsten uhindret igennem – ligesom lys.',
   trae:        '🪵 Træskive: Let materiale. Stopper alfa, og en tyk skive bremser beta, men gamma slipper næsten igennem.',
   aluplade:    '🔳 Aluminiumsplade: Tynd plade af let metal. Stopper alfa og er god mod beta, men bremser næsten ikke gamma.',

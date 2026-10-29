@@ -23,7 +23,7 @@ Træk, drej, justér og eksperimentér. Klik på et billede for at åbne simuler
     <td width="33%" align="center">
       <a href="https://froksen.github.io/simuleringer/straaling.html"><img src="simuleringer/thumbs/straaling.jpg" alt="Radioaktiv stråling"></a><br>
       <b>☢️ Radioaktiv stråling</b><br>
-      <sub>Alfa, beta og gamma gennem papir, aluminium og bly – målt med en Geiger-tæller</sub>
+      <sub>Alfa, beta og gamma gennem papir, metaller, mad og hverdagsting som betonflise, glasplade, træskive og cowboystof – målt med en Geiger-tæller</sub>
     </td>
     <td width="33%" align="center">
       <a href="https://froksen.github.io/simuleringer/henfaldsraekker.html"><img src="simuleringer/thumbs/henfaldsraekker.jpg" alt="Henfaldsrækker"></a><br>
