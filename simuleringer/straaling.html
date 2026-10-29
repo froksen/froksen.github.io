@@ -407,19 +407,18 @@
       <h3>Materiale foran kilden</h3>
       <div class="btn-group">
         <button class="btn btn-mat none-btn active" onclick="setMaterial(this, 'ingen')">Ingen</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'aluplade')">🔳 Aluminiumsplade</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'beton')">🧱 Betonflise</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'glas')">🪟 Glasplade</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'blaendplade')">🔲 Jernplade</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'cowboy')">👖 Cowboystof</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'trae')">🪵 Træskive</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'papir')">📄 Papir</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'aluminium')">🥫 Aluminium</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'bly')">⚫ Bly</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'jern')">🔩 Jern</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'koed')">🥩 Kødpålæg</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'kartofler')">🥔 Kartofler</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'fisk')">🐟 Fisk</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'beton')">🧱 Betonflise</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'blaendplade')">🔲 Jernplade</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'glas')">🪟 Glasplade</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'trae')">🪵 Træskive</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'aluplade')">🔳 Aluminiumsplade</button>
-        <button class="btn btn-mat" onclick="setMaterial(this, 'cowboy')">👖 Cowboystof</button>
       </div>
       <div id="thicknessCtrl" style="display:none; margin-top:12px;">
         <div class="slider-row">
@@ -629,7 +628,6 @@
         <table>
           <tr><th>Metal</th><th>Densitet (g/cm³)</th><th>μ beta (mm⁻¹)</th><th>μ gamma (mm⁻¹)</th></tr>
           <tr><td>Aluminium</td><td>2,70</td><td>0,701</td><td>0,0256</td></tr>
-          <tr><td>Jern</td><td>7,87</td><td>2,04</td><td>0,0572</td></tr>
           <tr><td>Bly</td><td>11,35</td><td>2,95</td><td>0,142</td></tr>
         </table>
         <h4>Papir og biologiske materialer</h4>
@@ -688,20 +686,20 @@ let spawning        = true;
 // ── Penetration table ──────────────────────────────────────────────────────
 // blockChance: probability (0-1) a particle is blocked by this material
 const penetration = {
-  //          ingen   papir   koed   kartofler  fisk   jern   bly
-  alpha: {   ingen:0, papir:1.00, koed:1.00, kartofler:1.00, fisk:1.00, aluminium:1.00, jern:1.00, bly:1.00 },
-  beta:  {   ingen:0, papir:0.04, koed:0.07, kartofler:0.06, fisk:0.06, aluminium:0.97, jern:0.90, bly:0.98 },
-  gamma: {   ingen:0, papir:0.02, koed:0.05, kartofler:0.04, fisk:0.03, aluminium:0.12, jern:0.45, bly:0.90 },
+  //          ingen   papir   koed   kartofler  fisk   aluminium   bly
+  alpha: {   ingen:0, papir:1.00, koed:1.00, kartofler:1.00, fisk:1.00, aluminium:1.00, bly:1.00 },
+  beta:  {   ingen:0, papir:0.04, koed:0.07, kartofler:0.06, fisk:0.06, aluminium:0.97, bly:0.98 },
+  gamma: {   ingen:0, papir:0.02, koed:0.05, kartofler:0.04, fisk:0.03, aluminium:0.12, bly:0.90 },
 };
 
 // ── Metal attenuation coefficients (per mm), derived from 5mm reference values ──
 // Formula: blockChance(t) = 1 - exp(-mu * t)
 const metalMu = {
   // Beta bremses efter masse pr. areal, så μ følger densiteten (skaleret ud fra aluminium)
-  beta:  { aluminium: 0.701, jern: 2.04, bly: 2.95 },
-  gamma: { aluminium: 0.0256, jern: 0.0572, bly: 0.142 },
+  beta:  { aluminium: 0.701, bly: 2.95 },
+  gamma: { aluminium: 0.0256, bly: 0.142 },
 };
-const metals = ['aluminium', 'jern', 'bly'];
+const metals = ['aluminium', 'bly'];
 
 // Paper: 1 A4 sheet ≈ 0.1 mm. μ (per mm) from NIST data for cellulose at ~1 MeV beta / 0.662 MeV gamma.
 const paperMu = { beta: 0.150, gamma: 0.0202 };
@@ -717,7 +715,7 @@ const bioMaterials = ['koed', 'kartofler', 'fisk'];
 // Beta-μ skaleret med densitet ud fra de øvrige materialer. px = tegnet bredde pr. mm.
 const plates = {
   beton:       { label:'BETON',      beta:0.600, gamma:0.0178, min:10,  max:80, step:5,   def:20, px:1.5 },
-  blaendplade: { label:'JERNPLADE',  beta:2.04,  gamma:0.0572, min:0.5, max:3,  step:0.5, def:1,  px:10 },
+  blaendplade: { label:'JERNPLADE',  beta:2.04,  gamma:0.0572, min:0.5, max:10, step:0.5, def:1,  px:10 },
   glas:        { label:'GLAS',       beta:0.650, gamma:0.0194, min:2,   max:10, step:1,   def:4,  px:10 },
   trae:        { label:'TRÆ',        beta:0.115, gamma:0.0050, min:5,   max:40, step:5,   def:20, px:2.5 },
   aluplade:    { label:'ALU-PLADE',  beta:0.701, gamma:0.0256, min:0.5, max:5,  step:0.5, def:1,  px:10 },
@@ -756,10 +754,9 @@ const matInfo = {
   kartofler: '🥔 Kartofler: Ligner biologisk væv. Stopper alfa, svagt mod beta og gamma.',
   fisk:      '🐟 Fisk: Biologisk væv med noget vand. Ligner kød.',
   aluminium: '🥫 Aluminium: Let metal. Stopper alfa helt og er særlig effektiv mod betastråling – selv få mm aluminium stopper det meste beta. Bremser gamma kun meget lidt.',
-  jern:      '🔩 Jern: Metal. Stopper alfa og bremser beta kraftigt. Bremser gamma delvist.',
   bly:       '⚫ Bly: Meget tæt metal. Den bedste afskærmning – bremser selv gammastråling kraftigt.',
   beton:       '🧱 Betonflise: Tung og tyk. Stopper alfa og beta, og en tyk flise bremser også en del gammastråling. Derfor bygges strålebeskyttelse ofte af beton.',
-  blaendplade: '🔲 Jernplade: Tynd plade af jern (ca. 1 mm). Stopper alfa, og fordi jern er tungt, bremser selv en tynd plade det meste beta. Gamma slipper næsten igennem.',
+  blaendplade: '🔲 Jernplade: Plade af jern. Stopper alfa, og fordi jern er tungt, bremser selv en tynd plade det meste beta. Gamma bremses kun delvist – det kræver tykt jern.',
   glas:        '🪟 Glasplade: Stopper alfa helt og bremser beta ret godt. Gamma går næsten uhindret igennem – ligesom lys.',
   trae:        '🪵 Træskive: Let materiale. Stopper alfa, og en tyk skive bremser beta, men gamma slipper næsten igennem.',
   aluplade:    '🔳 Aluminiumsplade: Tynd plade af let metal. Stopper alfa og er god mod beta, men bremser næsten ikke gamma.',
@@ -1024,11 +1021,11 @@ function drawScene() {
     const matColors = {
       papir:'rgba(240,220,180,0.85)', koed:'rgba(200,80,80,0.75)',
       kartofler:'rgba(180,160,60,0.75)', fisk:'rgba(60,160,200,0.75)',
-      aluminium:'rgba(180,190,200,0.88)', jern:'rgba(120,130,150,0.85)', bly:'rgba(60,70,90,0.92)',
+      aluminium:'rgba(180,190,200,0.88)', bly:'rgba(60,70,90,0.92)',
       beton:'rgba(150,150,145,0.9)', blaendplade:'rgba(110,115,125,0.9)', glas:'rgba(170,220,235,0.45)',
       trae:'rgba(160,110,60,0.85)', aluplade:'rgba(200,205,215,0.88)', cowboy:'rgba(50,80,140,0.85)'
     };
-    const matEmoji = { papir:'📄', koed:'🥩', kartofler:'🥔', fisk:'🐟', aluminium:'🥫', jern:'🔩', bly:'⚫',
+    const matEmoji = { papir:'📄', koed:'🥩', kartofler:'🥔', fisk:'🐟', aluminium:'🥫', bly:'⚫',
       beton:'🧱', blaendplade:'🔲', glas:'🪟', trae:'🪵', aluplade:'🔳', cowboy:'👖' };
 
     const mw = getMatW();
