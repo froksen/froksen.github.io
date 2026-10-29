@@ -414,6 +414,12 @@
         <button class="btn btn-mat" onclick="setMaterial(this, 'koed')">🥩 Kødpålæg</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'kartofler')">🥔 Kartofler</button>
         <button class="btn btn-mat" onclick="setMaterial(this, 'fisk')">🐟 Fisk</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'beton')">🧱 Betonflise</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'blaendplade')">🔲 Blændplade i jern</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'glas')">🪟 Glasplade</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'trae')">🪵 Træskive</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'aluplade')">🔳 Aluminiumsplade</button>
+        <button class="btn btn-mat" onclick="setMaterial(this, 'cowboy')">👖 Cowboystof</button>
       </div>
       <div id="thicknessCtrl" style="display:none; margin-top:12px;">
         <div class="slider-row">
@@ -431,6 +437,15 @@
         </div>
         <div style="text-align:right; margin-top:3px;">
           <span id="paperVal" style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--highlight);">1.0 mm (~10 A4)</span>
+        </div>
+      </div>
+      <div id="plateCtrl" style="display:none; margin-top:12px;">
+        <div class="slider-row">
+          <label>Tykkelse</label>
+          <input type="range" id="plateSlider" min="1" max="10" value="5" step="1" oninput="setPlateThickness(this.value)">
+        </div>
+        <div style="text-align:right; margin-top:3px;">
+          <span id="plateVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);">5 mm</span>
         </div>
       </div>
       <div id="bioCtrl" style="display:none; margin-top:12px;">
@@ -481,8 +496,15 @@
       <div>
         <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;" id="d2Label">Kilde → Geiger</div>
         <div class="slider-row">
-          <input type="range" id="d2Slider" min="10" max="720" value="720" step="10" oninput="setD2(this.value)">
-          <span id="d2Val" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:60px;text-align:right;">720 mm</span>
+          <input type="range" id="d2Slider" min="10" max="720" value="300" step="10" oninput="setD2(this.value)">
+          <span id="d2Val" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:60px;text-align:right;">300 mm</span>
+        </div>
+      </div>
+      <div id="dTotCtrl" style="display:none; margin-top:10px;">
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;">Kilde → Geiger (samlet)</div>
+        <div class="slider-row">
+          <input type="range" id="dTotSlider" min="10" max="720" value="300" step="10" oninput="setDTotal(this.value)">
+          <span id="dTotVal" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--highlight);min-width:60px;text-align:right;">300 mm</span>
         </div>
       </div>
     </div>
@@ -588,7 +610,10 @@
           <tr><td>Bly</td><td>0,142</td><td>~4,9 mm</td><td>~76 %</td></tr>
           <tr><td>Jern</td><td>0,057</td><td>~12 mm</td><td>~44 %</td></tr>
           <tr><td>Aluminium</td><td>0,026</td><td>~27 mm</td><td>~23 %</td></tr>
+          <tr><td>Glas</td><td>0,019</td><td>~36 mm</td><td>~18 %</td></tr>
+          <tr><td>Beton</td><td>0,018</td><td>~39 mm</td><td>~16 %</td></tr>
           <tr><td>Biologisk væv</td><td>~0,009</td><td>~77 mm</td><td>~9 %</td></tr>
+          <tr><td>Træ</td><td>0,005</td><td>~139 mm</td><td>~5 %</td></tr>
         </table>
         For at opnå 90 % blokering af gammastråling kræves fx ca. 16 mm bly eller ca. 40 mm jern. Gammastråling kan aldrig stoppes fuldstændigt med en endelig materialetykkelse – intensiteten nærmer sig blot nul asymptotisk med stigende tykkelse.
         <br><br>
@@ -615,6 +640,16 @@
           <tr><td>Kartofler (~1,08 g/cm³)</td><td>0,170</td><td>0,0082</td></tr>
           <tr><td>Fisk (~1,05 g/cm³)</td><td>0,175</td><td>0,0061</td></tr>
         </table>
+        <h4>Hverdagsplader og -stoffer</h4>
+        <table>
+          <tr><th>Materiale</th><th>μ beta (mm⁻¹)</th><th>μ gamma (mm⁻¹)</th></tr>
+          <tr><td>Betonflise (~2,3 g/cm³)</td><td>0,600</td><td>0,0178</td></tr>
+          <tr><td>Blændplade i jern (7,87 g/cm³)</td><td>0,461</td><td>0,0572</td></tr>
+          <tr><td>Glasplade (~2,5 g/cm³)</td><td>0,650</td><td>0,0194</td></tr>
+          <tr><td>Træskive (~0,6 g/cm³)</td><td>0,115</td><td>0,0050</td></tr>
+          <tr><td>Aluminiumsplade (2,70 g/cm³)</td><td>0,701</td><td>0,0256</td></tr>
+          <tr><td>Cowboystof (~0,5 g/cm³)</td><td>0,095</td><td>0,0042</td></tr>
+        </table>
         <p class="note">Kilde: NIST Physical Measurement Laboratory – X-Ray Mass Attenuation Coefficients (physics.nist.gov). Beta-μ er beregnet ud fra CSDA-rækkevidde i vandækvivalent materiale skaleret med densitet. Alfastråling beregnes ikke med μ-koefficienter – se modelbeskrivelsen ovenfor.</p>
       </div>
     </details>
@@ -629,6 +664,7 @@ let type           = 'alpha';
 let material       = 'ingen';
 let metalThickness = 5;
 let bioThickness   = 5;
+let plateThickness = 5;
 let paperSheets    = 10;
 let rate           = 6;
 let emitted  = 0;
@@ -676,10 +712,25 @@ const bioMu = {
 };
 const bioMaterials = ['koed', 'kartofler', 'fisk'];
 
+// Hverdagsplader: μ (per mm) for gamma fra NIST-masseattenuation ved 0.662 MeV × densitet.
+// Beta-μ skaleret med densitet ud fra de øvrige materialer. px = tegnet bredde pr. mm.
+const plates = {
+  beton:       { label:'BETON',      beta:0.600, gamma:0.0178, min:10,  max:80, step:5,   def:20, px:1.5 },
+  blaendplade: { label:'BLÆNDPLADE', beta:0.461, gamma:0.0572, min:0.5, max:3,  step:0.5, def:1,  px:10 },
+  glas:        { label:'GLAS',       beta:0.650, gamma:0.0194, min:2,   max:10, step:1,   def:4,  px:10 },
+  trae:        { label:'TRÆ',        beta:0.115, gamma:0.0050, min:5,   max:40, step:5,   def:20, px:2.5 },
+  aluplade:    { label:'ALU-PLADE',  beta:0.701, gamma:0.0256, min:0.5, max:5,  step:0.5, def:1,  px:10 },
+  cowboy:      { label:'COWBOYSTOF', beta:0.095, gamma:0.0042, min:0.5, max:5,  step:0.5, def:1,  px:10 },
+};
+
 function getBlockChance(radType, mat) {
   if (mat === 'papir') {
     if (radType === 'alpha') return 1.0;
     return 1 - Math.exp(-paperMu[radType] * (paperSheets * 0.1));
+  }
+  if (plates[mat]) {
+    if (radType === 'alpha') return 1.0;
+    return 1 - Math.exp(-plates[mat][radType] * plateThickness);
   }
   if (bioMaterials.includes(mat)) {
     if (radType === 'alpha') return 1.0;
@@ -706,6 +757,12 @@ const matInfo = {
   aluminium: '🥫 Aluminium: Let metal. Stopper alfa helt og er særlig effektiv mod betastråling – selv få mm aluminium stopper det meste beta. Bremser gamma kun meget lidt.',
   jern:      '🔩 Jern: Metal. Stopper alfa og bremser beta kraftigt. Bremser gamma delvist.',
   bly:       '⚫ Bly: Meget tæt metal. Den bedste afskærmning – bremser selv gammastråling kraftigt.',
+  beton:       '🧱 Betonflise: Tung og tyk. Stopper alfa og beta, og en tyk flise bremser også en del gammastråling. Derfor bygges strålebeskyttelse ofte af beton.',
+  blaendplade: '🔲 Blændplade i jern: Tynd jernplade (ca. 1 mm). Stopper alfa og bremser beta godt, men gamma slipper næsten igennem.',
+  glas:        '🪟 Glasplade: Stopper alfa helt og bremser beta ret godt. Gamma går næsten uhindret igennem – ligesom lys.',
+  trae:        '🪵 Træskive: Let materiale. Stopper alfa, og en tyk skive bremser beta, men gamma slipper næsten igennem.',
+  aluplade:    '🔳 Aluminiumsplade: Tynd plade af let metal. Stopper alfa og er god mod beta, men bremser næsten ikke gamma.',
+  cowboy:      '👖 Cowboystof: Tykt bomuldsstof. Stopper alfa ligesom papir og hud, men beta og gamma går næsten uhindret igennem.',
 };
 
 // ── Colors ─────────────────────────────────────────────────────────────────
@@ -725,7 +782,7 @@ const srcX  = 80;
 const SRC_Y = H/2;
 const MAT_W = 50;
 let   d1    = 250;   // source → material (mm)
-let   d2    = 720;   // material → Geiger (or source → Geiger when no material)
+let   d2    = 300;   // material → Geiger (or source → Geiger when no material)
 let   geiX  = 800;   // dynamic: srcX + d1 + d2 (material) or srcX + d2 (ingen)
 const GEI_Y = H/2, GEI_W = 60, GEI_H = 140;
 
@@ -744,12 +801,42 @@ function updateGeiX() {
     document.getElementById('d2Val').textContent = d2 + ' mm';
   }
   geiX = start + d2 + GEI_W/2;
+  if (material !== 'ingen') syncTotal();
+}
+
+// Samlet afstand kilde → Geiger, når der står et materiale imellem
+function syncTotal() {
+  const mw  = Math.round(getMatW());
+  const sl  = document.getElementById('dTotSlider');
+  const min = 10 + mw + 10;
+  const max = W - GEI_W - 10 - PORT_X;
+  if (+sl.min !== min) sl.min = min;
+  if (+sl.max !== max) sl.max = max;
+  const tot = d1 + mw + d2;
+  if (+sl.value !== tot) sl.value = tot;
+  document.getElementById('dTotVal').textContent = tot + ' mm';
+}
+
+function setDTotal(v) {
+  // Flyt Geiger-røret – materialet bliver stående, medmindre røret skubbes helt ind til det
+  const tot = parseInt(v), mw = Math.round(getMatW());
+  d2 = tot - d1 - mw;
+  if (d2 < 10) {
+    d1 = Math.max(10, tot - mw - 10);
+    d2 = Math.max(10, tot - d1 - mw);
+    document.getElementById('d1Slider').value = d1;
+    document.getElementById('d1Val').textContent = d1 + ' mm';
+  }
+  document.getElementById('d2Slider').value = d2;
+  document.getElementById('d2Val').textContent = d2 + ' mm';
+  updateGeiX();
 }
 
 function getMatW() {
   if (metals.includes(material)) return metalThickness * 10;
   if (material === 'papir') return Math.max(3, paperSheets);
   if (bioMaterials.includes(material)) return Math.max(3, bioThickness * 2);
+  if (plates[material]) return Math.max(3, plateThickness * plates[material].px);
   return MAT_W;
 }
 
@@ -936,9 +1023,12 @@ function drawScene() {
     const matColors = {
       papir:'rgba(240,220,180,0.85)', koed:'rgba(200,80,80,0.75)',
       kartofler:'rgba(180,160,60,0.75)', fisk:'rgba(60,160,200,0.75)',
-      aluminium:'rgba(180,190,200,0.88)', jern:'rgba(120,130,150,0.85)', bly:'rgba(60,70,90,0.92)'
+      aluminium:'rgba(180,190,200,0.88)', jern:'rgba(120,130,150,0.85)', bly:'rgba(60,70,90,0.92)',
+      beton:'rgba(150,150,145,0.9)', blaendplade:'rgba(110,115,125,0.9)', glas:'rgba(170,220,235,0.45)',
+      trae:'rgba(160,110,60,0.85)', aluplade:'rgba(200,205,215,0.88)', cowboy:'rgba(50,80,140,0.85)'
     };
-    const matEmoji = { papir:'📄', koed:'🥩', kartofler:'🥔', fisk:'🐟', aluminium:'🥫', jern:'🔩', bly:'⚫' };
+    const matEmoji = { papir:'📄', koed:'🥩', kartofler:'🥔', fisk:'🐟', aluminium:'🥫', jern:'🔩', bly:'⚫',
+      beton:'🧱', blaendplade:'🔲', glas:'🪟', trae:'🪵', aluplade:'🔳', cowboy:'👖' };
 
     const mw = getMatW();
     ctx.fillStyle = matColors[material] || 'rgba(150,150,150,0.7)';
@@ -956,7 +1046,7 @@ function drawScene() {
     ctx.rotate(-Math.PI/2);
     ctx.font = 'bold 10px "Exo 2", sans-serif';
     ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(material.toUpperCase(), 0, 4);
+    ctx.fillText(plates[material] ? plates[material].label : material.toUpperCase(), 0, 4);
     ctx.restore();
   }
 
@@ -1137,47 +1227,71 @@ function setType(t) {
 function setMaterial(btn, m) {
   const wasNone = material === 'ingen';
   const isNone  = m === 'ingen';
+  // Samlet afstand kilde → Geiger før skiftet – den bevares, så røret bliver stående
+  const oldTot  = wasNone ? d2 : d1 + Math.round(getMatW()) + d2;
   material = m;
   document.querySelectorAll('.btn-mat').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('thicknessCtrl').style.display = metals.includes(m) ? 'block' : 'none';
   document.getElementById('paperCtrl').style.display = m === 'papir' ? 'block' : 'none';
   document.getElementById('bioCtrl').style.display = bioMaterials.includes(m) ? 'block' : 'none';
+  document.getElementById('plateCtrl').style.display = plates[m] ? 'block' : 'none';
+  if (plates[m]) {
+    // Hver plade har sin egen typiske tykkelse og sit eget interval
+    const p = plates[m], sl = document.getElementById('plateSlider');
+    sl.min = p.min; sl.max = p.max; sl.step = p.step; sl.value = p.def;
+    setPlateThickness(p.def);
+  }
   if (wasNone && !isNone) {
-    // ingen → materiale: fordel d2 i d1 (35%) og ny d2 (65%)
-    d1 = Math.round(d2 * 0.35 / 10) * 10;
-    d2 = d2 - d1;
+    // ingen → materiale: materialet placeres ca. 35% af vejen ude
+    d1 = Math.round(oldTot * 0.35 / 10) * 10;
     document.getElementById('d1Slider').value = d1;
     document.getElementById('d1Val').textContent = d1 + ' mm';
-    document.getElementById('d2Slider').value = d2;
-    document.getElementById('d2Val').textContent = d2 + ' mm';
+    setDTotal(oldTot);
     document.getElementById('d1Ctrl').style.display = 'block';
+    document.getElementById('dTotCtrl').style.display = 'block';
     document.getElementById('d2Label').textContent = 'Materiale → Geiger';
   } else if (!wasNone && isNone) {
-    // materiale → ingen: kombiner d1+d2 til d2
-    d2 = Math.min(d1 + d2, 720);
+    // materiale → ingen: hele afstanden bliver kilde → Geiger
+    d2 = Math.min(oldTot, 720);
     document.getElementById('d2Slider').value = d2;
     document.getElementById('d2Val').textContent = d2 + ' mm';
     document.getElementById('d1Ctrl').style.display = 'none';
+    document.getElementById('dTotCtrl').style.display = 'none';
     document.getElementById('d2Label').textContent = 'Kilde → Geiger';
+  } else if (!isNone) {
+    // materiale → materiale: røret bliver stående, selvom materialet skifter tykkelse
+    setDTotal(oldTot);
   }
   updateGeiX();
   updateInfo();
 }
 
+// Ændring af tykkelse må ikke flytte Geiger-røret: bevar den samlede afstand kilde → Geiger
+function keepTotal(change) {
+  const tot = d1 + Math.round(getMatW()) + d2;
+  change();
+  if (material !== 'ingen') setDTotal(tot);
+}
+
 function setThickness(v) {
-  metalThickness = parseInt(v);
+  keepTotal(() => { metalThickness = parseInt(v); });
   document.getElementById('thicknessVal').textContent = v + ' mm';
 }
 
 function setPaperSheets(v) {
-  paperSheets = parseInt(v);
+  keepTotal(() => { paperSheets = parseInt(v); });
   const mm = (paperSheets * 0.1).toFixed(1);
   document.getElementById('paperVal').textContent = mm + ' mm (~' + paperSheets + ' A4)';
 }
 
+function setPlateThickness(v) {
+  keepTotal(() => { plateThickness = parseFloat(v); });
+  document.getElementById('plateVal').textContent = String(plateThickness).replace('.', ',') + ' mm';
+}
+
 function setBioThickness(v) {
-  bioThickness = parseInt(v);
+  keepTotal(() => { bioThickness = parseInt(v); });
   document.getElementById('bioVal').textContent = v + ' mm';
 }
 
