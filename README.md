@@ -100,7 +100,10 @@ Ressourcer til den fællesfaglige naturfagsprøve i 9. klasse – fysik/kemi, bi
 
 Interaktive kort og værktøjer, der ikke hører til et bestemt fag.
 
-- 🏫 **[Skolekort Sønderborg](https://froksen.github.io/Andre%20projekter/)** – se skolerne i Sønderborg Kommune på et kort
+- 🏫 **[Skolekort Sønderborg](https://froksen.github.io/andre_projekter/skoler_sonderborg_afstand.html)** – se skolerne i Sønderborg Kommune på et kort
+- 🔺 **[Q-pyramiden](https://froksen.github.io/andre_projekter/qpyramiden_rosesprojekt.html)** – uofficiel digital udgave af Q-pyramiden fra ROSES-projektet om relevans i naturfag
+
+<p><a href="https://froksen.github.io/andre_projekter/"><b>➜ Gå til andre projekter</b></a></p>
 
 ---
 

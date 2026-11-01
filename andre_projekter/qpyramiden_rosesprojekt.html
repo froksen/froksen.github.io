@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q-pyramiden</title>
+<meta name="description" content="Digital Q-pyramide: placér 25 udsagn om relevans i naturfag efter hvor vigtige de er for dig.">
+<style>
+  :root{
+    --bg:#f5f3ee; --panel:#ffffff; --ink:#1f2933; --muted:#5f6b76; --line:#d5d0c4;
+    --accent:#1f6f78; --accent-soft:#e3f0f1; --card:#fffdf6; --card-line:#e2d9bf;
+    --slot:#fbfaf7; --slot-line:#b9b3a4; --danger:#a23b2a;
+    --slot-w:clamp(104px, calc((min(100vw, 1240px) - 130px) / 9), 132px); --slot-h:112px; --gap:6px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 16px 60px}
+  header h1{font-size:1.6rem;margin:0 0 4px}
+  header p{margin:0;color:var(--muted);max-width:820px}
+
+  .who{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;margin:18px 0 14px}
+  .who label{display:flex;flex-direction:column;font-size:.85rem;color:var(--muted);gap:3px}
+  .who input{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;min-width:220px;color:var(--ink)}
+  .who input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .progress{margin-left:auto;font-weight:600}
+  .progress .bar{display:block;width:220px;height:8px;background:#e6e1d6;border-radius:99px;margin-top:5px;overflow:hidden}
+  .progress .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+
+  .board{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px 12px;overflow-x:auto}
+  .pyramid{display:grid;grid-template-columns:repeat(9,var(--slot-w));gap:var(--gap);justify-content:center;align-items:end;min-width:max-content}
+  .col{display:flex;flex-direction:column-reverse;gap:var(--gap)}
+  .slot{width:var(--slot-w);height:var(--slot-h);border:1.5px dashed var(--slot-line);border-radius:8px;background:var(--slot);position:relative;display:flex;padding:0}
+  .slot.empty:hover,.slot.target{border-color:var(--accent);background:var(--accent-soft)}
+  .slot.target{border-style:solid;box-shadow:0 0 0 3px rgba(31,111,120,.18)}
+  body.selecting .slot.empty{border-color:var(--accent);background:#f0f7f7}
+  .slot:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .scale{display:flex;align-items:center;gap:10px;margin:14px auto 0;max-width:calc(9*var(--slot-w) + 8*var(--gap));font-weight:700;font-size:.95rem}
+  .scale .arrow{flex:1;height:0;border-top:2px solid var(--accent);position:relative}
+  .scale .arrow::before,.scale .arrow::after{content:"";position:absolute;top:-7px;border:6px solid transparent}
+  .scale .arrow::before{left:-6px;border-right-color:var(--accent);border-left:0}
+  .scale .arrow::after{right:-6px;border-left-color:var(--accent);border-right:0}
+
+  .card{width:100%;height:100%;background:var(--card);border:1px solid var(--card-line);border-radius:8px;padding:7px 8px;font-size:12px;line-height:1.27;
+        cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;text-align:left;color:var(--ink);font-family:inherit;
+        box-shadow:0 1px 2px rgba(0,0,0,.06);display:flex;align-items:center;overflow:hidden}
+  .card:hover{border-color:var(--accent)}
+  .card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .card.selected{border:2px solid var(--accent);box-shadow:0 0 0 3px rgba(31,111,120,.2);background:#fff}
+  .card.ghost-src{opacity:.3}
+  .ghost{position:fixed;z-index:1000;pointer-events:none;width:var(--slot-w);height:var(--slot-h);transform:rotate(-2deg);box-shadow:0 10px 24px rgba(0,0,0,.2);cursor:grabbing}
+
+  .pool-wrap{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px 16px}
+  .pool-wrap h2{font-size:1.05rem;margin:0 0 2px}
+  .pool-wrap .hint{margin:0 0 12px;color:var(--muted);font-size:.9rem}
+  .pool{display:flex;flex-wrap:wrap;gap:8px;min-height:var(--slot-h);border-radius:10px;padding:4px}
+  .pool.target{background:var(--accent-soft);outline:2px dashed var(--accent)}
+  .pool .card{width:var(--slot-w);height:var(--slot-h)}
+  .pool-empty{color:var(--muted);font-style:italic;padding:12px 4px;display:none}
+  .pool.is-empty .pool-empty{display:block}
+
+
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+  button.btn{font:inherit;font-weight:600;padding:10px 16px;border-radius:9px;border:1px solid var(--accent);background:#fff;color:var(--accent);cursor:pointer}
+  button.btn:hover{background:var(--accent-soft)}
+  button.btn.primary{background:var(--accent);color:#fff}
+  button.btn.primary:hover{background:#185a62}
+  button.btn.subtle{border-color:var(--line);color:var(--muted)}
+  button.btn.subtle:hover{color:var(--danger);border-color:var(--danger);background:#fff}
+  .spacer{flex:1}
+  .status{color:var(--muted);font-size:.88rem;min-height:1.2em;margin-top:8px}
+  .status.warn{color:var(--danger)}
+
+
+  header{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+  header h1{flex:1}
+  header .disclaimer{flex-basis:100%;margin:0}
+  header .disclaimer p{max-width:none;color:var(--ink)}
+  header > p{flex-basis:100%}
+  .help-btn{flex:none;display:inline-flex;align-items:center;gap:7px;font:inherit;font-weight:600;padding:8px 14px;border-radius:99px;border:1px solid var(--accent);background:#fff;color:var(--accent);cursor:pointer}
+  .help-btn:hover{background:var(--accent-soft)}
+  .help-btn .q{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px}
+
+  dialog.help{border:0;border-radius:16px;padding:0;max-width:680px;width:calc(100% - 32px);max-height:calc(100vh - 40px);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.25)}
+  dialog.help::backdrop{background:rgba(25,32,38,.55)}
+  .help-inner{padding:24px 26px 20px;overflow:auto;max-height:calc(100vh - 40px)}
+  .help h2{margin:0 0 4px;font-size:1.4rem;padding-right:36px}
+  @media (max-width:520px){.help .mini{flex-direction:column;align-items:flex-start}.help-inner{padding:20px 18px 16px}}
+  .help .lead{margin:0 0 16px;color:var(--muted)}
+  .help h3{font-size:1rem;margin:18px 0 6px}
+  .help p{margin:0 0 8px}
+  .help ol{margin:0;padding-left:0;list-style:none;counter-reset:st}
+  .help ol li{counter-increment:st;position:relative;padding:0 0 10px 38px}
+  .help ol li::before{content:counter(st);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;display:grid;place-items:center;font-size:.9rem}
+  .help .mini{display:flex;align-items:center;gap:14px;background:var(--bg);border-radius:10px;padding:12px 14px;margin:8px 0 4px}
+  .help .mini svg{flex:none}
+  .help .mini p{margin:0;font-size:.92rem}
+  .help .note{background:#fff7e6;border:1px solid #efd9a6;border-radius:10px;padding:10px 12px;font-size:.92rem;margin-top:10px}
+  .help-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:16px;position:sticky;bottom:-20px;background:#fff;padding:10px 0 4px}
+  .help-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:transparent;font-size:22px;line-height:1;color:var(--muted);cursor:pointer}
+  .help-x:hover{background:var(--bg);color:var(--ink)}
+
+
+  .roses-link{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+  .roses-link:hover{color:#185a62}
+  .help .about{background:var(--accent-soft);border-radius:10px;padding:10px 12px;font-size:.92rem;margin-top:10px}
+  footer.site{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:space-between}
+  footer.site p{margin:0;max-width:760px}
+
+
+  .disclaimer{margin-top:14px;border:1px solid #d9b46a;border-left:5px solid #c4902b;background:#fff8e8;border-radius:10px;padding:12px 14px;color:var(--ink);font-size:.9rem}
+  .disclaimer strong{display:block;margin-bottom:3px;font-size:.95rem}
+  .disclaimer p{margin:0}
+
+  .print-head{display:none}
+
+  @media (max-width:720px){
+      .progress{margin-left:0}
+    .who input{min-width:0;width:100%}
+    .who label{flex:1 1 160px}
+  }
+
+  @media print{
+    @page{size:A4 landscape;margin:10mm}
+    body{background:#fff;font-size:11px}
+    .wrap{max-width:none;padding:0}
+    header,.who,.pool-wrap,.actions,.status,dialog,footer.site,.disclaimer{display:none!important}
+    .print-head{display:block;margin-bottom:6mm}
+    .print-head h1{font-size:16px;margin:0 0 2px}
+    .print-head div{font-size:11px}
+    :root{--slot-w:29.5mm;--slot-h:24mm;--gap:0px}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .board{border:0;padding:0;overflow:visible}
+    .slot{border:1px solid #000;border-radius:0;background:#fff;margin:0 -1px -1px 0}
+    .slot.empty{border-style:solid}
+    .card{border:0;border-radius:0;box-shadow:none;background:#fff;font-size:8pt;padding:3px 4px}
+    .scale{color:#000}
+        }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Q-pyramiden</h1>
+    <button class="help-btn" id="btnHelp" type="button" aria-haspopup="dialog"><span class="q" aria-hidden="true">?</span>Hjælp</button>
+    <div class="disclaimer" role="note">
+      <strong>Uofficiel digital udgave – brug på eget ansvar</strong>
+      <p>Denne hjemmeside er en uafhængig, digital gengivelse af Q-værktøjet. Den er ikke udviklet, godkendt eller vedligeholdt af ROSES-projektet, Professionshøjskolen Absalon eller Københavns Universitet og har ingen officiel tilknytning til dem. Siden stilles til rådighed, som den er, uden garanti, og brug sker på eget ansvar. Besvarelser gemmes kun lokalt i din egen browser og sendes ikke videre fra siden.</p>
+    </div>
+    <p>Placér de 25 udsagn i pyramiden efter, hvor vigtige de er for din glæde ved naturfag. Der skal være præcis ét udsagn i hvert felt. Træk et udsagn ind i et felt, eller klik på udsagnet og derefter på feltet.</p>
+  </header>
+
+  <dialog class="help" id="help" aria-labelledby="helpTitle">
+    <div class="help-inner">
+      <button class="help-x" type="button" data-close aria-label="Luk hjælp">×</button>
+      <h2 id="helpTitle">Velkommen til Q-pyramiden</h2>
+      <div class="disclaimer" style="margin:8px 0 12px" role="note"><strong>Uofficiel udgave</strong><p>Denne digitale udgave har ingen officiel tilknytning til ROSES-projektet, men er en digital gengivelse af det analoge værktøj. Siden bruges på eget ansvar.</p></div>
+      <p class="lead">Læs her, hvad opgaven går ud på, og hvordan siden virker. Du kan altid åbne hjælpen igen med knappen Hjælp øverst til højre.</p>
+
+      <h3>Hvad er Q-pyramiden?</h3>
+      <p>Q-pyramiden er et værktøj til at finde ud af, hvad du synes gør naturfag relevant og godt at lære. Du får 25 udsagn om naturfagsundervisningen og skal sortere dem efter, hvor vigtige de er for din glæde ved naturfag.</p>
+      <p>Der er ingen rigtige eller forkerte svar. Det er din egen mening, der tæller. Bagefter bruger klassen pyramiderne til en fælles snak om, hvad der gør naturfag meningsfuldt.</p>
+      <div class="about">Q-pyramiden er udviklet i forskningsprojektet ROSES (Relevance of Science Education – Second), der undersøger unges interesse for naturfag i Danmark, Grønland og Færøerne. <a class="roses-link" href="https://ind.ku.dk/roses" target="_blank" rel="noopener">Læs mere om ROSES-projektet ↗</a></div>
+
+      <div class="mini">
+        <svg width="132" height="62" viewBox="0 0 132 62" aria-hidden="true">
+          <g fill="#e3f0f1" stroke="#1f6f78" stroke-width="1">
+            <rect x="60" y="2" width="12" height="10"/>
+            <rect x="46" y="14" width="12" height="10"/><rect x="60" y="14" width="12" height="10"/><rect x="74" y="14" width="12" height="10"/>
+            <rect x="32" y="26" width="12" height="10"/><rect x="46" y="26" width="12" height="10"/><rect x="60" y="26" width="12" height="10"/><rect x="74" y="26" width="12" height="10"/><rect x="88" y="26" width="12" height="10"/>
+            <rect x="18" y="38" width="12" height="10"/><rect x="32" y="38" width="12" height="10"/><rect x="46" y="38" width="12" height="10"/><rect x="60" y="38" width="12" height="10"/><rect x="74" y="38" width="12" height="10"/><rect x="88" y="38" width="12" height="10"/><rect x="102" y="38" width="12" height="10"/>
+            <rect x="4" y="50" width="12" height="10"/><rect x="18" y="50" width="12" height="10"/><rect x="32" y="50" width="12" height="10"/><rect x="46" y="50" width="12" height="10"/><rect x="60" y="50" width="12" height="10"/><rect x="74" y="50" width="12" height="10"/><rect x="88" y="50" width="12" height="10"/><rect x="102" y="50" width="12" height="10"/><rect x="116" y="50" width="12" height="10"/>
+          </g>
+          <rect x="4" y="50" width="12" height="10" fill="#f3d9d3" stroke="#a23b2a"/>
+          <rect x="116" y="50" width="12" height="10" fill="#cfe7d6" stroke="#2d7a45"/>
+        </svg>
+        <p>Pyramiden har 9 kolonner. Længst til venstre er "Slet ikke vigtigt", længst til højre er "Meget vigtigt". Kolonnerne i yderkanterne har kun ét felt, og midten har fem. Du er altså nødt til at vælge, hvad der er allermest og allermindst vigtigt for dig.</p>
+      </div>
+
+      <h3>Sådan gør du</h3>
+      <ol>
+        <li>Skriv dit navn og din klasse i felterne øverst. Navnet kommer med på din PDF og udskrift, så din lærer kan se, at besvarelsen er din.</li>
+        <li>Læs udsagnene nederst på siden. Du må gerne snakke med din sidemakker om, hvad de betyder, men du laver din egen pyramide.</li>
+        <li>Placér udsagnene i pyramiden. Du kan trække et udsagn hen i et felt med musen (eller fingeren), eller klikke på udsagnet og derefter på et tomt felt.</li>
+        <li>Flyt rundt, til du er tilfreds. Slipper du et udsagn på et felt, hvor der allerede ligger et, bytter de plads. Du kan også trække et udsagn tilbage til bunken.</li>
+        <li>Gem og aflevér. Når alle 25 felter er fyldt, trykker du Hent som PDF og sender filen til din lærer, eller du trykker Udskriv.</li>
+      </ol>
+
+      <div class="note">Gem dit arbejde: Siden husker selv dine placeringer i denne browser. Skal du arbejde videre på en anden computer, så tryk Gem besvarelse (fil) og brug senere Åbn gemt besvarelse.</div>
+
+      <div class="help-foot">
+        <button class="btn primary" type="button" data-close>Kom i gang</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="help" id="phoneNote" aria-labelledby="phoneTitle">
+    <div class="help-inner">
+      <h2 id="phoneTitle">Du bruger vist en telefon</h2>
+      <p class="lead">Q-pyramiden virker bedst på en computer, en Chromebook eller en iPad/tablet.</p>
+      <p>På en telefon er skærmen for smal til at vise hele pyramiden på én gang, og det kan være svært at trække udsagnene på plads. Du får det bedste overblik, hvis du åbner siden på en større skærm.</p>
+      <p>Du kan godt fortsætte på telefonen, hvis du vil. Tip: Tryk på et udsagn og derefter på et felt i stedet for at trække.</p>
+      <div class="help-foot">
+        <button class="btn primary" type="button" id="phoneOk">Fortsæt alligevel</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="print-head">
+    <h1>Q-pyramide – min oplevelse af relevans i naturfag</h1>
+    <div id="printWho"></div>
+  </div>
+
+  <div class="who">
+    <label>Navn<input id="name" type="text" autocomplete="name" placeholder="Skriv dit navn"></label>
+    <label>Klasse<input id="klasse" type="text" placeholder="F.eks. 9.A" style="min-width:120px"></label>
+    <div class="progress"><span id="progressText">0 af 25 placeret</span><span class="bar"><i id="progressBar"></i></span></div>
+  </div>
+
+  <section class="board" aria-label="Q-pyramide">
+    <div class="pyramid" id="pyramid"></div>
+    <div class="scale"><span>Slet ikke vigtigt</span><span class="arrow"></span><span>Meget vigtigt</span></div>
+  </section>
+
+  <section class="pool-wrap">
+    <h2>Udsagn</h2>
+    <p class="hint" id="poolHint">Træk udsagnene op i pyramiden. Du kan flytte dem rundt bagefter – og trække dem tilbage hertil.</p>
+    <div class="pool" id="pool" aria-label="Udsagn der ikke er placeret"><div class="pool-empty">Alle udsagn er placeret. Godt gået!</div></div>
+  </section>
+
+  <div class="actions">
+    <button class="btn primary" id="btnPdf" type="button">Hent som PDF</button>
+    <button class="btn" id="btnPrint" type="button">Udskriv</button>
+    <button class="btn" id="btnSave" type="button">Gem besvarelse (fil)</button>
+    <button class="btn" id="btnLoad" type="button">Åbn gemt besvarelse</button>
+    <span class="spacer"></span>
+    <button class="btn subtle" id="btnReset" type="button">Start forfra</button>
+    <input type="file" id="fileIn" accept=".json,application/json" hidden>
+  </div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <footer class="site">
+    <p>Q-værktøjet er udviklet i forbindelse med forskningsprojektet ROSES (Relevance of Science Education – Second), som ledes af Professionshøjskolen Absalon i samarbejde med Institut for Naturfagenes Didaktik, Københavns Universitet.</p>
+    <a class="roses-link" href="https://ind.ku.dk/roses" target="_blank" rel="noopener">Læs mere om ROSES på ind.ku.dk/roses ↗</a>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ============================================================
+   INDSTILLINGER – ret her, hvis udsagnene skal ændres.
+   Hvert udsagn har et fast id, som bruges når besvarelser gemmes.
+   ============================================================ */
+const STATEMENTS = [
+  {id:1,  text:"At lære om noget, der har betydning for mit liv."},
+  {id:2,  text:"At lære om noget, jeg kan få brug for i en kommende uddannelse."},
+  {id:3,  text:"At lære om noget, jeg kan bruge i min hverdag uden for skolen."},
+  {id:4,  text:"At undervisningen passer til os som personer."},
+  {id:5,  text:"At vi får tid til at tænke over hvad det, vi lærer, betyder for vores eget liv."},
+  {id:6,  text:"At lære om noget, jeg kender fra min hverdag."},
+  {id:7,  text:"At lære om noget, der kan være vigtigt i et fremtidigt job."},
+  {id:8,  text:"At lære om noget, som hjælper mig med at forstå verden omkring mig."},
+  {id:9,  text:"At læreren fortæller, hvad det, vi lærer, kan bruges til."},
+  {id:10, text:"At undervisningen handler om naturen tæt på, hvor vi bor."},
+  {id:11, text:"At lære om noget, jeg selv har oplevet før."},
+  {id:12, text:"At arbejde med hvordan vi i Danmark kan løse fælles problemer med naturfaglig viden."},
+  {id:13, text:"At lære om noget, som kan være nyttigt senere i mit liv."},
+  {id:14, text:"At læreren sørger for at det I lærer i klassen, passer til jeres interesser."},
+  {id:15, text:"At lære om naturfaglige ting ude i naturen."},
+  {id:16, text:"At arbejde med spørgsmål, der har betydning for de valg, vi træffer i Danmark."},
+  {id:17, text:"At lære om noget, som bygger videre på det, jeg allerede har lært."},
+  {id:18, text:"At lære om noget, som klassen synes er spændende."},
+  {id:19, text:"At vi taler om, hvordan det, vi lærer, kan bruges, når vi bliver voksne."},
+  {id:20, text:"At bruge tid i naturen uden at tænke på at lære noget."},
+  {id:21, text:"At undervisningen handler om hvordan Danmark kan udvikle sig i fremtiden."},
+  {id:22, text:"At lære om noget, som jeg i forvejen har lidt styr på."},
+  {id:23, text:"At undervisningen passer til den måde klassen lærer bedst."},
+  {id:24, text:"At vi taler om hvordan det, vi lærer, kan bruges ude i verden."},
+  {id:25, text:"At I arbejder med naturen i andre verdensdele."}
+];
+const COL_HEIGHTS = [1,2,3,4,5,4,3,2,1];   // venstre = slet ikke vigtigt, højre = meget vigtigt
+const STORAGE_KEY = "q-pyramide-v1";
+/* ============================================================ */
+
+const byId = Object.fromEntries(STATEMENTS.map(s => [s.id, s]));
+const SLOTS = [];                       // [{key:"c-r", col, row}]
+COL_HEIGHTS.forEach((h, c) => { for (let r = 0; r < h; r++) SLOTS.push({key:`${c}-${r}`, col:c, row:r}); });
+const TOTAL = SLOTS.length;
+
+let state = { placements:{}, name:"", klasse:"" };  // placements: slotKey -> statementId
+let selected = null;   // statement id selected by click
+let suppressClick = false;
+
+const $ = id => document.getElementById(id);
+const pyramidEl = $("pyramid"), poolEl = $("pool");
+
+/* ---------- state helpers ---------- */
+function slotOf(id){ for (const k in state.placements) if (state.placements[k] === id) return k; return null; }
+function placedCount(){ return Object.keys(state.placements).length; }
+
+function move(id, targetKey){            // targetKey = slot key, or null for the pool
+  const fromKey = slotOf(id);
+  if (fromKey === targetKey) return;
+  if (targetKey){
+    const other = state.placements[targetKey];
+    if (fromKey) delete state.placements[fromKey];
+    if (other != null){
+      if (fromKey) state.placements[fromKey] = other;   // swap
+      // if dragged from the pool, the displaced card returns to the pool
+    }
+    state.placements[targetKey] = id;
+  } else if (fromKey){
+    delete state.placements[fromKey];
+  }
+  save(); render();
+}
+
+/* ---------- rendering ---------- */
+function makeCard(s){
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "card" + (selected === s.id ? " selected" : "");
+  b.textContent = s.text;
+  b.dataset.id = s.id;
+  b.setAttribute("aria-pressed", selected === s.id ? "true" : "false");
+  b.addEventListener("pointerdown", onPointerDown);
+  b.addEventListener("click", onCardClick);
+  return b;
+}
+
+function buildPyramid(){
+  pyramidEl.innerHTML = "";
+  COL_HEIGHTS.forEach((h, c) => {
+    const col = document.createElement("div");
+    col.className = "col";
+    for (let r = 0; r < h; r++){
+      const slot = document.createElement("div");
+      slot.className = "slot";
+      slot.dataset.slot = `${c}-${r}`;
+      slot.tabIndex = 0;
+      slot.addEventListener("click", onSlotClick);
+      slot.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); onSlotClick.call(slot, e); } });
+      col.appendChild(slot);
+    }
+    pyramidEl.appendChild(col);
+  });
+}
+
+function render(){
+  pyramidEl.querySelectorAll(".slot").forEach(slot => {
+    slot.innerHTML = "";
+    const id = state.placements[slot.dataset.slot];
+    const label = slotLabel(slot.dataset.slot);
+    if (id != null){
+      slot.classList.remove("empty");
+      slot.appendChild(makeCard(byId[id]));
+      slot.setAttribute("aria-label", label);
+      slot.tabIndex = -1;
+    } else {
+      slot.classList.add("empty");
+      slot.setAttribute("aria-label", "Tomt felt, " + label);
+      slot.tabIndex = 0;
+    }
+  });
+  poolEl.querySelectorAll(".card").forEach(c => c.remove());
+  STATEMENTS.forEach(s => { if (!slotOf(s.id)) poolEl.appendChild(makeCard(s)); });
+  const n = placedCount();
+  poolEl.classList.toggle("is-empty", n === TOTAL);
+  $("progressText").textContent = `${n} af ${TOTAL} placeret`;
+  $("progressBar").style.width = (n / TOTAL * 100) + "%";
+  document.body.classList.toggle("selecting", selected != null);
+  $("poolHint").textContent = selected != null
+    ? "Klik nu på et felt i pyramiden for at placere udsagnet (eller klik på udsagnet igen for at fortryde)."
+    : "Træk udsagnene op i pyramiden. Du kan flytte dem rundt bagefter – og trække dem tilbage hertil.";
+}
+
+function slotLabel(key){
+  const c = +key.split("-")[0];
+  const names = ["Slet ikke vigtigt","","","","Midten","","","","Meget vigtigt"];
+  return `kolonne ${c+1} af 9` + (names[c] ? ` (${names[c]})` : "");
+}
+
+/* ---------- click-to-place ---------- */
+function onCardClick(e){
+  e.stopPropagation();
+  if (suppressClick) return;
+  const id = +this.dataset.id;
+  if (selected === null){ selected = id; render(); focusCard(id); return; }
+  if (selected === id){ selected = null; render(); focusCard(id); return; }
+  // another card is selected: if this card sits in a slot, swap into that slot
+  const key = slotOf(id);
+  const sel = selected; selected = null;
+  if (key) move(sel, key); else { selected = id; render(); focusCard(id); }
+}
+function onSlotClick(e){
+  if (suppressClick || selected === null) return;
+  const sel = selected; selected = null;
+  move(sel, this.dataset.slot);
+}
+poolEl.addEventListener("click", () => {
+  if (suppressClick || selected === null) return;
+  const sel = selected; selected = null;
+  move(sel, null);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && selected !== null){ selected = null; render(); } });
+function focusCard(id){ const el = document.querySelector(`.card[data-id="${id}"]`); if (el) el.focus({preventScroll:true}); }
+
+/* ---------- drag and drop (mouse + touch via pointer events) ---------- */
+let drag = null;
+function onPointerDown(e){
+  if (e.button !== 0) return;
+  const card = e.currentTarget;
+  drag = { id:+card.dataset.id, card, startX:e.clientX, startY:e.clientY, active:false, ghost:null, offX:0, offY:0, target:null, lastY:e.clientY };
+  document.addEventListener("pointermove", onPointerMove);
+  document.addEventListener("pointerup", onPointerUp);
+  document.addEventListener("pointercancel", onPointerCancel);
+}
+function onPointerMove(e){
+  if (!drag) return;
+  if (!drag.active){
+    if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 5) return;
+    drag.active = true;
+    const r = drag.card.getBoundingClientRect();
+    drag.offX = drag.startX - r.left; drag.offY = drag.startY - r.top;
+    const g = drag.card.cloneNode(true);
+    g.classList.add("ghost"); g.classList.remove("selected");
+    document.body.appendChild(g);
+    drag.ghost = g;
+    drag.card.classList.add("ghost-src");
+    selected = null; document.body.classList.remove("selecting");
+    autoScroll();
+  }
+  e.preventDefault();
+  drag.lastY = e.clientY;
+  drag.ghost.style.left = (e.clientX - drag.offX) + "px";
+  drag.ghost.style.top  = (e.clientY - drag.offY) + "px";
+  const t = dropTargetAt(e.clientX, e.clientY);
+  if (t !== drag.target){
+    if (drag.target) drag.target.classList.remove("target");
+    drag.target = t;
+    if (t) t.classList.add("target");
+  }
+}
+function dropTargetAt(x, y){
+  const el = document.elementFromPoint(x, y);
+  if (!el) return null;
+  return el.closest(".slot") || el.closest(".pool");
+}
+function endDrag(){
+  document.removeEventListener("pointermove", onPointerMove);
+  document.removeEventListener("pointerup", onPointerUp);
+  document.removeEventListener("pointercancel", onPointerCancel);
+  if (drag && drag.ghost) drag.ghost.remove();
+  if (drag && drag.target) drag.target.classList.remove("target");
+}
+function onPointerUp(e){
+  if (!drag) return;
+  const d = drag;
+  endDrag(); drag = null;
+  if (!d.active) return;              // it was a click – the click handler takes over
+  suppressClick = true; setTimeout(() => suppressClick = false, 0);
+  const t = d.target;
+  if (t && t.classList.contains("slot")) move(d.id, t.dataset.slot);
+  else if (t && t.classList.contains("pool")) move(d.id, null);
+  else render();
+}
+function onPointerCancel(){ endDrag(); drag = null; render(); }
+function autoScroll(){
+  if (!drag || !drag.active) return;
+  const edge = 70, y = drag.lastY, h = window.innerHeight;
+  if (y < edge) window.scrollBy(0, -Math.ceil((edge - y) / 4));
+  else if (y > h - edge) window.scrollBy(0, Math.ceil((y - (h - edge)) / 4));
+  requestAnimationFrame(autoScroll);
+}
+
+/* ---------- saving ---------- */
+function save(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(_) {}
+}
+function restore(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) applyData(JSON.parse(raw));
+  } catch(_) {}
+}
+function applyData(d){
+  const placements = {};
+  const used = new Set();
+  const validKeys = new Set(SLOTS.map(s => s.key));
+  if (d && d.placements) for (const k in d.placements){
+    const id = +d.placements[k];
+    if (validKeys.has(k) && byId[id] && !used.has(id)){ placements[k] = id; used.add(id); }
+  }
+  state = { placements, name:str(d.name), klasse:str(d.klasse) };
+  $("name").value = state.name; $("klasse").value = state.klasse;
+}
+function str(v){ return typeof v === "string" ? v : ""; }
+
+["name","klasse"].forEach(f => $(f).addEventListener("input", e => { state[f] = e.target.value; save(); }));
+
+function fileBase(){
+  const n = (state.name || "besvarelse").trim().toLowerCase()
+    .replace(/æ/g,"ae").replace(/ø/g,"oe").replace(/å/g,"aa")
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  return "q-pyramide-" + (n || "besvarelse");
+}
+function today(){ return new Date().toLocaleDateString("da-DK", {day:"numeric", month:"long", year:"numeric"}); }
+function setStatus(msg, warn){ const s = $("status"); s.textContent = msg; s.classList.toggle("warn", !!warn); }
+
+$("btnSave").addEventListener("click", () => {
+  const data = Object.assign({ app:"q-pyramide", version:1, saved:new Date().toISOString() }, state);
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  download(blob, fileBase() + ".json");
+  setStatus("Din besvarelse er gemt som en fil. Du kan åbne den igen med \"Åbn gemt besvarelse\".");
+});
+$("btnLoad").addEventListener("click", () => $("fileIn").click());
+$("fileIn").addEventListener("change", e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      if (!d || typeof d.placements !== "object") throw new Error();
+      applyData(d); selected = null; save(); render();
+      setStatus("Besvarelsen er åbnet.");
+    } catch(_) { setStatus("Filen kunne ikke åbnes. Vælg en fil, der er gemt fra Q-pyramiden.", true); }
+    e.target.value = "";
+  };
+  r.readAsText(f);
+});
+$("btnReset").addEventListener("click", () => {
+  if (!confirm("Vil du fjerne alle placeringer og starte forfra? (Navn og klasse bliver stående.)")) return;
+  state.placements = {};
+  selected = null; save(); render(); setStatus("");
+});
+function download(blob, name){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+function checkComplete(){
+  if (!state.name.trim()){
+    setStatus("Skriv dit navn øverst, før du henter PDF eller udskriver – så kan din lærer se, hvem besvarelsen er fra.", true);
+    $("name").focus(); $("name").scrollIntoView({behavior:"smooth", block:"center"});
+    $("name").style.outline = "2px solid var(--danger)";
+    return false;
+  }
+  $("name").style.outline = "";
+  const n = placedCount();
+  if (n < TOTAL) return confirm(`Du har kun placeret ${n} af ${TOTAL} udsagn. Vil du fortsætte alligevel?`);
+  return true;
+}
+
+/* ---------- print ---------- */
+$("btnPrint").addEventListener("click", () => {
+  if (!checkComplete()) return;
+  $("printWho").textContent = whoLine();
+  window.print();
+});
+function whoLine(){
+  return [state.name ? "Navn: " + state.name : "", state.klasse ? "Klasse: " + state.klasse : "", "Dato: " + today()].filter(Boolean).join("     ");
+}
+
+/* ---------- PDF ---------- */
+$("btnPdf").addEventListener("click", () => {
+  if (!checkComplete()) return;
+  if (!window.jspdf){
+    setStatus("PDF-funktionen kunne ikke indlæses (kræver internet). Brug \"Udskriv\" og vælg \"Gem som PDF\" i stedet.", true);
+    return;
+  }
+  makePdf();
+  setStatus("PDF'en er hentet. Find den i din mappe med overførsler.");
+});
+
+function makePdf(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:"landscape", unit:"mm", format:"a4" });
+  const W = 297, M = 12;
+  const teal = [31,111,120];
+
+  // --- page 1: pyramid
+  doc.setFont("helvetica","bold"); doc.setFontSize(16); doc.setTextColor(20);
+  doc.text("Q-pyramide – min oplevelse af relevans i naturfag", M, 16);
+  doc.setFont("helvetica","normal"); doc.setFontSize(10.5); doc.setTextColor(60);
+  doc.text(whoLine(), M, 23);
+
+  const colW = (W - 2*M) / 9, boxH = 26, bottom = 30 + 5*boxH;
+  doc.setDrawColor(0); doc.setLineWidth(0.3);
+  COL_HEIGHTS.forEach((h, c) => {
+    for (let r = 0; r < h; r++){
+      const x = M + c*colW, y = bottom - (r+1)*boxH;
+      doc.rect(x, y, colW, boxH);
+      const id = state.placements[`${c}-${r}`];
+      if (id != null){
+        let fs = 7.6, lines;
+        do { doc.setFontSize(fs); lines = doc.splitTextToSize(byId[id].text, colW - 3.4); fs -= 0.3; }
+        while (lines.length * fs * 0.3528 * 1.18 > boxH - 3 && fs > 5.5);
+        const lh = doc.getFontSize() * 0.3528 * 1.18;
+        const ty = y + boxH/2 - (lines.length*lh)/2 + lh*0.78;
+        doc.setTextColor(20);
+        doc.text(lines, x + 1.7, ty, { lineHeightFactor:1.18 });
+      }
+    }
+  });
+  // scale arrow
+  const ay = bottom + 9;
+  doc.setDrawColor(...teal); doc.setFillColor(...teal); doc.setLineWidth(0.6);
+  doc.line(M + 3, ay, W - M - 3, ay);
+  doc.triangle(M, ay, M + 4, ay - 2, M + 4, ay + 2, "F");
+  doc.triangle(W - M, ay, W - M - 4, ay - 2, W - M - 4, ay + 2, "F");
+  doc.setFont("helvetica","bold"); doc.setFontSize(11); doc.setTextColor(20);
+  doc.text("Slet ikke vigtigt", M, ay + 7);
+  doc.text("Meget vigtigt", W - M, ay + 7, { align:"right" });
+
+  // --- page 2: ranked list
+  doc.addPage();
+  let y = 16;
+  const need = h => { if (y + h > 200){ doc.addPage(); y = 16; } };
+  doc.setFont("helvetica","bold"); doc.setFontSize(14);
+  doc.text("Mine placeringer – fra meget vigtigt til slet ikke vigtigt", M, y);
+  doc.setFont("helvetica","normal"); doc.setFontSize(9.5); doc.setTextColor(90);
+  doc.text(whoLine(), M, y + 6); doc.setTextColor(20);
+  y += 13;
+  for (let c = 8; c >= 0; c--){
+    const score = c - 4, label = (score > 0 ? "+" : "") + score;
+    const name = c === 8 ? "  (meget vigtigt)" : c === 0 ? "  (slet ikke vigtigt)" : c === 4 ? "  (midten)" : "";
+    need(6);
+    doc.setFont("helvetica","bold"); doc.setFontSize(9.5); doc.setTextColor(...teal);
+    doc.text(`Kolonne ${label}${name}`, M, y); y += 4.6;
+    doc.setFont("helvetica","normal"); doc.setTextColor(20);
+    for (let r = COL_HEIGHTS[c]-1; r >= 0; r--){
+      const id = state.placements[`${c}-${r}`];
+      const t = id != null ? "•  " + byId[id].text : "•  (tomt felt)";
+      const lines = doc.splitTextToSize(t, W - 2*M - 6);
+      need(lines.length * 4.2);
+      doc.text(lines, M + 4, y); y += lines.length * 4.2;
+    }
+    y += 1.6;
+  }
+  doc.save(fileBase() + ".pdf");
+}
+
+
+/* ---------- help ---------- */
+const helpEl = $("help");
+function openHelp(){
+  if (typeof helpEl.showModal === "function"){ if (!helpEl.open) helpEl.showModal(); }
+  else helpEl.setAttribute("open", "");
+  helpEl.querySelector(".help-inner").scrollTop = 0;
+}
+function closeHelp(){ if (helpEl.close) helpEl.close(); else helpEl.removeAttribute("open"); $("btnHelp").focus(); }
+$("btnHelp").addEventListener("click", openHelp);
+helpEl.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closeHelp));
+helpEl.addEventListener("click", e => { if (e.target === helpEl) closeHelp(); });   // klik uden for vinduet
+
+
+/* ---------- telefon-advarsel ---------- */
+function isPhone(){
+  const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+  const shortSide = Math.min(window.screen.width, window.screen.height);
+  return coarse && shortSide < 600;            // tablets/iPads har mindst ca. 740 px på den korte led
+}
+const phoneEl = $("phoneNote");
+function showStartDialogs(){
+  if (isPhone() && typeof phoneEl.showModal === "function"){
+    phoneEl.showModal();
+    phoneEl.addEventListener("close", openHelp, { once:true });   // hjælpen vises bagefter
+  } else openHelp();
+}
+$("phoneOk").addEventListener("click", () => phoneEl.close());
+
+/* ---------- start ---------- */
+buildPyramid();
+restore();
+render();
+showStartDialogs();   // hjælpen (og evt. telefon-advarsel) vises hver gang siden åbnes
+</script>
+</body>
+</html>
