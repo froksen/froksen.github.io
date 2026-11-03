@@ -114,12 +114,26 @@
 
 
 
-  .band{height:36px;background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='36' viewBox='0 0 240 36'><rect width='60' height='36' fill='%23FDBD38'/><rect x='60' width='60' height='36' fill='%2311294A'/><path d='M60 36L120 0v36z' fill='%23498125'/><rect x='120' width='60' height='36' fill='%23498125'/><circle cx='150' cy='36' r='18' fill='%23FDBD38'/><rect x='180' width='60' height='36' fill='%23FDBD38'/><path d='M180 0a18 18 0 0 1 0 36z' fill='%23D9390A'/></svg>") repeat-x left top;}
-  .help .band{height:14px;background-size:auto 14px;margin:-24px -26px 18px}
   .scale .lo{color:var(--orange)} .scale .hi{color:var(--green)}
   footer.site{border-top:0}
   footer.site::before{content:"";flex-basis:100%;height:6px;background:linear-gradient(90deg,var(--yellow) 0 25%,var(--navy) 25% 50%,var(--green) 50% 75%,var(--orange) 75%);margin-bottom:8px}
-  @media (max-width:520px){.help .band{margin:-20px -18px 16px}}
+
+  .band{display:block;height:38px;width:384px;max-width:100%;overflow:visible;margin-bottom:-12px}
+  .help .band{height:16px;width:224px;margin:-24px auto 18px -26px}
+  @media (max-width:520px){.help .band{margin:-20px auto 16px -18px}}
+
+  .vband{position:absolute;left:0;top:0;width:87px;height:886px;pointer-events:none;z-index:0}
+  body{position:relative;padding-left:76px}
+  .wrap{position:relative;z-index:1}
+  body > .band{display:none}
+  .help-inner{position:relative;padding-left:52px}
+  .help .vband{width:29px;height:295px;left:0;top:0;position:absolute}
+  @media (max-width:720px){
+    body{padding-left:0}
+    body > .vband{display:none}
+    body > .band{display:block}
+  }
+  @media (max-width:520px){.help-inner{padding-left:34px}.help .vband{width:22px;height:222px}}
   .print-head{display:none}
 
   @media (max-width:720px){
@@ -132,7 +146,8 @@
     @page{size:A4 landscape;margin:10mm}
     body{background:#fff;font-size:11px}
     .wrap{max-width:none;padding:0}
-    header,.who,.pool-wrap,.actions,.status,dialog,footer.site,.band{display:none!important}
+    header,.who,.pool-wrap,.actions,.status,dialog,footer.site,.band,.vband{display:none!important}
+    body{padding-left:0}
     .print-head{display:block;margin-bottom:6mm}
     .print-head h1{font-size:16px;margin:0 0 2px}
     .print-head div{font-size:11px}
@@ -147,7 +162,34 @@
 </style>
 </head>
 <body>
-<div class="band" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="roses-band" viewBox="0 0 1477 145" overflow="visible">
+    <defs><g transform="matrix(0 1 1 0 0 0)"><clipPath id="qh3"><rect y="633" width="100" height="211"/></clipPath><clipPath id="qh6"><rect y="1266" width="100" height="211"/></clipPath></g></defs>
+    <g transform="matrix(0 1 1 0 0 0)">
+    <path d="M0 100 A100 100 0 0 1 100 0 V211 H0 Z" fill="#FDBD38"/>
+    <rect y="211" width="100" height="211" fill="#11294A"/><path d="M100 211 H0 V311 Z" fill="#498125"/>
+    <rect y="422" width="100" height="211" fill="#FDBD38"/>
+    <rect y="633" width="100" height="211" fill="#498125"/><circle cx="-5" cy="738.5" r="105.5" fill="#D9390A" clip-path="url(#qh3)"/>
+    <rect y="844" width="100" height="211" fill="#498125"/><path d="M0 955 L100 1055 H0 Z" fill="#11294A"/>
+    <rect y="1055" width="100" height="211" fill="#FDBD38"/>
+    <rect y="1266" width="100" height="211" fill="#498125"/><circle cx="0" cy="1371.5" r="105.5" fill="#D9390A" clip-path="url(#qh6)"/>
+    <circle cx="100" cy="844" r="45" fill="#D9390A"/>
+    </g>
+  </symbol>
+  <symbol id="roses-vband" viewBox="0 0 145 1477" overflow="visible">
+    <defs><clipPath id="qv3"><rect y="633" width="100" height="211"/></clipPath><clipPath id="qv6"><rect y="1266" width="100" height="211"/></clipPath></defs>
+    <path d="M0 100 A100 100 0 0 1 100 0 V211 H0 Z" fill="#FDBD38"/>
+    <rect y="211" width="100" height="211" fill="#11294A"/><path d="M100 211 H0 V311 Z" fill="#498125"/>
+    <rect y="422" width="100" height="211" fill="#FDBD38"/>
+    <rect y="633" width="100" height="211" fill="#498125"/><circle cx="-5" cy="738.5" r="105.5" fill="#D9390A" clip-path="url(#qv3)"/>
+    <rect y="844" width="100" height="211" fill="#498125"/><path d="M0 955 L100 1055 H0 Z" fill="#11294A"/>
+    <rect y="1055" width="100" height="211" fill="#FDBD38"/>
+    <rect y="1266" width="100" height="211" fill="#498125"/><circle cx="0" cy="1371.5" r="105.5" fill="#D9390A" clip-path="url(#qv6)"/>
+    <circle cx="100" cy="844" r="45" fill="#D9390A"/>
+  </symbol>
+</svg>
+<svg class="band" aria-hidden="true" viewBox="0 0 1477 145" preserveAspectRatio="xMinYMin meet"><use href="#roses-band"/></svg>
+<svg class="vband" aria-hidden="true" viewBox="0 0 145 1477" preserveAspectRatio="xMinYMin meet" overflow="visible"><use href="#roses-vband"/></svg>
 <div class="wrap">
 
   <header>
@@ -158,7 +200,7 @@
 
   <dialog class="help" id="help" aria-labelledby="helpTitle">
     <div class="help-inner">
-      <div class="band" aria-hidden="true"></div>
+      <svg class="vband" aria-hidden="true" viewBox="0 0 145 1477" preserveAspectRatio="xMinYMin meet" overflow="visible"><use href="#roses-vband"/></svg>
       <button class="help-x" type="button" data-close aria-label="Luk hjælp">×</button>
       <h2 id="helpTitle">Velkommen til Q-pyramiden</h2>
       <p class="lead">Læs her, hvad opgaven går ud på, og hvordan siden virker. Du kan altid åbne hjælpen igen med knappen Hjælp øverst til højre.</p>
@@ -202,7 +244,7 @@
 
   <dialog class="help" id="phoneNote" aria-labelledby="phoneTitle">
     <div class="help-inner">
-      <div class="band" aria-hidden="true"></div>
+      <svg class="vband" aria-hidden="true" viewBox="0 0 145 1477" preserveAspectRatio="xMinYMin meet" overflow="visible"><use href="#roses-vband"/></svg>
       <h2 id="phoneTitle">Du bruger vist en telefon</h2>
       <p class="lead">Q-pyramiden virker bedst på en computer, en Chromebook eller en iPad/tablet.</p>
       <p>På en telefon er skærmen for smal til at vise hele pyramiden på én gang, og det kan være svært at trække udsagnene på plads. Du får det bedste overblik, hvis du åbner siden på en større skærm.</p>
