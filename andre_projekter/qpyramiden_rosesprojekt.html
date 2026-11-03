@@ -28,7 +28,7 @@
   .progress .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 
   .board{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px 12px;overflow-x:auto}
-  .pyramid{display:grid;grid-template-columns:repeat(9,var(--slot-w));gap:var(--gap);justify-content:center;align-items:end;min-width:max-content}
+  .pyramid{display:grid;grid-template-columns:repeat(9,var(--slot-w));gap:var(--gap);justify-content:center;align-items:end;width:max-content;margin:0 auto}
   .col{display:flex;flex-direction:column-reverse;gap:var(--gap)}
   .slot{width:var(--slot-w);height:var(--slot-h);border:1.5px dashed var(--slot-line);border-radius:8px;background:var(--slot);position:relative;display:flex;padding:0}
   .slot.empty:hover,.slot.target{border-color:var(--accent);background:var(--accent-soft)}
@@ -74,9 +74,8 @@
 
   header{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
   header h1{flex:1}
-  header .disclaimer{flex-basis:100%;margin:0}
-  header .disclaimer p{max-width:none;color:var(--ink)}
-  header > p{flex-basis:100%}
+  header > p{flex-basis:100%;max-width:none;padding-right:min(30%, 400px)}
+  @media (max-width:720px){header > p{padding-right:0}}
   .help-btn{flex:none;display:inline-flex;align-items:center;gap:7px;font:inherit;font-weight:600;padding:8px 14px;border-radius:99px;border:1px solid var(--accent);background:#fff;color:var(--accent);cursor:pointer}
   .help-btn:hover{background:var(--accent-soft)}
   .help-btn .q{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px}
@@ -108,9 +107,6 @@
   footer.site p{margin:0;max-width:760px}
 
 
-  .disclaimer{margin-top:14px;border:1px solid #d9b46a;border-left:5px solid #c4902b;background:#fff8e8;border-radius:10px;padding:12px 14px;color:var(--ink);font-size:.9rem}
-  .disclaimer strong{display:block;margin-bottom:3px;font-size:.95rem}
-  .disclaimer p{margin:0}
 
   .print-head{display:none}
 
@@ -124,7 +120,7 @@
     @page{size:A4 landscape;margin:10mm}
     body{background:#fff;font-size:11px}
     .wrap{max-width:none;padding:0}
-    header,.who,.pool-wrap,.actions,.status,dialog,footer.site,.disclaimer{display:none!important}
+    header,.who,.pool-wrap,.actions,.status,dialog,footer.site{display:none!important}
     .print-head{display:block;margin-bottom:6mm}
     .print-head h1{font-size:16px;margin:0 0 2px}
     .print-head div{font-size:11px}
@@ -144,10 +140,6 @@
   <header>
     <h1>Q-pyramiden</h1>
     <button class="help-btn" id="btnHelp" type="button" aria-haspopup="dialog"><span class="q" aria-hidden="true">?</span>Hjælp</button>
-    <div class="disclaimer" role="note">
-      <strong>Uofficiel digital udgave – brug på eget ansvar</strong>
-      <p>Denne hjemmeside er en uafhængig, digital gengivelse af Q-værktøjet. Den er ikke udviklet, godkendt eller vedligeholdt af ROSES-projektet, Professionshøjskolen Absalon eller Københavns Universitet og har ingen officiel tilknytning til dem. Siden stilles til rådighed, som den er, uden garanti, og brug sker på eget ansvar. Besvarelser gemmes kun lokalt i din egen browser og sendes ikke videre fra siden.</p>
-    </div>
     <p>Placér de 25 udsagn i pyramiden efter, hvor vigtige de er for din glæde ved naturfag. Der skal være præcis ét udsagn i hvert felt. Træk et udsagn ind i et felt, eller klik på udsagnet og derefter på feltet.</p>
   </header>
 
@@ -155,7 +147,6 @@
     <div class="help-inner">
       <button class="help-x" type="button" data-close aria-label="Luk hjælp">×</button>
       <h2 id="helpTitle">Velkommen til Q-pyramiden</h2>
-      <div class="disclaimer" style="margin:8px 0 12px" role="note"><strong>Uofficiel udgave</strong><p>Denne digitale udgave har ingen officiel tilknytning til ROSES-projektet, men er en digital gengivelse af det analoge værktøj. Siden bruges på eget ansvar.</p></div>
       <p class="lead">Læs her, hvad opgaven går ud på, og hvordan siden virker. Du kan altid åbne hjælpen igen med knappen Hjælp øverst til højre.</p>
 
       <h3>Hvad er Q-pyramiden?</h3>
@@ -241,7 +232,7 @@
   <div class="status" id="status" role="status" aria-live="polite"></div>
 
   <footer class="site">
-    <p>Q-værktøjet er udviklet i forbindelse med forskningsprojektet ROSES (Relevance of Science Education – Second), som ledes af Professionshøjskolen Absalon i samarbejde med Institut for Naturfagenes Didaktik, Københavns Universitet.</p>
+    <p>Q-værktøjet er udviklet i forbindelse med forskningsprojektet ROSES (Relevance of Science Education – Second), som ledes af Professionshøjskolen Absalon i samarbejde med Institut for Naturfagenes Didaktik, Københavns Universitet. Denne side er en digital gengivelse af det analoge Q-værktøj og er udgivet med tilladelse fra projektet.</p>
     <a class="roses-link" href="https://ind.ku.dk/roses" target="_blank" rel="noopener">Læs mere om ROSES på ind.ku.dk/roses ↗</a>
   </footer>
 
